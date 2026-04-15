@@ -1514,8 +1514,6 @@ async function testAndSave(){
     localStorage.setItem("appsScriptUrl",url);
     st.style.display="none";
     goStep(3);
-    // Auto-run sync after successful test
-    await runSync();
   }catch(e){
     st.style.display="none";
     er.style.display="block";
@@ -1550,9 +1548,11 @@ async function runSync(){
     if(data.sc){
       results.push(`📊 SC Calls tab read (weekBase unchanged — manually verified)`);
     }
+    // Patient sync disabled until sheet structure is finalised with digitised assessment form.
+    // patients[] is maintained manually and updated by Claude when new data is confirmed.
+    // The sheet connection is verified but patient data is NOT overwritten from the sheet.
     if(data.patients){
-      const n=parsePatientsGrid(data.patients);
-      results.push(`👥 Patients: ${n} records loaded`);
+      results.push(`👥 Sheet connected (${data.patients.length} rows found — patient sync paused until assessment form is digitised)`);
     }
     refreshAll();
     const now=new Date().toISOString();

@@ -1451,7 +1451,7 @@ refreshAll();
       <button class="bfull b-blue" onclick="runSync()" id="sync-btn">🔄 Sync Now</button>
       <button onclick="goStep(2)" style="width:100%;margin-top:7px;padding:7px;border-radius:7px;border:1.5px solid var(--border2);background:none;color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer">Change URL</button>
 
-      <div class="fn">Dashboard auto-syncs on load if a URL is saved. Each sync replaces all data with the latest from your sheet. Your URL is saved in browser localStorage.</div>
+      <div class="fn">Sync runs only when you click Sync Now. weekBase (SC call totals) is always locked — only patient records update from the sheet. Your URL is saved in browser localStorage.</div>
     </div>
   </div>
 </div>
@@ -1545,9 +1545,10 @@ async function runSync(){
     if(!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const data=await resp.json();
     const results=[];
+    // SC calls tab: weekBase is the authoritative source (manually verified numbers).
+    // We do NOT override weekBase from the sheet — week totals/ne/sti are locked per your confirmation.
     if(data.sc){
-      const wksUpdated=parseSCGrid(data.sc);
-      results.push(`📊 SC Calls: ${wksUpdated} weeks updated`);
+      results.push(`📊 SC Calls tab read (weekBase unchanged — manually verified)`);
     }
     if(data.patients){
       const n=parsePatientsGrid(data.patients);
@@ -1650,12 +1651,8 @@ function parsePatientsGrid(grid){
 }
 
 // ===== AUTO-SYNC ON LOAD =====
-window.addEventListener("load",()=>{
-  if(savedUrl){
-    // Silent background sync — update data without opening modal
-    runSync().catch(()=>{});
-  }
-});
+// Auto-sync on load disabled — sync only when user clicks Sync Sheet.
+// This ensures hardcoded weekBase and patients[] are always the base data.
 </script>
 </body>
 </html>

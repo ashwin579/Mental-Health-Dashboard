@@ -1545,9 +1545,10 @@ async function runSync(){
     if(!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const data=await resp.json();
     const results=[];
+    // SC calls tab: weekBase is the authoritative source (manually verified numbers).
+    // We do NOT override weekBase from the sheet — week totals/ne/sti are locked per your confirmation.
     if(data.sc){
-      const wksUpdated=parseSCGrid(data.sc);
-      results.push(`📊 SC Calls: ${wksUpdated} weeks updated`);
+      results.push(`📊 SC Calls tab read (weekBase unchanged — manually verified)`);
     }
     if(data.patients){
       const n=parsePatientsGrid(data.patients);

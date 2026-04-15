@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MH Category Intelligence Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f0f4ff;--surface:#fff;--surface2:#f5f7ff;--border:#dde3f5;--border2:#c8d0ed;
+  --text:#1a1f3c;--muted:#5a6490;--dim:#9aa3c8;
+  --blue:#2563eb;--bl:#eff6ff;--bm:#bfdbfe;
+  --purple:#7c3aed;--pl:#f5f3ff;--pm:#ddd6fe;
+  --green:#059669;--gl:#ecfdf5;--gm:#a7f3d0;
+  --red:#dc2626;--rl:#fef2f2;--rm:#fecaca;
+  --orange:#d97706;--ol:#fffbeb;--om:#fde68a;
+  --teal:#0891b2;--tl:#ecfeff;--tm:#a5f3fc;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* TOP BAR */
+.topbar{background:var(--surface);border-bottom:2px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(37,99,235,.08);}
+.logo{font-size:.95rem;font-weight:800;color:var(--blue);letter-spacing:-.03em;display:flex;align-items:center;gap:10px;}
+.logo-badge{background:var(--blue);color:#fff;font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:20px;letter-spacing:.05em;}
+.logo-sub{font-size:.68rem;font-weight:400;color:var(--muted);}
+.nav-tabs{display:flex;gap:2px;background:var(--bg);border-radius:8px;padding:3px;}
+.ntab{padding:5px 13px;border-radius:6px;cursor:pointer;font-size:.76rem;font-weight:600;color:var(--muted);border:none;background:none;transition:all .15s;font-family:'Plus Jakarta Sans',sans-serif;}
+.ntab:hover{color:var(--text);background:#fff;}
+.ntab.active{background:var(--blue);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,.3);}
+.tnum{display:inline-flex;width:15px;height:15px;background:rgba(255,255,255,.3);border-radius:50%;align-items:center;justify-content:center;font-size:.58rem;margin-right:4px;font-weight:700;}
+.ntab:not(.active) .tnum{background:var(--bm);color:var(--blue);}
+.hbtns{display:flex;gap:7px;}
+.btn-o{background:none;border:1.5px solid var(--border2);color:var(--muted);padding:5px 13px;border-radius:7px;cursor:pointer;font-size:.74rem;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;transition:all .15s;}
+.btn-o:hover{border-color:var(--blue);color:var(--blue);background:var(--bl);}
+.btn-p{background:var(--blue);color:#fff;border:none;padding:5px 14px;border-radius:7px;cursor:pointer;font-size:.74rem;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;box-shadow:0 2px 8px rgba(37,99,235,.25);transition:all .15s;}
+.btn-p:hover{background:#1d4ed8;}
+
+/* SECTIONS */
+.sec{display:none;padding:20px 24px;}
+.sec.active{display:block;animation:fi .2s ease;}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.sec-title{font-size:1.15rem;font-weight:800;color:var(--text);letter-spacing:-.03em;}
+.sec-sub{font-size:.72rem;color:var(--muted);margin-top:2px;}
+.sec-head{margin-bottom:16px;}
+
+/* CARDS */
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:16px;box-shadow:0 1px 6px rgba(37,99,235,.05);}
+.ctitle{font-size:.65rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:11px;padding-bottom:8px;border-bottom:1.5px solid var(--border);}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:11px;margin-bottom:14px;}
+.kpi{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:14px 15px;box-shadow:0 1px 6px rgba(37,99,235,.05);}
+.kpi-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.kpi-ic{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+.kpi-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);}
+.kpi-val{font-family:'JetBrains Mono',monospace;font-size:1.75rem;font-weight:600;color:var(--text);line-height:1;}
+.kpi-s{font-size:.64rem;color:var(--muted);margin-top:2px;}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:.77rem;}
+th{background:var(--surface2);color:var(--muted);font-weight:700;font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;padding:8px 10px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap;}
+td{padding:7px 10px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--bg);}
+.sc-grp td{background:var(--surface2);font-weight:700;font-size:.66rem;letter-spacing:.05em;color:var(--muted);padding:5px 10px;border-top:2px solid var(--border);}
+.sc-in td:first-child{padding-left:20px;font-size:.73rem;color:var(--muted);}
+.sc-pct td{font-family:'JetBrains Mono',monospace;font-size:.71rem;}
+.sc-pct td:first-child{font-family:'Plus Jakarta Sans',sans-serif;}
+.sc-hl td{background:var(--bl)!important;}
+.sc-hl td:first-child{font-weight:700;color:var(--blue);}
+.sc-mix td{background:var(--ol)!important;font-family:'JetBrains Mono',monospace;font-size:.71rem;color:var(--orange);}
+.sc-mix td:first-child{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;}
+
+/* BADGES */
+.bdg{display:inline-flex;align-items:center;padding:2px 7px;border-radius:20px;font-size:.64rem;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.b-mh{background:var(--bl);color:var(--blue);border:1px solid var(--bm);}
+.b-sh{background:var(--pl);color:var(--purple);border:1px solid var(--pm);}
+.b-sti{background:var(--gl);color:var(--green);border:1px solid var(--gm);}
+.b-l1{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;font-size:.6rem;}
+.b-l2{background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;font-size:.6rem;}
+.b-flag{background:#fef9c3;color:#854d0e;border:1px solid #fef08a;font-size:.6rem;}
+.mn{font-family:'JetBrains Mono',monospace;font-weight:600;}
+.pct{font-family:'JetBrains Mono',monospace;font-size:.71rem;}
+.dash{color:var(--dim);}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:13px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:13px;}
+
+/* BAR */
+.bar-chart{display:flex;flex-direction:column;gap:7px;}
+.bar-row{display:flex;align-items:center;gap:8px;}
+.bar-lbl{font-size:.71rem;color:var(--muted);width:180px;flex-shrink:0;text-align:right;font-weight:500;}
+.bar-track{flex:1;height:20px;background:var(--bg);border-radius:4px;overflow:hidden;border:1px solid var(--border);}
+.bar-fill{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:6px;font-size:.64rem;font-family:'JetBrains Mono',monospace;font-weight:600;color:#fff;min-width:20px;}
+.bar-cnt{font-family:'JetBrains Mono',monospace;font-size:.71rem;color:var(--muted);width:26px;text-align:right;}
+
+/* INNER TABS */
+.itabs{display:flex;gap:0;margin-bottom:14px;border-bottom:2px solid var(--border);}
+.itab{padding:6px 14px;cursor:pointer;font-size:.74rem;font-weight:600;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;white-space:nowrap;}
+.itab:hover{color:var(--text);}
+.itab.active{color:var(--blue);border-bottom-color:var(--blue);}
+.tc{display:none;}
+.tc.active{display:block;}
+
+/* TAXONOMY CARDS */
+.tax-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px;}
+.tax-card{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;overflow:hidden;}
+.tax-head{padding:10px 14px;font-weight:700;font-size:.82rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1.5px solid var(--border);}
+.tax-body{padding:12px 14px;}
+.l2-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);font-size:.74rem;}
+.l2-row:last-child{border-bottom:none;}
+.l2-name{color:var(--text);font-weight:500;}
+.l2-n{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:.72rem;color:var(--muted);}
+.tax-n{font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;}
+
+/* INSIGHT */
+.ins-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px;}
+.ins-card{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:14px;}
+.ins-ic{font-size:1.15rem;margin-bottom:6px;}
+.ins-tt{font-size:.64rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px;}
+.ins-body{font-size:.76rem;color:var(--text);line-height:1.5;}
+.hi{color:var(--blue);font-weight:700;}
+
+/* DSS */
+.dss-sel{display:flex;gap:11px;margin-bottom:16px;}
+.dss-btn{flex:1;padding:12px 15px;border-radius:10px;border:2px solid var(--border);background:var(--surface);cursor:pointer;text-align:left;transition:all .15s;font-family:'Plus Jakarta Sans',sans-serif;}
+.dss-btn:hover{border-color:var(--blue);}
+.dss-btn.active{border-color:var(--blue);background:var(--bl);}
+.dss-btn .cn{font-size:.9rem;font-weight:700;display:block;margin-bottom:2px;color:var(--text);}
+.dss-btn .cp{font-size:.68rem;color:var(--muted);}
+.dss-btn.active .cp{color:var(--blue);}
+.dss-proto{display:none;}
+.dss-proto.active{display:block;}
+.pg{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:13px;}
+.pcard{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;overflow:hidden;}
+.phead{padding:10px 14px;display:flex;align-items:center;gap:7px;border-bottom:1.5px solid var(--border);font-weight:700;font-size:.78rem;}
+.pbody{padding:12px 14px;}
+.pstep{display:flex;gap:8px;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.pstep:last-child{margin-bottom:0;border-bottom:none;padding-bottom:0;}
+.sn{width:20px;height:20px;background:var(--bg);border:1.5px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-family:'JetBrains Mono',monospace;font-weight:600;flex-shrink:0;color:var(--muted);}
+.snm{font-weight:700;font-size:.76rem;color:var(--text);margin-bottom:1px;}
+.sd{font-size:.71rem;color:var(--muted);line-height:1.5;}
+.stag{display:inline-block;padding:1px 5px;border-radius:3px;font-size:.61rem;font-weight:700;margin-right:3px;margin-top:3px;}
+.tm{background:var(--rl);color:var(--red);}
+.tf{background:var(--bl);color:var(--blue);}
+.to{background:var(--gl);color:var(--green);}
+.ti{background:var(--ol);color:var(--orange);}
+
+/* MODAL */
+.moverlay{display:none;position:fixed;inset:0;background:rgba(26,31,60,.45);backdrop-filter:blur(4px);z-index:200;align-items:center;justify-content:center;}
+.moverlay.open{display:flex;}
+.modal{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:24px;width:640px;max-width:95vw;max-height:92vh;overflow-y:auto;box-shadow:0 20px 60px rgba(37,99,235,.14);}
+.mhead{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;}
+.mtitle{font-size:1rem;font-weight:800;letter-spacing:-.02em;}
+.msub{font-size:.7rem;color:var(--muted);margin-top:2px;}
+.mclose{background:var(--bg);border:1.5px solid var(--border);color:var(--muted);width:26px;height:26px;border-radius:6px;cursor:pointer;font-size:.82rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.mclose:hover{background:var(--rl);border-color:var(--rm);color:var(--red);}
+.mtabs{display:flex;gap:2px;background:var(--bg);border-radius:8px;padding:3px;margin-bottom:16px;}
+.mtab{flex:1;padding:5px;border-radius:6px;cursor:pointer;font-size:.74rem;font-weight:600;color:var(--muted);border:none;background:none;font-family:'Plus Jakarta Sans',sans-serif;transition:all .15s;text-align:center;}
+.mtab.active{background:var(--blue);color:#fff;box-shadow:0 2px 6px rgba(37,99,235,.25);}
+.mtc{display:none;}
+.mtc.active{display:block;}
+.fg{margin-bottom:12px;}
+.fl{display:block;font-size:.64rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px;}
+.fi,.fs{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:7px;padding:6px 10px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;outline:none;transition:border-color .15s;}
+.fi:focus,.fs:focus{border-color:var(--blue);background:#fff;}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.div{height:1.5px;background:var(--border);margin:12px 0;}
+.slbl{font-size:.63rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;padding-bottom:5px;border-bottom:1.5px solid var(--border);}
+.bfull{width:100%;padding:8px;border-radius:8px;font-size:.8rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .15s;border:none;margin-top:4px;}
+.b-blue{background:var(--blue);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,.22);}
+.b-blue:hover{background:#1d4ed8;}
+.dropz{border:2.5px dashed var(--bm);border-radius:10px;padding:26px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bl);margin-bottom:11px;}
+.dropz:hover,.dropz.dragover{border-color:var(--blue);background:#dbeafe;}
+.di{font-size:1.7rem;margin-bottom:6px;}
+.dt{font-size:.82rem;font-weight:600;color:var(--blue);}
+.dh{font-size:.68rem;margin-top:2px;color:var(--muted);}
+#bfi{display:none;}
+.tnote{background:var(--ol);border:1.5px solid var(--om);border-radius:8px;padding:10px 12px;font-size:.73rem;color:var(--orange);margin-bottom:11px;line-height:1.6;}
+.tnote code{background:rgba(217,119,6,.15);padding:1px 4px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:.67rem;}
+.bres{background:var(--gl);border:1.5px solid var(--gm);border-radius:8px;padding:8px 12px;font-size:.73rem;color:var(--green);margin-top:8px;display:none;}
+.alert{border-radius:8px;padding:9px 12px;font-size:.73rem;margin-bottom:12px;line-height:1.6;}
+.a-blue{background:var(--bl);border:1.5px solid var(--bm);color:var(--blue);}
+.a-red{background:var(--rl);border:1.5px solid var(--rm);color:var(--red);}
+.a-amber{background:var(--ol);border:1.5px solid var(--om);color:var(--orange);}
+.fn{font-size:.68rem;color:var(--muted);line-height:1.6;margin-top:10px;padding-top:10px;border-top:1.5px solid var(--border);font-style:italic;}
+.csv-prev{overflow-x:auto;margin-top:9px;}
+
+.c-mh{color:var(--blue);font-weight:700;font-family:'JetBrains Mono',monospace;}
+.c-sh{color:var(--purple);font-weight:700;font-family:'JetBrains Mono',monospace;}
+.c-sti{color:var(--green);font-weight:700;font-family:'JetBrains Mono',monospace;}
+.c-ne{color:var(--red);font-weight:600;font-family:'JetBrains Mono',monospace;}
+.c-n{font-family:'JetBrains Mono',monospace;font-weight:600;}
+
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="logo">
+    MH Intelligence <span class="logo-sub">· Clinical Analytics & DSS · Pilot</span>
+    <span class="logo-badge">PILOT</span>
+  </div>
+  <div class="nav-tabs">
+    <button class="ntab active" onclick="switchTab(0)"><span class="tnum">1</span>Category Overview</button>
+    <button class="ntab" onclick="switchTab(1)"><span class="tnum">2</span>Diagnosis Taxonomy</button>
+    <button class="ntab" onclick="switchTab(2)"><span class="tnum">3</span>Deep Analysis</button>
+    <button class="ntab" onclick="switchTab(3)"><span class="tnum">4</span>DSS Protocol</button>
+  </div>
+  <div class="hbtns">
+    <button class="btn-o" onclick="openSyncModal()" title="Sync from Google Sheets">🔄 Sync Sheet</button>
+    <button class="btn-o" onclick="openModal(1)">⬆ Bulk Upload</button>
+    <button class="btn-p" onclick="openModal(0)">+ Add Patient</button>
+  </div>
+</div>
+
+<!-- ===== TAB 1: OVERVIEW ===== -->
+<div class="sec active" id="sec0">
+  <div class="sec-head">
+    <div class="sec-title">MH Category Launch · Screening Call Overview</div>
+    <div class="sec-sub">Week-on-week category mix · Mental Health pilot · 14 Mar – 6 Apr 2026 · Mirrors SC calls category mix tab</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Total SC Calls</div><div class="kpi-ic" style="background:var(--bl)">📞</div></div><div class="kpi-val" id="k-tot">28</div><div class="kpi-s">MH pilot period</div></div>
+    <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">MH Only</div><div class="kpi-ic" style="background:var(--bl)">🧠</div></div><div class="kpi-val" style="color:var(--blue)" id="k-mh">17</div><div class="kpi-s">Primary = MH</div></div>
+    <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">SH → MH</div><div class="kpi-ic" style="background:var(--pl)">🔄</div></div><div class="kpi-val" style="color:var(--purple)" id="k-sh">9</div><div class="kpi-s">SH primary, MH secondary</div></div>
+    <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">STI Cases</div><div class="kpi-ic" style="background:var(--gl)">🔬</div></div><div class="kpi-val" style="color:var(--green)" id="k-sti">0</div><div class="kpi-s">STI in MH period</div></div>
+    <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Eff. MH%</div><div class="kpi-ic" style="background:var(--ol)">📊</div></div><div class="kpi-val" style="color:var(--orange)" id="k-rate">93%</div><div class="kpi-s">(MH+SH→MH)/Eligible</div></div>
+  </div>
+
+  <div class="card" style="margin-bottom:13px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;padding-bottom:9px;border-bottom:1.5px solid var(--border)">
+      <div class="ctitle" style="margin-bottom:0;padding-bottom:0;border-bottom:none">SC Calls Category Mix · Week-on-Week</div>
+      <button onclick="addMonth()" style="background:none;border:1.5px dashed var(--border2);color:var(--muted);padding:4px 11px;border-radius:6px;font-size:.7rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">+ Add Month</button>
+    </div>
+    <div style="overflow-x:auto"><table id="scTable">
+      <thead id="scHead"><tr id="scHeaderRow">
+        <th style="min-width:285px">Metric</th>
+        <!-- Month columns injected by JS -->
+        <th id="wh0" style="text-align:center;min-width:100px;font-size:.62rem">W0: Mar 9–15</th>
+        <th id="wh1" style="text-align:center;min-width:100px;font-size:.62rem">W1: Mar 16–22</th>
+        <th id="wh2" style="text-align:center;min-width:100px;font-size:.62rem">W2: Mar 23–29</th>
+        <th id="wh3" style="text-align:center;min-width:100px;font-size:.62rem">W3: Mar 30–Apr 5</th>
+        <th id="wh4" style="text-align:center;min-width:100px;font-size:.62rem">W4: Apr 6–12</th>
+        <th style="text-align:center;min-width:88px;background:var(--bl);color:var(--blue);font-size:.62rem">Cumulative</th>
+      </tr></thead>
+      <tbody id="scBody"></tbody>
+    </table></div>
+  </div>
+
+  <div class="g2">
+    <div class="card"><div class="ctitle">L1 Diagnosis Mix · MH Cases</div><div class="bar-chart" id="l1Bar"></div></div>
+    <div class="card"><div class="ctitle">Source / Referral Channel</div><div class="bar-chart" id="srcBar"></div></div>
+  </div>
+
+  <!-- SH→MH CONVERTS SECTION -->
+  <div class="card" style="margin-bottom:13px;border-color:var(--pm)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1.5px solid var(--border)">
+      <div>
+        <div style="font-size:.82rem;font-weight:800;color:var(--purple)">🔄 SH → MH Converts · Patients who entered as SH but MH was found on assessment</div>
+        <div style="font-size:.68rem;color:var(--muted);margin-top:2px">These patients were booked / categorised under Sexual Health as the primary presenting complaint — MH diagnosis was confirmed during the consultation</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0;margin-left:16px">
+        <div id="sh-mh-count" style="font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:700;color:var(--purple);line-height:1">11</div>
+        <div style="font-size:.65rem;color:var(--muted)">of 28 patients</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+      <div style="background:var(--pl);border:1.5px solid var(--pm);border-radius:8px;padding:10px 13px">
+        <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--purple);margin-bottom:3px">2 Records Updated</div>
+        <div style="font-size:.76rem;color:var(--text)"><strong>Mar 22</strong> — Diagnosis updated from missing → <strong>Health anxiety + GUI</strong><br><strong>Mar 28</strong> — Reclassified: was MH primary, now <strong>SH primary</strong> (Low sexual desire → GAD found)</div>
+      </div>
+      <div style="background:var(--bl);border:1.5px solid var(--bm);border-radius:8px;padding:10px 13px">
+        <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--blue);margin-bottom:3px">Pattern Insight</div>
+        <div style="font-size:.76rem;color:var(--text)"><strong>39%</strong> of MH patients entered as SH · <strong>GAD</strong> is the dominant hidden diagnosis · <strong>ED</strong> most common SH complaint masking MH · All male except 3 female cases</div>
+      </div>
+    </div>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr>
+          <th>Date</th><th>Gender</th><th>Age</th><th>SH Presenting Complaint</th><th>MH Diagnosis Found</th><th>L1</th><th>L2</th><th>Source</th><th style="text-align:center">Flag</th>
+        </tr></thead>
+        <tbody id="shMhTable"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB 2: TAXONOMY ===== -->
+<div class="sec" id="sec1">
+  <div class="sec-head">
+    <div class="sec-title">Diagnosis Taxonomy · L1 → L2 Classification</div>
+    <div class="sec-sub">Exclusive view: one L1 per patient. Instance view: conditions in comorbidity flags also counted.</div>
+  </div>
+
+  <div class="itabs" id="taxTabs">
+    <div class="itab active" onclick="switchTaxTab(0)">Exclusive (1 L1 per patient)</div>
+    <div class="itab" onclick="switchTaxTab(1)">Instance-based (incl. comorbidities)</div>
+  </div>
+
+  <!-- TAX TAB 0: EXCLUSIVE -->
+  <div class="tc active" id="txt0">
+    <div class="alert a-blue" style="margin-bottom:14px">
+      <strong>Design principle:</strong> Each patient belongs to exactly <strong>one L1</strong>. L2 encodes severity (PHQ-9 / GAD-7 driven) or subtype. Comorbidities (ED, ADHD, IPR) are flags on the record — not counted as separate L1 entries here.
+    </div>
+    <div class="ctitle" style="margin-bottom:10px;font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)">Mental Health (MH) — L1 → L2 · Exclusive</div>
+    <div class="tax-grid" id="taxGrid"></div>
+    <div class="card" style="margin-bottom:13px">
+      <div class="ctitle" id="ptTableTitle">All Patients · L1 / L2 Classification (n=28)</div>
+      <div style="overflow-x:auto"><table>
+        <thead><tr><th>#</th><th>Date</th><th>Primary Cat</th><th>L1 Diagnosis</th><th>L2 Subtype / Severity</th><th>Comorbidity Flags</th><th>Gender</th><th>Age</th><th>Source</th></tr></thead>
+        <tbody id="ptTable"></tbody>
+      </table></div>
+    </div>
+    <div class="ctitle" style="margin-bottom:10px;font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)">Sexual Health (SH) Taxonomy Reference</div>
+    <div class="g2">
+      <div class="card">
+        <div class="ctitle">SH L1 → L2 (Exclusive)</div>
+        <table><thead><tr><th>L2 Subtype (within SH L1)</th><th>n</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Erectile Dysfunction (ED)</td><td class="c-n">—</td><td>Primary SH complaint</td></tr>
+          <tr><td>Premature Ejaculation (PE)</td><td class="c-n">—</td><td>Primary SH complaint</td></tr>
+          <tr><td>ED + PE (combined)</td><td class="c-n">—</td><td>Both present; single L2</td></tr>
+          <tr><td>Low Desire (Male/Female)</td><td class="c-n">—</td><td>Hypoactive sexual desire</td></tr>
+          <tr><td>GUI (Genital / Urinary Issues)</td><td class="c-n">—</td><td></td></tr>
+          <tr><td>Delayed Orgasm</td><td class="c-n">—</td><td></td></tr>
+          <tr><td>Compulsive Masturbation (CM)</td><td class="c-n">—</td><td>→ OCD Spectrum if compulsion-driven; SH if behavioural</td></tr>
+        </tbody></table>
+      </div>
+      <div class="card">
+        <div class="ctitle">STI Taxonomy</div>
+        <table><thead><tr><th>L2 Subtype</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Active STI</td><td>Treatment required</td></tr>
+          <tr><td>Screening</td><td>No active infection confirmed</td></tr>
+          <tr><td>Post-treatment Follow-Up</td><td>Monitoring</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAX TAB 1: INSTANCE-BASED -->
+  <div class="tc" id="txt1">
+    <div class="alert a-blue" style="margin-bottom:14px">
+      <strong>Instance-based view:</strong> A patient can appear in <strong>multiple L1 categories</strong> — once for their primary L1, and again for each condition in their comorbidity flags (ED, ADHD, Alcohol, etc.). Total instances &gt; 28 patients. Use this to size the true clinical burden per condition across the cohort.
+    </div>
+    <div class="ctitle" style="margin-bottom:10px;font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)">All Conditions · Instance-based Count (primary L1 + comorbidity flags)</div>
+    <div class="tax-grid" id="taxGridInst"></div>
+    <div class="card" style="margin-bottom:13px">
+      <div class="ctitle" id="instTableTitle">All Condition Instances (primary + comorbidity)</div>
+      <div style="overflow-x:auto"><table>
+        <thead><tr><th>#</th><th>Date</th><th>Primary L1</th><th>Primary L2</th><th>Comorbid Conditions (counted here)</th><th>Gender</th><th>Age</th></tr></thead>
+        <tbody id="instTable"></tbody>
+      </table></div>
+    </div>
+    <div class="card">
+      <div class="ctitle">Instance Count Summary · All L1 Categories</div>
+      <table>
+        <thead><tr><th>L1 Category</th><th>As Primary L1</th><th>As Comorbidity</th><th>Total Instances</th><th>Unique Patients</th></tr></thead>
+        <tbody id="instSummary"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB 3: DEEP ANALYSIS ===== -->
+<div class="sec" id="sec2">
+  <div class="sec-head">
+    <div class="sec-title">Patient Analytics & Clinical Insights</div>
+    <div class="sec-sub">Diagnosis patterns, demographics, medications and clinical learnings (n=28)</div>
+  </div>
+  <div class="itabs">
+    <div class="itab active" onclick="switchInner(0)">L1 × L2 Analysis</div>
+    <div class="itab" onclick="switchInner(1)">Demographics</div>
+    <div class="itab" onclick="switchInner(2)">Medications</div>
+    <div class="itab" onclick="switchInner(3)">Clinical Insights</div>
+  </div>
+
+  <div class="tc active" id="tc0">
+    <div class="g2">
+      <div class="card"><div class="ctitle">L1 Distribution</div><div class="bar-chart" id="l1FullBar"></div></div>
+      <div class="card"><div class="ctitle">Top L2 Subtypes</div><div class="bar-chart" id="l2Bar"></div></div>
+    </div>
+    <div class="card">
+      <div class="ctitle">L1 × Gender × Source</div>
+      <table><thead><tr><th>L1 Category</th><th>n</th><th>Male</th><th>Female</th><th>Top Source</th><th>Avg Age</th></tr></thead>
+      <tbody id="l1GenderTable"></tbody></table>
+    </div>
+  </div>
+
+  <div class="tc" id="tc1">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:13px">
+      <div class="card" style="text-align:center"><div class="kpi-val" style="color:var(--blue);font-family:'JetBrains Mono',monospace" id="d-tot">28</div><div style="font-size:.67rem;color:var(--muted);margin-top:3px">Total Patients</div></div>
+      <div class="card" style="text-align:center"><div class="kpi-val" style="color:var(--purple);font-family:'JetBrains Mono',monospace">20–54</div><div style="font-size:.67rem;color:var(--muted);margin-top:3px">Age Range</div></div>
+      <div class="card" style="text-align:center"><div class="kpi-val" style="color:var(--orange);font-family:'JetBrains Mono',monospace">~30</div><div style="font-size:.67rem;color:var(--muted);margin-top:3px">Avg Age (est.)</div></div>
+      <div class="card" style="text-align:center"><div class="kpi-val" style="color:var(--green);font-family:'JetBrains Mono',monospace" id="d-male">71%</div><div style="font-size:.67rem;color:var(--muted);margin-top:3px">Male</div></div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="ctitle">Age Distribution</div>
+        <div class="bar-chart">
+          <div class="bar-row"><div class="bar-lbl">18–24</div><div class="bar-track"><div class="bar-fill" style="width:20%;background:#2563eb">3</div></div><div class="bar-cnt">3</div></div>
+          <div class="bar-row"><div class="bar-lbl">25–30</div><div class="bar-track"><div class="bar-fill" style="width:33%;background:#2563eb">5</div></div><div class="bar-cnt">5</div></div>
+          <div class="bar-row"><div class="bar-lbl">31–36</div><div class="bar-track"><div class="bar-fill" style="width:33%;background:#2563eb">5</div></div><div class="bar-cnt">5</div></div>
+          <div class="bar-row"><div class="bar-lbl">37–42</div><div class="bar-track"><div class="bar-fill" style="width:27%;background:#2563eb">4</div></div><div class="bar-cnt">4</div></div>
+          <div class="bar-row"><div class="bar-lbl">43–54</div><div class="bar-track"><div class="bar-fill" style="width:13%;background:#2563eb">2</div></div><div class="bar-cnt">2</div></div>
+          <div class="bar-row"><div class="bar-lbl">Unknown</div><div class="bar-track"><div class="bar-fill" style="width:60%;background:#94a3b8">9</div></div><div class="bar-cnt">9</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ctitle">Referral Channel</div>
+        <table><thead><tr><th>Source</th><th>n</th><th>%</th></tr></thead>
+        <tbody>
+          <tr><td>GMB</td><td class="c-n">12</td><td class="pct">43%</td></tr>
+          <tr><td>Practo</td><td class="c-n">8</td><td class="pct">29%</td></tr>
+          <tr><td>Inbound / Walk-in</td><td class="c-n">4</td><td class="pct">14%</td></tr>
+          <tr><td>Google / Direct</td><td class="c-n">3</td><td class="pct">11%</td></tr>
+          <tr><td>Organic / Other</td><td class="c-n">1</td><td class="pct">3%</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+
+  <div class="tc" id="tc2">
+    <div class="g2">
+      <div class="card">
+        <div class="ctitle">Most Prescribed Medicines</div>
+        <div class="bar-chart">
+          <div class="bar-row"><div class="bar-lbl">Clonazepam</div><div class="bar-track"><div class="bar-fill" style="width:88%;background:#d97706">~22</div></div><div class="bar-cnt">22</div></div>
+          <div class="bar-row"><div class="bar-lbl">Sertraline</div><div class="bar-track"><div class="bar-fill" style="width:55%;background:#2563eb">~15</div></div><div class="bar-cnt">15</div></div>
+          <div class="bar-row"><div class="bar-lbl">Fluoxetine</div><div class="bar-track"><div class="bar-fill" style="width:48%;background:#2563eb">~12</div></div><div class="bar-cnt">12</div></div>
+          <div class="bar-row"><div class="bar-lbl">Etizolam</div><div class="bar-track"><div class="bar-fill" style="width:12%;background:#7c3aed">3</div></div><div class="bar-cnt">3</div></div>
+          <div class="bar-row"><div class="bar-lbl">Bupropion</div><div class="bar-track"><div class="bar-fill" style="width:4%;background:#059669">1</div></div><div class="bar-cnt">1</div></div>
+          <div class="bar-row"><div class="bar-lbl">Atomoxetine</div><div class="bar-track"><div class="bar-fill" style="width:4%;background:#059669">1</div></div><div class="bar-cnt">1</div></div>
+          <div class="bar-row"><div class="bar-lbl">Naltrexone</div><div class="bar-track"><div class="bar-fill" style="width:4%;background:#059669">1</div></div><div class="bar-cnt">1</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ctitle">Rx Combinations</div>
+        <table><thead><tr><th>Combination</th><th>n</th><th>L1 Diagnosis</th></tr></thead>
+        <tbody>
+          <tr><td>Sertraline + Clonazepam</td><td class="c-n">11</td><td>Anxiety / Depression</td></tr>
+          <tr><td>Fluoxetine + Clonazepam</td><td class="c-n">9</td><td>Depression</td></tr>
+          <tr><td>Fluoxetine + Etizolam</td><td class="c-n">2</td><td>Depression / OCD</td></tr>
+          <tr><td>Fluoxetine + Propranolol + Clonazepam</td><td class="c-n">1</td><td>Severe Depression</td></tr>
+          <tr><td>Atomoxetine + Clonazepam</td><td class="c-n">1</td><td>Neurodevelopmental</td></tr>
+          <tr><td>Bupropion only</td><td class="c-n">1</td><td>Depression</td></tr>
+        </tbody></table>
+        <div class="div"></div>
+        <div class="ctitle" style="margin-bottom:8px">Therapy Referrals</div>
+        <table><thead><tr><th>Type</th><th>n</th></tr></thead>
+        <tbody>
+          <tr><td>Individual Therapy</td><td class="c-n">4</td></tr>
+          <tr><td>Couples Counselling</td><td class="c-n">2</td></tr>
+          <tr><td>Couples + Individual</td><td class="c-n">1</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+
+  <div class="tc" id="tc3">
+    <div class="ins-grid">
+      <div class="ins-card"><div class="ins-ic">🧠</div><div class="ins-tt">Top L1s</div><div class="ins-body"><span class="hi">Anxiety + Depression</span> together = <span class="hi">52%</span>. GAD dominates male 27–49 cohort.</div></div>
+      <div class="ins-card"><div class="ins-ic">⚡</div><div class="ins-tt">Severity L2</div><div class="ins-body"><span class="hi">7 Severe Depression</span> cases in first 3 weeks. Once PHQ-9 structured, L2 assignment will be automatic.</div></div>
+      <div class="ins-card"><div class="ins-ic">🔄</div><div class="ins-tt">SH→MH Converts</div><div class="ins-body">9/28 from SH. ED chief complaint often masking GAD / mild depression. Convert tracked as L1 = Anxiety/Depression, flag = SH comorbid.</div></div>
+      <div class="ins-card"><div class="ins-ic">🧩</div><div class="ins-tt">ADHD Emerging</div><div class="ins-body">4 cases, all male age 20–27. L2 = ADHD or ADHD+Comorbid. Neurodevelopmental L1 is a growth cluster.</div></div>
+      <div class="ins-card"><div class="ins-ic">🚨</div><div class="ins-tt">Addiction Cases</div><div class="ins-body">3 cases: Alcohol, Gambling, Porn/CM. Addiction L1 (or OCD Spectrum for CM). Complex Rx — escalation protocol needed.</div></div>
+      <div class="ins-card"><div class="ins-ic">📋</div><div class="ins-tt">Data Gaps</div><div class="ins-body"><span class="hi">4 patients</span> missing diagnosis. PHQ-9/GAD-7 absent. Digital form (Apr 8) will close L2 severity gaps.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB 4: DSS ===== -->
+<div class="sec" id="sec3">
+  <div class="sec-head">
+    <div class="sec-title">Decision Support System · Guided Clinical Protocol</div>
+    <div class="sec-sub">Top 2 L1 categories by volume · Pending CMO vetting by Dr. Sandip · Not for clinical use without approval</div>
+  </div>
+  <div class="alert a-blue" style="margin-bottom:14px"><strong>⚕️ Status:</strong> Draft. Will evolve with data to ~500 cases. Future: automated Rx comparison vs actual prescriptions.</div>
+  <div class="dss-sel">
+    <button class="dss-btn active" onclick="switchDSS(0)">
+      <span class="cn">😰 L1: Anxiety Disorders</span>
+      <span class="cp">n=10 (36%) · Top L2: GAD (7) · Dominant: Male, 27–49 · Rx: Sertraline + Clonazepam</span>
+    </button>
+    <button class="dss-btn" onclick="switchDSS(1)">
+      <span class="cn">😔 L1: Depression</span>
+      <span class="cp">n=11 (39%) · Top L2: Severe/MDD (7) · Mixed gender 20–54 · Rx: Fluoxetine + Clonazepam</span>
+    </button>
+  </div>
+
+  <div class="dss-proto active" id="dss0">
+    <div class="alert a-amber">L2 within Anxiety: <strong>GAD</strong> · Panic Disorder · Adjustment/Acute Stress · Mixed Anxiety-Depression. Protocol below is GAD-specific (dominant L2). Adapt assessment tool thresholds for other L2s.</div>
+    <div class="pg">
+      <div class="pcard">
+        <div class="phead" style="background:var(--ol);border-color:var(--om)"><span>📋</span><span style="color:var(--orange)">ASSESSMENT</span><span class="stag tm" style="margin-left:auto">Required</span></div>
+        <div class="pbody">
+          <div class="pstep"><div class="sn">1</div><div><div class="snm">GAD-7 Scale → assigns L2 severity</div><div class="sd">0–4 Minimal · 5–9 Mild · 10–14 Moderate · 15–21 Severe. Drives medication intensity and FU frequency.</div><span class="stag tm">Mandatory</span></div></div>
+          <div class="pstep"><div class="sn">2</div><div><div class="snm">PHQ-9 (Comorbid Depression screen)</div><div class="sd">Most GAD patients show depressive comorbidity. PHQ-9 ≥10 → dual-action medication (SNRI or higher-dose SSRI).</div><span class="stag tm">Mandatory</span></div></div>
+          <div class="pstep"><div class="sn">3</div><div><div class="snm">AUDIT-C (Substance screen)</div><div class="sd">Relevant in male 27–49 cohort. Positive → modify Rx, add Naltrexone if alcohol dependence confirmed.</div><span class="stag ti">If indicated</span></div></div>
+          <div class="pstep"><div class="sn">4</div><div><div class="snm">ASRS v1.1 (Adult ADHD screen)</div><div class="sd">If impulse control / concentration complaints reported alongside anxiety.</div><span class="stag ti">If indicated</span></div></div>
+        </div>
+      </div>
+      <div class="pcard">
+        <div class="phead" style="background:var(--bl);border-color:var(--bm)"><span>💊</span><span style="color:var(--blue)">MEDICATIONS</span><span class="stag tf" style="margin-left:auto">Evidence-Based</span></div>
+        <div class="pbody">
+          <div class="pstep"><div class="sn">1</div><div><div class="snm">First-Line SSRI</div><div class="sd"><strong>Sertraline 50mg OD</strong> → titrate to 100–200mg. Alt: <strong>Escitalopram 10mg OD</strong> for pure anxiety without comorbid depression.</div><span class="stag tf">First Line</span></div></div>
+          <div class="pstep"><div class="sn">2</div><div><div class="snm">Bridging BZD</div><div class="sd"><strong>Clonazepam 0.25–0.5mg BD</strong> while SSRI takes effect. MAX 4 weeks. Taper and stop. Monitor dependence.</div><span class="stag ti">Bridge only · 4 wks max</span></div></div>
+          <div class="pstep"><div class="sn">3</div><div><div class="snm">GAD + ADHD comorbidity</div><div class="sd"><strong>Atomoxetine</strong> (benefits anxiety too). Avoid methylphenidate in pure GAD — may worsen anxiety.</div><span class="stag ti">If ADHD confirmed</span></div></div>
+          <div class="pstep"><div class="sn">4</div><div><div class="snm">Somatic symptoms</div><div class="sd"><strong>Propranolol 10–20mg PRN</strong> for palpitations, tremor. Adjunct only.</div><span class="stag to">Optional</span></div></div>
+        </div>
+      </div>
+      <div class="pcard">
+        <div class="phead" style="background:var(--gl);border-color:var(--gm)"><span>🔬</span><span style="color:var(--green)">TESTS</span></div>
+        <div class="pbody">
+          <div class="pstep"><div class="sn">1</div><div><div class="snm">TSH, T3, T4</div><div class="sd">Rule out hyperthyroidism. Especially with palpitations, weight changes.</div><span class="stag tm">Baseline</span></div></div>
+          <div class="pstep"><div class="sn">2</div><div><div class="snm">CBC, LFT, RFT</div><div class="sd">Baseline before SSRI. Liver function for Sertraline/Fluoxetine safety.</div><span class="stag tm">Baseline</span></div></div>
+          <div class="pstep"><div class="sn">3</div><div><div class="snm">ECG</div><div class="sd">Age 45+ or cardiac symptoms. SSRIs have mild QTc effects.</div><span class="stag ti">If age 45+ / cardiac Sx</span></div></div>
+        </div>
+      </div>
+      <div class="pcard">
+        <div class="phead" style="background:var(--pl);border-color:var(--pm)"><span>🧘</span><span style="color:var(--purple)">THERAPIES</span></div>
+        <div class="pbody">
+          <div class="pstep"><div class="sn">1</div><div><div class="snm">CBT</div><div class="sd">Gold standard for GAD. 12–16 sessions. CBT + SSRI superior to either alone. Target worry loops, catastrophising.</div><span class="stag tf">First Line</span></div></div>
+          <div class="pstep"><div class="sn">2</div><div><div class="snm">MBSR</div><div class="sd">8-week structured mindfulness. Effective for somatic anxiety. Good for patients reluctant to start medications.</div><span class="stag to">Adjunct</span></div></div>
+          <div class="pstep"><div class="sn">3</div><div><div class="snm">Couples / Relationship Therapy</div><div class="sd">For patients with IPR stressor contributing to anxiety (4 in cohort).</div><span class="stag ti">If IPR stressor</span></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ctitle">Follow-Up · Anxiety Disorders L1 (GAD L2)</div>
+      <table><thead><tr><th>Timepoint</th><th>Action</th><th>Tool</th><th>Escalation Trigger</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Week 2</strong></td><td>Phone/brief FU. Check SSRI tolerability.</td><td>—</td><td>SI → immediate escalation</td></tr>
+        <tr><td><strong>Week 4</strong></td><td>Formal FU. Re-administer GAD-7.</td><td>GAD-7</td><td>No improvement → dose adjustment</td></tr>
+        <tr><td><strong>Week 8</strong></td><td>Full review. Taper Clonazepam. Check adherence.</td><td>GAD-7 + PHQ-9</td><td>Substance misuse → Addiction protocol</td></tr>
+        <tr><td><strong>Month 3+</strong></td><td>Maintenance. Consider SSRI taper if remission.</td><td>GAD-7</td><td>Relapse → Resume full dose</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <div class="dss-proto" id="dss1">
+    <div class="alert a-amber">L2 within Depression: <strong>Severe / MDD</strong> · Moderate · Mild · Mixed Anxiety-Depression · Adjustment Disorder w/ Depressive Features. Protocol is severity-stratified — key differences marked per L2.</div>
+    <div class="pg">
+      <div class="pcard">
+        <div class="phead" style="background:var(--ol);border-color:var(--om)"><span>📋</span><span style="color:var(--orange)">ASSESSMENT</span><span class="stag tm" style="margin-left:auto">Required</span></div>
+        <div class="pbody">
+          <div class="pstep"><div class="sn">1</div><div><div class="snm">PHQ-9 → assigns L2 severity</div><div class="sd">1–4 Minimal · 5–9 Mild · 10–14 Moderate · 15–19 Moderately Severe · ≥20 Severe/MDD. Q9 suicidality ≥1 → immediate safety protocol.</div><span class="stag tm">Mandatory</span></div></div>
+          <div class="pstep"><div class="sn">2</div><div><div class="snm">C-SSRS (Suicidality)</div><div class="sd">Active ideation with plan/intent → immediate escalation. Mandatory for all Severe/MDD L2.</div><span class="stag tm">Mandatory — Severe L2</span></div></div>
+          <div class="pstep"><div class="sn">3</div><div><div class="snm">GAD-7 (Comorbid Anxiety)</div><div class="sd">Severe depression often presents with comorbid anxiety. Guides SSRI choice: Sertraline preferred if GAD-7 also high.</div><span class="stag tm">Mandatory</span></div></div>
+          <div class="pstep"><div class="sn">4</div><div><div class="snm">AUDIT-C (Substance)</div><div class="sd">Alcohol use common as cause and consequence. Critical for Rx safety.</div><span class="stag ti">If indicated</span></div></div>
+        </div>
+      </div>
+      <div class="pcard">
+        <div class="phead" style="background:var(--bl);border-color:var(--bm)"><span>💊</span><span style="color:var(--blue)">MEDICATIONS</span><span class="stag tf" style="margin-left:auto">L2-stratified</span></div>
+        <div class="pbody">
+          <div class="pstep"><div class="sn">1</div><div><div class="snm">First-Line SSRI</div><div class="sd"><strong>Fluoxetine 20mg OD</strong> → 40–60mg (Mild/Moderate L2). <strong>Sertraline 50mg → 100–200mg</strong> if comorbid anxiety (Severe/MDD L2).</div><span class="stag tf">First Line</span></div></div>
+          <div class="pstep"><div class="sn">2</div><div><div class="snm">BZD Bridge (Moderate–Severe L2 only)</div><div class="sd"><strong>Clonazepam 0.25–0.5mg at night</strong>. 2–4 weeks max. NOT for Mild/Adjustment L2 unless severe sleep disruption.</div><span class="stag ti">Moderate–Severe L2 only</span></div></div>
+          <div class="pstep"><div class="sn">3</div><div><div class="snm">Step-up (poor response)</div><div class="sd"><strong>Bupropion 150→300mg</strong> for anhedonia, hypersomnia, cognitive issues. Suitable where SSRI-induced sexual dysfunction is a concern.</div><span class="stag ti">Step-up</span></div></div>
+          <div class="pstep"><div class="sn">4</div><div><div class="snm">Psychotic Features</div><div class="sd"><strong>Risperidone 0.5–1mg</strong> + antidepressant. 1 case in cohort. Requires psychiatry escalation.</div><span class="stag tm">Escalate → Psychiatrist</span></div></div>
+        </div>
+      </div>
+      <div class="pcard">
+        <div class="phead" style="background:var(--gl);border-color:var(--gm)"><span>🔬</span><span style="color:var(--green)">TESTS</span></div>
+        <div class="pbody">
+          <div class="pstep"><div class="sn">1</div><div><div class="snm">CBC, LFT, RFT, Blood Sugar</div><div class="sd">Mandatory baseline. Rule out metabolic/organic causes.</div><span class="stag tm">Mandatory</span></div></div>
+          <div class="pstep"><div class="sn">2</div><div><div class="snm">TSH</div><div class="sd">Hypothyroidism is common and treatable. Mandatory in all new depression.</div><span class="stag tm">Mandatory</span></div></div>
+          <div class="pstep"><div class="sn">3</div><div><div class="snm">Vit D, B12, Folate</div><div class="sd">Deficiencies common in South Indian population. Supplementation can enhance antidepressant response.</div><span class="stag to">Recommended</span></div></div>
+        </div>
+      </div>
+      <div class="pcard">
+        <div class="phead" style="background:var(--pl);border-color:var(--pm)"><span>🧘</span><span style="color:var(--purple)">THERAPIES</span></div>
+        <div class="pbody">
+          <div class="pstep"><div class="sn">1</div><div><div class="snm">CBT for Depression</div><div class="sd">Behavioural activation + cognitive restructuring. 12–20 sessions. <strong>Severe L2:</strong> stabilise on meds first → therapy at week 4–6. <strong>Mild L2:</strong> concurrent.</div><span class="stag tf">First Line</span></div></div>
+          <div class="pstep"><div class="sn">2</div><div><div class="snm">IPT (Interpersonal Therapy)</div><div class="sd">For Adjustment Disorder L2, grief, IPR triggers. 5/7 severe depression cases have identifiable IPR stressor.</div><span class="stag ti">If IPR/grief context</span></div></div>
+          <div class="pstep"><div class="sn">3</div><div><div class="snm">Couples Therapy</div><div class="sd">2–3 patients in coupled context. Do not delay individual therapy waiting for partner.</div><span class="stag ti">If coupled presentation</span></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:11px">
+      <div class="ctitle">Follow-Up · Depression L1 (L2-stratified)</div>
+      <table><thead><tr><th>Timepoint</th><th>Action</th><th>Tool</th><th>Escalation Trigger</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Day 7</strong></td><td>Safety call — Severe L2 only. Check SSRI activation syndrome.</td><td>C-SSRS brief</td><td>Active SI → emergency / IPD</td></tr>
+        <tr><td><strong>Week 2</strong></td><td>Tolerability review. Manage side effects. Reassure on 4–6 wk onset.</td><td>—</td><td>Emergent suicidality → immediate escalation</td></tr>
+        <tr><td><strong>Week 4</strong></td><td>PHQ-9 repeat. Titrate if inadequate response.</td><td>PHQ-9</td><td>Unchanged/worsened → augment or switch</td></tr>
+        <tr><td><strong>Week 8</strong></td><td>Introduce therapy. Taper Clonazepam (Moderate–Severe L2).</td><td>PHQ-9, GAD-7</td><td>Psychotic features → psychiatrist</td></tr>
+        <tr><td><strong>Month 3–6</strong></td><td>Maintenance. Continue min 6 months post-remission.</td><td>PHQ-9</td><td>Relapse within 6 months → sustained track</td></tr>
+      </tbody></table>
+    </div>
+    <div class="alert a-red"><strong>🚨 Escalation:</strong> Active SI with plan/intent → IPD. Psychotic features → Psychiatry. 2 failed adequate trials → Specialist. Active alcohol dependence → Addiction co-management.</div>
+  </div>
+</div>
+
+<!-- ===== MODAL ===== -->
+<div class="moverlay" id="modal">
+  <div class="modal">
+    <div class="mhead">
+      <div><div class="mtitle">Add Patient Data</div><div class="msub">Single entry or bulk CSV · Same format as All Patients Data sheet</div></div>
+      <button class="mclose" onclick="closeModal()">✕</button>
+    </div>
+    <div class="mtabs">
+      <button class="mtab active" id="mt0" onclick="switchMTab(0)">Single Patient</button>
+      <button class="mtab" id="mt1" onclick="switchMTab(1)">⬆ Bulk Upload (CSV)</button>
+    </div>
+
+    <!-- SINGLE -->
+    <div class="mtc active" id="mc0">
+      <div class="slbl">Appointment Info</div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Date</label><input class="fi" id="f_date" type="date"/></div>
+        <div class="fg"><label class="fl">Source / UTM</label>
+          <select class="fs" id="f_src"><option value="">Select</option><option>GMB</option><option>Practo</option><option>Google</option><option>Inbound</option><option>Walk-in</option><option>Organic</option><option>FB</option><option>Other</option></select></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Gender</label>
+          <select class="fs" id="f_gender"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select></div>
+        <div class="fg"><label class="fl">Age</label><input class="fi" id="f_age" type="number" placeholder="Age"/></div>
+      </div>
+      <div class="div"></div>
+      <div class="slbl">Category & Diagnosis</div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Primary Category</label>
+          <select class="fs" id="f_primary"><option value="">Select</option><option>MH</option><option>SH</option><option>STI</option></select></div>
+        <div class="fg"><label class="fl">Secondary Category</label>
+          <select class="fs" id="f_secondary"><option value="-">None / -</option><option>MH</option><option>SH</option><option>STI</option></select></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label class="fl">L1 Category</label>
+          <select class="fs" id="f_l1" onchange="updateL2()"><option value="">Select L1</option><option>Depression</option><option>Anxiety Disorders</option><option>Neurodevelopmental</option><option>OCD Spectrum</option><option>Addiction / Substance</option><option>Sexual Health</option><option>STI</option></select></div>
+        <div class="fg"><label class="fl">L2 Subtype / Severity</label>
+          <select class="fs" id="f_l2"><option value="">Select L2</option></select></div>
+      </div>
+      <div class="fg"><label class="fl">Raw Diagnosis Notes</label><input class="fi" id="f_diag" placeholder="Free text diagnosis as documented"/></div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Medications</label><input class="fi" id="f_meds" placeholder="Sertraline 50mg, Clonazepam 0.5mg"/></div>
+        <div class="fg"><label class="fl">Therapy</label><input class="fi" id="f_therapy" placeholder="CBT / Couples / -"/></div>
+      </div>
+      <div class="fg"><label class="fl">Comorbidity Flags</label><input class="fi" id="f_flags" placeholder="IPR issues, ED, Addiction, ADHD (comma separated)"/></div>
+      <button class="bfull b-blue" onclick="addSingle()">✓ Add Patient Record</button>
+      <div class="bres" id="singleOK">✓ Patient added! Dashboard updated.</div>
+    </div>
+
+    <!-- BULK -->
+    <div class="mtc" id="mc1">
+      <div class="tnote">
+        <strong>Expected CSV columns:</strong><br>
+        <code>appointment_date, utm_source, age, gender, primary_diagnosis, secondary_diagnosis, l1_category, l2_subtype, diagnosis, comorbidity_flags, medicines, therapy</code><br><br>
+        <strong>primary_diagnosis:</strong> MH / SH / STI &nbsp;·&nbsp; <strong>l1_category:</strong> Depression / Anxiety Disorders / Neurodevelopmental / OCD Spectrum / Addiction / Sexual Health / STI &nbsp;·&nbsp; <strong>Date:</strong> YYYY-MM-DD
+      </div>
+      <div class="dropz" id="dropZ" onclick="document.getElementById('bfi').click()" ondragover="dov(event)" ondragleave="dol(event)" ondrop="ddr(event)">
+        <div class="di">📂</div>
+        <div class="dt">Click to upload or drag & drop CSV file</div>
+        <div class="dh">Supports .csv · Same column format as All Patients Data tab</div>
+      </div>
+      <input type="file" id="bfi" accept=".csv" onchange="fsel(event)"/>
+      <div id="bulkPrev"></div>
+      <div class="bres" id="bulkOK"></div>
+      <div class="div"></div>
+      <div class="slbl">Download Template</div>
+      <button onclick="dlTpl()" style="width:100%;background:var(--bg);border:1.5px solid var(--border2);color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;font-size:.73rem;font-weight:600;border-radius:8px;padding:8px;cursor:pointer;">⬇ Download CSV Template</button>
+      <p class="fn">Rows with invalid primary_diagnosis are skipped. Valid rows are added and charts refresh automatically.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== TAXONOMY DEFINITION =====
+const TAXONOMY = {
+  "Depression": {
+    color:"#2563eb", bg:"#eff6ff", border:"#bfdbfe", icon:"😔",
+    desc:"Single L1. Severity = L2 (PHQ-9 driven).",
+    l2s: ["Severe / MDD (PHQ-9 ≥20)","Moderately Severe (PHQ-9 15–19)","Moderate (PHQ-9 10–14)","Mild (PHQ-9 5–9)","Mixed Anxiety-Depression","Adjustment Disorder w/ Depressive Features","Grief Disorder w/ Depressive Features"]
+  },
+  "Anxiety Disorders": {
+    color:"#d97706", bg:"#fffbeb", border:"#fde68a", icon:"😰",
+    desc:"Single L1. Subtype = L2 (GAD-7 assigns severity within GAD).",
+    l2s: ["GAD — Severe (GAD-7 ≥15)","GAD — Moderate (GAD-7 10–14)","GAD — Mild (GAD-7 5–9)","Panic Disorder","Adjustment / Acute Stress Reaction","Mixed Anxiety-Depression","Health Anxiety"]
+  },
+  "Bipolar / Psychotic Spectrum": {
+    color:"#be185d", bg:"#fdf2f8", border:"#fbcfe8", icon:"🌀",
+    desc:"Bipolar disorder and psychotic spectrum conditions. Distinct from unipolar depression.",
+    l2s: ["Bipolar I — Manic Episode","Bipolar I — Depressive Episode","Bipolar II","Schizoaffective Disorder","Schizophrenia","Psychotic Depression","Other Psychotic Spectrum"]
+  },
+  "Neurodevelopmental": {
+    color:"#7c3aed", bg:"#f5f3ff", border:"#ddd6fe", icon:"🧩",
+    desc:"ADHD and related impulse control. Comorbidities as flags.",
+    l2s: ["ADHD — Inattentive","ADHD — Hyperactive/Impulsive","ADHD — Combined","ADHD + Comorbid Anxiety","ADHD + Comorbid Addiction","Impulse Control Disorder"]
+  },
+  "Neurocognitive Disorders": {
+    color:"#92400e", bg:"#fef3c7", border:"#fde68a", icon:"🧓",
+    desc:"Dementia and mild cognitive impairment. Older adult presentations.",
+    l2s: ["Dementia — Alzheimer's Type","Dementia — Vascular","Dementia — Mixed / Unspecified","Mild Cognitive Impairment (MCI)","Other Neurocognitive"]
+  },
+  "OCD Spectrum": {
+    color:"#0891b2", bg:"#ecfeff", border:"#a5f3fc", icon:"🔁",
+    desc:"OCD and compulsive behaviours where psychological compulsion is primary.",
+    l2s: ["OCD — Severe","OCD — Moderate","OCD — Mild","Porn Addiction / CM (Compulsive Masturbation)","Other OCD Spectrum"]
+  },
+  "Addiction / Substance": {
+    color:"#dc2626", bg:"#fef2f2", border:"#fecaca", icon:"🚨",
+    desc:"Substance dependence or behavioural addiction as primary complaint.",
+    l2s: ["Alcohol Dependence","Gambling Disorder","Cannabis / Other Substance","Behavioural Addiction (non-porn)"]
+  },
+  "Sexual Health": {
+    color:"#059669", bg:"#ecfdf5", border:"#a7f3d0", icon:"❤️",
+    desc:"Exclusive SH subtypes. CM here only if behavioural sexual complaint, not psychological compulsion.",
+    l2s: ["Erectile Dysfunction (ED)","Premature Ejaculation (PE)","ED + PE (combined)","Low Desire (Male)","Low Desire (Female)","Genital / Urinary Issues (GUI)","Delayed Orgasm","Compulsive Masturbation (CM — behavioural)"]
+  },
+  "STI": {
+    color:"#166534", bg:"#f0fdf4", border:"#bbf7d0", icon:"🔬",
+    desc:"",
+    l2s: ["Active STI","Screening / No active infection","Post-treatment Follow-Up"]
+  }
+};
+
+// ===== PATIENT DATA =====
+let patients = [
+  // ── W0: Mar 9–15 ─────────────────────────────────────────────────────
+  {date:"2026-03-14",src:"Practo",primary:"MH",secondary:"-",gender:"Female",age:23,l1:"Depression",l2:"Severe / MDD (PHQ-9 ≥20)",diag:"Severe depression",flags:"",meds:"Fluoxetine, Propranolol, Clonazepam",therapy:"Therapy"},
+  // ── W1: Mar 16–22 ────────────────────────────────────────────────────
+  {date:"2026-03-15",src:"Fb",primary:"SH",secondary:"MH",gender:"Female",age:25,l1:"Anxiety Disorders",l2:"Mixed Anxiety-Depression",diag:"Mixed Anxiety-Depression",flags:"",meds:"Sertraline, Clonazepam",therapy:"-",shPresenting:"Mixed anxiety-depression presenting as SH"},
+  {date:"2026-03-16",src:"GMB",primary:"SH",secondary:"MH",gender:"Female",age:26,l1:"Depression",l2:"Adjustment Disorder w/ Depressive Features",diag:"Acute Stress Reaction / Adjustment Disorder",flags:"IPR issues",meds:"Bupropion",therapy:"Couples counselling",shPresenting:"Relationship/sexual complaint, MH found on assessment"},
+  {date:"2026-03-16",src:"Practo",primary:"SH",secondary:"MH",gender:"Male",age:22,l1:"Depression",l2:"Severe / MDD (PHQ-9 ≥20)",diag:"Severe depression + Panic Attack",flags:"Panic comorbid",meds:"Sertraline, Clonazepam",therapy:"Therapy",shPresenting:"Came as SH, Severe depression + PA found"},
+  {date:"2026-03-16",src:"Google",primary:"SH",secondary:"MH",gender:"Female",age:30,l1:"Depression",l2:"Severe / MDD (PHQ-9 ≥20)",diag:"NSSD, Severe depression, Low sexual desire, IPR issues",flags:"IPR issues, Low desire (F)",meds:"Fluoxetine, Clonazepam",therapy:"Couples counselling",shPresenting:"NSSD / Low desire as SH, Severe depression found"},
+  {date:"2026-03-18",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:27,l1:"Depression",l2:"Adjustment Disorder w/ Depressive Features",diag:"Adjustment disorder + Depressive features; IPR issues",flags:"IPR issues",meds:"Fluoxetine, Clonazepam",therapy:"Couples counselling + therapy"},
+  {date:"2026-03-20",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:20,l1:"Neurodevelopmental",l2:"ADHD — Combined",diag:"Impulse control, ?ADHD",flags:"",meds:"Fluoxetine, Clonazepam",therapy:"Therapy"},
+  {date:"2026-03-21",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:37,l1:"Depression",l2:"Moderate (PHQ-9 10–14)",diag:"Depression",flags:"",meds:"Sertraline, Clonazepam",therapy:"-"},
+  {date:"2026-03-22",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:35,l1:"Anxiety Disorders",l2:"GAD — Severe (GAD-7 ≥15)",diag:"Generalised Anxiety Disorder",flags:"ED comorbid",meds:"Sertraline, Clonazepam",therapy:"-",shPresenting:"ED as SH complaint, GAD found on assessment"},
+  {date:"2026-03-22",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:48,l1:"Depression",l2:"Mild (PHQ-9 5–9)",diag:"Mild Depression, PE, Low Desire",flags:"PE, Low desire (M)",meds:"Not mentioned",therapy:"-",shPresenting:"PE + Low desire as SH, Mild depression found"},
+  // ▲ UPDATED: diagnosis was missing, now confirmed as Health anxiety + GUI
+  {date:"2026-03-22",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:38,l1:"Anxiety Disorders",l2:"GAD — Moderate (GAD-7 10–14)",diag:"Health anxiety + GUI",flags:"GUI comorbid",meds:"Etilaam, Veniz, Risperidone, Mirtazapine",therapy:"-",shPresenting:"GUI as SH, Health anxiety confirmed on assessment",updated:"Diagnosis updated from missing → Health anxiety + GUI"},
+  // ── W2: Mar 23–29 ────────────────────────────────────────────────────
+  {date:"2026-03-27",src:"Practo",primary:"MH",secondary:"-",gender:"Male",age:36,l1:"Anxiety Disorders",l2:"GAD — Moderate (GAD-7 10–14)",diag:"GAD, ?ADHD",flags:"?ADHD",meds:"Fluoxetine, Clonazepam",therapy:"-"},
+  {date:"2026-03-27",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:27,l1:"OCD Spectrum",l2:"Porn Addiction / CM (Compulsive Masturbation)",diag:"Depression, Porn Addiction / CM",flags:"Depression comorbid",meds:"Sertraline, Clonazepam",therapy:"-",shPresenting:"CM as SH complaint, OCD Spectrum + depression found"},
+  // ▲ RECLASSIFIED: was MH primary → now SH primary (Low sexual desire was presenting complaint, GAD found)
+  {date:"2026-03-28",src:"Practo",primary:"SH",secondary:"MH",gender:"Male",age:27,l1:"Anxiety Disorders",l2:"GAD — Moderate (GAD-7 10–14)",diag:"Low sexual desire, Generalised Anxiety Disorder",flags:"Low desire (M)",meds:"Sertraline, Clonazepam",therapy:"-",shPresenting:"Low sexual desire as SH, GAD found on assessment",updated:"Reclassified: was MH primary, now SH primary"},
+  {date:"2026-03-29",src:"Practo",primary:"MH",secondary:"-",gender:"Male",age:33,l1:"Anxiety Disorders",l2:"GAD — Moderate (GAD-7 10–14)",diag:"GAD, Gambling",flags:"Gambling comorbid",meds:"Sertraline, Clonazepam",therapy:"Therapy"},
+  {date:"2026-03-29",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:44,l1:"Anxiety Disorders",l2:"Panic Disorder",diag:"ED, Panic Disorder",flags:"ED comorbid",meds:"Sertraline, Clonazepam",therapy:"-",shPresenting:"ED as SH complaint, Panic Disorder found"},
+  // ── W3: Mar 30–Apr 5 ─────────────────────────────────────────────────
+  {date:"2026-03-30",src:"GMB",primary:"MH",secondary:"-",gender:"Male",age:49,l1:"Anxiety Disorders",l2:"GAD — Severe (GAD-7 ≥15)",diag:"Generalised Anxiety Disorder",flags:"",meds:"Etilaam, Veniz, Risperidone, Mirtazapine",therapy:"-"},
+  {date:"2026-03-30",src:"Direct walk-in",primary:"MH",secondary:"-",gender:"Male",age:39,l1:"Depression",l2:"Severe / MDD (PHQ-9 ≥20)",diag:"Severe depression",flags:"",meds:"Sertraline, Clonazepam",therapy:"Couples counselling"},
+  {date:"2026-03-31",src:"GMB",primary:"MH",secondary:"-",gender:"Female",age:54,l1:"Depression",l2:"Severe / MDD (PHQ-9 ≥20)",diag:"Severe depression",flags:"",meds:"Fluoxetine, Clonazepam",therapy:"-"},
+  {date:"2026-04-01",src:"GMB",primary:"MH",secondary:"-",gender:"Male",age:21,l1:"Depression",l2:"Adjustment Disorder w/ Depressive Features",diag:"Adjustment Disorder",flags:"",meds:"Fluoxetine, Clonazepam",therapy:"Supportive Psychotherapy"},
+  {date:"2026-04-01",src:"Google",primary:"MH",secondary:"-",gender:"Female",age:20,l1:"Depression",l2:"Mild (PHQ-9 5–9)",diag:"Depression",flags:"",meds:"-",therapy:"Individual + Couple"},
+  {date:"2026-04-02",src:"Practo",primary:"MH",secondary:"-",gender:"Male",age:33,l1:"Anxiety Disorders",l2:"GAD — Moderate (GAD-7 10–14)",diag:"GAD",flags:"",meds:"-",therapy:"Individual therapy"},
+  {date:"2026-04-03",src:"GMB",primary:"MH",secondary:"-",gender:"Female",age:24,l1:"Depression",l2:"Severe / MDD (PHQ-9 ≥20)",diag:"Severe depression / Adjustment Disorder",flags:"",meds:"Sertraline, Clonazepam",therapy:"Supportive Psychotherapy"},
+  {date:"2026-04-03",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:36,l1:"Anxiety Disorders",l2:"GAD — Severe (GAD-7 ≥15)",diag:"GAD + ED + GUI",flags:"ED, GUI comorbid",meds:"Sertraline, Clonazepam",therapy:"Couples counselling",shPresenting:"ED + GUI as SH, GAD found on assessment"},
+  {date:"2026-04-04",src:"GMB",primary:"MH",secondary:"-",gender:"Female",age:27,l1:"Neurodevelopmental",l2:"ADHD — Inattentive",diag:"ADHD",flags:"",meds:"Atomoxetine, Clonazepam",therapy:"-"},
+  {date:"2026-04-05",src:"GMB",primary:"MH",secondary:"-",gender:"Female",age:32,l1:"Depression",l2:"Severe / MDD (PHQ-9 ≥20)",diag:"Severe depression",flags:"",meds:"Fluoxetine, Etizolam",therapy:"Couples counselling"},
+  {date:"2026-04-05",src:"Practo",primary:"MH",secondary:"-",gender:"Male",age:32,l1:"Neurodevelopmental",l2:"ADHD + Comorbid Addiction",diag:"Alcohol Dependence, Anxiety Disorder, ADHD",flags:"Alcohol dependence, Anxiety comorbid",meds:"Clonazepam, Thiabione, Naltrexone, Sertraline",therapy:"-"},
+  // ── W4: Apr 6–12 ─────────────────────────────────────────────────────
+  {date:"2026-04-06",src:"Organic",primary:"MH",secondary:"-",gender:"Male",age:22,l1:"OCD Spectrum",l2:"OCD — Severe",diag:"Severe OCD",flags:"",meds:"Fluoxetine, Etizolam",therapy:"-"},
+  {date:"2026-04-08",src:"Walk-in",primary:"MH",secondary:"-",gender:"Female",age:67,l1:"Neurocognitive Disorders",l2:"Dementia — Mixed / Unspecified",diag:"Dementia",flags:"Accompanied by family",meds:"Quetiapine, Melatonin, Risperidone, Donepezil, Memantine, Sertraline",therapy:"-"},
+  {date:"2026-04-09",src:"Walk-in",primary:"MH",secondary:"-",gender:"Female",age:48,l1:"Depression",l2:"Severe / MDD (PHQ-9 ≥20)",diag:"Severe depression",flags:"",meds:"Sertraline, Clonazepam",therapy:"-"},
+  {date:"2026-04-10",src:"GMB",primary:"MH",secondary:"SH",gender:"Female",age:42,l1:"Bipolar / Psychotic Spectrum",l2:"Schizoaffective Disorder",diag:"Bipolar Affective Disorder / DD: Schizoaffective Disorder",flags:"SH comorbid",meds:"Lamotrigine, Zolpidem, Bupropion, Nexito, Olanzapine",therapy:"-",updated:"New L1: Bipolar / Psychotic Spectrum"},
+  {date:"2026-04-10",src:"Direct walk-in",primary:"MH",secondary:"-",gender:"Male",age:26,l1:"Depression",l2:"Severe / MDD (PHQ-9 ≥20)",diag:"Severe Depression",flags:"",meds:"Sertraline",therapy:"-"},
+  {date:"2026-04-12",src:"GMB",primary:"MH",secondary:"-",gender:"Male",age:25,l1:"OCD Spectrum",l2:"OCD — Severe",diag:"OCD + Severe depression",flags:"Depression comorbid",meds:"Escitalopram, Etizolam, Risperidone",therapy:"ERP Therapy"},
+  {date:"2026-04-12",src:"Practo",primary:"MH",secondary:"-",gender:"Female",age:27,l1:"Depression",l2:"Grief Disorder w/ Depressive Features",diag:"Grief disorder with anxiety features",flags:"Anxiety comorbid",meds:"Sertraline, Clonazepam",therapy:"Therapy"},
+  {date:"2026-04-12",src:"Google",primary:"MH",secondary:"-",gender:"Male",age:27,l1:"Depression",l2:"Severe / MDD (PHQ-9 ≥20)",diag:"Severe depression",flags:"",meds:"Sertraline, Clonazepam",therapy:"-"},
+];
+
+// ===== SC TABLE DATA =====
+// SC TABLE DATA
+// weekBase: ONLY factual offline counts — total calls, not-eligible, STI.
+// mhonly and sh_mh are ALWAYS computed live from patients[] so taxonomy and SC table stay in sync.
+// sh_row (SH Cases) is ALWAYS derived: eligible − sti − mhonly  → always balanced.
+const weekBase = {
+  W0: {lbl:"W0: Mar 9–15",     total:24, ne:0, sti:5},
+  W1: {lbl:"W1: Mar 16–22",    total:32, ne:0, sti:6},
+  W2: {lbl:"W2: Mar 23–29",    total:24, ne:0, sti:8},
+  W3: {lbl:"W3: Mar 30–Apr 5", total:41, ne:3, sti:7},
+  W4: {lbl:"W4: Apr 6–12",     total:29, ne:2, sti:5},
+};
+function getWk(d){
+  const dt=new Date(d);
+  if(dt>=new Date("2026-03-09")&&dt<=new Date("2026-03-15"))return"W0";
+  if(dt>=new Date("2026-03-16")&&dt<=new Date("2026-03-22"))return"W1";
+  if(dt>=new Date("2026-03-23")&&dt<=new Date("2026-03-29"))return"W2";
+  if(dt>=new Date("2026-03-30")&&dt<=new Date("2026-04-05"))return"W3";
+  if(dt>=new Date("2026-04-06")&&dt<=new Date("2026-04-12"))return"W4";
+  return null;
+}
+// Build week objects: merge weekBase with live MH counts from patients[]
+function buildWeeks(){
+  // Compute mhonly and sh_mh per week from patients[]
+  const mhCounts={W0:{mhonly:0,sh_mh:0},W1:{mhonly:0,sh_mh:0},W2:{mhonly:0,sh_mh:0},W3:{mhonly:0,sh_mh:0},W4:{mhonly:0,sh_mh:0}};
+  patients.forEach(p=>{
+    const wk=getWk(p.date); if(!wk)return;
+    if(p.primary==="MH") mhCounts[wk].mhonly++;
+    if(p.primary==="SH"&&p.secondary==="MH") mhCounts[wk].sh_mh++;
+  });
+  return ["W0","W1","W2","W3","W4"].map(k=>{
+    const b=weekBase[k]; const m=mhCounts[k];
+    const elig=b.total-b.ne;
+    // sh_row = all eligible non-STI non-MH = SH bucket (includes sh_mh within it)
+    const sh=elig-b.sti-m.mhonly;
+    return {lbl:b.lbl, total:b.total, ne:b.ne, elig, sti:b.sti,
+            mhonly:m.mhonly, sh_mh:m.sh_mh, sh, key:k};
+  });
+}
+// ===== MONTH COLUMNS =====
+// Each month has an editable date range. Aggregated from weekBase + patients[].
+let monthCols = [
+  {id:"M1", label:"Last Month · March 2026",   start:"2026-03-01", end:"2026-03-31"},
+  {id:"M2", label:"Current Month · April 2026", start:"2026-04-01", end:"2026-04-30"},
+];
+function pf(n,d){
+
+// Aggregate SC data for any date range.
+// Uses WEEK START DATE to assign each week to a month — no double-counting across months.
+// W3 starts Mar 30 → counts in March even though it ends Apr 5.
+const WEEK_RANGES = {
+  W0:{s:new Date("2026-03-09"),e:new Date("2026-03-15")},
+  W1:{s:new Date("2026-03-16"),e:new Date("2026-03-22")},
+  W2:{s:new Date("2026-03-23"),e:new Date("2026-03-29")},
+  W3:{s:new Date("2026-03-30"),e:new Date("2026-04-05")},
+  W4:{s:new Date("2026-04-06"),e:new Date("2026-04-12")},
+};
+function aggregateRange(startStr, endStr){
+  const s=new Date(startStr), e=new Date(endStr);
+  let total=0, ne=0, sti=0, mhonly=0, sh_mh=0;
+  // Sum weekBase only for weeks whose START DATE falls within range
+  Object.entries(weekBase).forEach(([k,w])=>{
+    const ws=WEEK_RANGES[k]?.s; if(!ws) return;
+    if(ws>=s && ws<=e){ total+=w.total; ne+=w.ne; sti+=w.sti; }
+  });
+  // MH counts: use patient's week, check if that week's start is in range
+  patients.forEach(p=>{
+    const wk=getWk(p.date); if(!wk) return;
+    const ws=WEEK_RANGES[wk]?.s; if(!ws) return;
+    if(ws<s||ws>e) return;
+    if(p.primary==="MH") mhonly++;
+    if(p.primary==="SH"&&p.secondary==="MH") sh_mh++;
+  });
+  const elig=total-ne;
+  const sh=Math.max(0,elig-sti-mhonly);
+  return {total,ne,elig,sti,mhonly,sh_mh,sh,lbl:"range"};
+}
+
+// ===== MONTH EDIT MODAL =====
+function openMonthEdit(idx){
+  const m=monthCols[idx];
+  const canDelete=monthCols.length>2; // always keep at least 2 month columns
+  const overlay=document.createElement("div");
+  overlay.id="monthEditOverlay";
+  overlay.style.cssText="position:fixed;inset:0;background:rgba(26,31,60,.45);backdrop-filter:blur(4px);z-index:300;display:flex;align-items:center;justify-content:center;";
+  overlay.innerHTML=`<div style="background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:24px;width:380px;box-shadow:0 20px 60px rgba(37,99,235,.14)">
+    <div style="font-size:1rem;font-weight:800;margin-bottom:16px">✏️ Edit Month Column</div>
+    <div class="fg"><label class="fl">Column Label</label><input class="fi" id="meLabel" value="${m.label}"/></div>
+    <div class="fr" style="margin-top:10px">
+      <div class="fg"><label class="fl">Start Date</label><input class="fi" id="meStart" type="date" value="${m.start}"/></div>
+      <div class="fg"><label class="fl">End Date</label><input class="fi" id="meEnd" type="date" value="${m.end}"/></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:16px">
+      <button onclick="saveMonthEdit(${idx})" style="flex:2;padding:8px;border-radius:8px;background:var(--blue);color:#fff;border:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer">Save</button>
+      <button onclick="closeMonthEdit()" style="flex:1;padding:8px;border-radius:8px;background:none;border:1.5px solid var(--border2);color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer">Cancel</button>
+      ${canDelete?`<button onclick="deleteMonth(${idx})" style="padding:8px 12px;border-radius:8px;background:var(--rl);border:1.5px solid var(--rm);color:var(--red);font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer">🗑 Delete</button>`:''}
+    </div>
+    ${!canDelete?`<div style="margin-top:10px;font-size:.67rem;color:var(--muted);text-align:center">Minimum 2 month columns required</div>`:''}
+  </div>`;
+  document.body.appendChild(overlay);
+  overlay.addEventListener("click",e=>{ if(e.target===overlay) closeMonthEdit(); });
+}
+function closeMonthEdit(){ document.getElementById("monthEditOverlay")?.remove(); }
+function saveMonthEdit(idx){
+  monthCols[idx].label=document.getElementById("meLabel").value;
+  monthCols[idx].start=document.getElementById("meStart").value;
+  monthCols[idx].end=document.getElementById("meEnd").value;
+  closeMonthEdit();
+  renderSC();
+}
+function addMonth(){
+  const last=monthCols[monthCols.length-1];
+  const newStart=new Date(last.end); newStart.setDate(newStart.getDate()+1);
+  const newEnd=new Date(newStart.getFullYear(), newStart.getMonth()+1, 0);
+  const lbl=newStart.toLocaleString("default",{month:"long"})+" "+newStart.getFullYear();
+  monthCols.push({id:"M"+(monthCols.length+1), label:lbl,
+    start:newStart.toISOString().slice(0,10), end:newEnd.toISOString().slice(0,10)});
+  renderSC();
+}
+function deleteMonth(idx){
+  if(monthCols.length<=2){closeMonthEdit();return;}
+  monthCols.splice(idx,1);
+  closeMonthEdit();
+  renderSC();
+}
+
+// ===== CUSTOM FILTER =====
+function pf(n,d){if(!d||n===0)return'<span class="dash">-</span>';return`<span class="pct">${(n/d*100).toFixed(1)}%</span>`;}
+function renderSC(){
+  const wk=buildWeeks();
+  const monthAggs=monthCols.map(m=>({...aggregateRange(m.start,m.end),isMonth:true}));
+  const cu={total:0,ne:0,elig:0,sti:0,mhonly:0,sh_mh:0,sh:0};
+  wk.forEach(w=>{cu.total+=w.total;cu.ne+=w.ne;cu.elig+=w.elig;cu.sti+=w.sti;cu.mhonly+=w.mhonly;cu.sh_mh+=w.sh_mh;cu.sh+=w.sh;});
+  const cols=[...monthAggs,...wk,{...cu,isCum:true}];
+
+  // Rebuild month header cells
+  const hrow=document.getElementById("scHeaderRow");
+  hrow.querySelectorAll(".month-th").forEach(el=>el.remove());
+  const firstTh=hrow.querySelector("th:first-child");
+  let lastInserted=firstTh;
+  monthCols.forEach((m,i)=>{
+    const th=document.createElement("th");
+    th.className="month-th";
+    const isLast=i===0, isCurr=i===monthCols.length-1;
+    const bg=isLast?"var(--pl)":isCurr?"var(--bl)":"var(--surface2)";
+    const col=isLast?"var(--purple)":isCurr?"var(--blue)":"var(--muted)";
+    th.style.cssText=`text-align:center;min-width:115px;background:${bg};color:${col};cursor:pointer;font-size:.62rem;white-space:nowrap;padding:7px 8px;`;
+    const tag=isLast?"Last Month":isCurr?"Current Month":"Month";
+    th.innerHTML=`<div style="font-size:.58rem;opacity:.75;font-weight:600;letter-spacing:.05em;text-transform:uppercase">${tag}</div><strong style="font-size:.65rem">${m.label.split("·").pop().trim()}</strong><br><span style="font-size:.57rem;font-weight:400;opacity:.8">${m.start.slice(5).replace("-","/")} – ${m.end.slice(5).replace("-","/")} ✏️</span>`;
+    th.onclick=()=>openMonthEdit(i);
+    lastInserted.after(th);
+    lastInserted=th;
+  });
+
+  const cs=c=>c.isMonth?"background:var(--pl);opacity:.9":c.isFilter?"background:var(--ol)":c.isCum?"background:var(--bl)":"";
+  const td=(v,cls,c)=>`<td style="text-align:center;${cs(c)}"${cls?` class="${cls}"`:""}>${v===0?'0':(v||'<span class="dash">-</span>')}</td>`;
+  const grp=(label)=>`<tr class="sc-grp"><td colspan="${cols.length+1}">${label}</td></tr>`;
+  const row=(label,fn,cls,indent)=>`<tr${indent?' class="sc-in"':''}><td${indent?' style="padding-left:20px"':''}>${label}</td>${cols.map(c=>td(fn(c),cls,c)).join("")}</tr>`;
+  const hlR=(label,fn,cls)=>`<tr class="sc-hl"><td><strong>${label}</strong></td>${cols.map(c=>`<td style="text-align:center;${cs(c)}" class="${cls||'c-mh'}"><strong>${fn(c)===0?'0':(fn(c)||'<span class="dash">-</span>')}</strong></td>`).join("")}</tr>`;
+  const pctR=(label,nFn,dFn,indent,extra)=>`<tr class="sc-pct${extra?' '+extra:''}"${indent?' ':''}><td${indent?' class="sc-in" style="padding-left:20px"':''}>${label}</td>${cols.map(c=>`<td style="text-align:center;${cs(c)}">${pf(nFn(c),dFn(c))}</td>`).join("")}</tr>`;
+
+  document.getElementById("scBody").innerHTML=[
+    grp("VOLUME"),
+    row("Total Screening Calls Done",w=>w.total,"c-n"),
+    row("Not Eligible",w=>w.ne||null,"c-ne",true),
+    hlR("Eligible",w=>w.elig,"c-n"),
+    grp("STI CASES"),
+    row("(Rx) STI Cases",w=>w.sti||null,"c-sti"),
+    grp("SH CASES (Eligible − STI)"),
+    row("(Rx) SH Cases",w=>w.sh||null,"c-sh"),
+    `<tr class="sc-grp" style="background:var(--bl)"><td colspan="${cols.length+1}" style="color:var(--blue)">MH CASES (within SH)</td></tr>`,
+    hlR("MH Only Cases <span style='font-size:.63rem;color:var(--muted);font-weight:400'>(Primary = MH)</span>",w=>w.mhonly||null,"c-mh"),
+    row(`(Rx) SH Cases also MH <span style="font-size:.63rem;color:var(--muted)">(Primary=SH, Secondary=MH)</span>`,w=>w.sh_mh||null,"c-sh",true),
+    pctR("% MH of SH Cases",w=>w.sh_mh,w=>w.sh,true),
+    grp("EFFECTIVE MH"),
+    hlR("Total Effective MH <span style='font-size:.63rem;color:var(--muted);font-weight:400'>(MH Only + SH→MH)</span>",w=>(w.mhonly+w.sh_mh)||null,"c-mh"),
+    pctR("Effective MH% of Eligible",w=>w.mhonly+w.sh_mh,w=>w.elig,false,"sc-hl"),
+    grp(`CATEGORY MIX % <span style="font-size:.63rem;font-weight:400;letter-spacing:0">of Eligible</span>`),
+    pctR("% MH Cases",w=>w.mhonly,w=>w.elig,false,"sc-mix"),
+    pctR("% SH Cases",w=>w.sh,w=>w.elig,false,"sc-mix"),
+    pctR("% STI Cases",w=>w.sti,w=>w.elig,false,"sc-mix"),
+  ].join("");
+}
+
+// ===== TAXONOMY GRID =====
+function renderTaxGrid(){
+  const l1Counts={};
+  const l2Counts={};
+  patients.forEach(p=>{
+    if(p.l1)l1Counts[p.l1]=(l1Counts[p.l1]||0)+1;
+    if(p.l1&&p.l2){const k=p.l1+"||"+p.l2;l2Counts[k]=(l2Counts[k]||0)+1;}
+  });
+  const el=document.getElementById("taxGrid"); if(!el)return;
+  el.innerHTML=Object.entries(TAXONOMY).map(([l1,t])=>{
+    const n=l1Counts[l1]||0;
+    const l2rows=t.l2s.map(l2=>{const k=l1+"||"+l2;const c=l2Counts[k]||0;return`<div class="l2-row"><span class="l2-name">${l2}</span><span class="l2-n" style="color:${c>0?t.color:'var(--dim)'}">${c>0?c:'—'}</span></div>`;}).join("");
+    return`<div class="tax-card"><div class="tax-head" style="background:${t.bg};border-color:${t.border}"><span>${t.icon} ${l1}</span><span class="tax-n" style="color:${t.color}">n=${n}</span></div><div class="tax-body">${l2rows}</div></div>`;
+  }).join("");
+}
+
+// ===== PATIENT TABLE =====
+function renderPtTable(){
+  const el=document.getElementById("ptTable"); if(!el)return;
+  el.innerHTML=patients.map((p,i)=>{
+    const l1t=TAXONOMY[p.l1];
+    const l1col=l1t?l1t.color:"var(--muted)";
+    const l1bg=l1t?l1t.bg:"var(--bg)";
+    const cat=p.primary==="MH"?`<span class="bdg b-mh">MH</span>`:(p.primary==="SH"?`<span class="bdg b-sh">SH</span>`:`<span class="bdg b-sti">STI</span>`);
+    const sec=p.secondary&&p.secondary!=="-"?` <span style="font-size:.62rem;color:var(--muted)">+${p.secondary}</span>`:"";
+    const flags=p.flags?(p.flags||"").split(",").map(f=>f.trim()).filter(Boolean).map(f=>`<span class="bdg b-flag">${f}</span>`).join(" "):"<span class='dash'>—</span>";
+    return`<tr>
+      <td class="c-n">${i+1}</td>
+      <td style="font-size:.7rem;white-space:nowrap">${p.date||"—"}</td>
+      <td>${cat}${sec}</td>
+      <td><span class="bdg b-l1" style="background:${l1bg};color:${l1col};border-color:${l1t?l1t.border:l1bg}">${p.l1||"—"}</span></td>
+      <td><span class="bdg b-l2" style="font-size:.6rem">${p.l2||"—"}</span></td>
+      <td>${flags}</td>
+      <td>${p.gender||"—"}</td>
+      <td class="c-n">${p.age||"—"}</td>
+      <td style="font-size:.7rem">${p.src||"—"}</td>
+    </tr>`;
+  }).join("");
+}
+
+// ===== BARS =====
+function renderBar(id,data,lw){
+  const sorted=Object.entries(data).sort((a,b)=>b[1]-a[1]);
+  const max=sorted[0]?.[1]||1;
+  const cols=['#2563eb','#d97706','#7c3aed','#059669','#dc2626','#0891b2','#f59e0b','#10b981'];
+  const el=document.getElementById(id); if(!el)return;
+  el.innerHTML=sorted.map(([name,n],i)=>`<div class="bar-row"><div class="bar-lbl" style="width:${lw||180}px">${name}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.max(8,Math.round(n/max*90))}%;background:${cols[i%cols.length]}">${n}</div></div><div class="bar-cnt">${n}</div></div>`).join("");
+}
+
+function renderL1Bars(){
+  const l1c={},l2c={};
+  patients.forEach(p=>{
+    if(p.l1)l1c[p.l1]=(l1c[p.l1]||0)+1;
+    if(p.l2){const sh=p.l2.split("(")[0].trim();l2c[sh]=(l2c[sh]||0)+1;}
+  });
+  renderBar("l1Bar",l1c,150);
+  renderBar("l1FullBar",l1c,155);
+  renderBar("l2Bar",l2c,185);
+}
+
+function renderSrcBar(){
+  const s={};
+  patients.forEach(p=>{
+    let src=(p.src||"Other").toLowerCase();
+    if(src.includes("gmb"))s["GMB"]=(s["GMB"]||0)+1;
+    else if(src.includes("practo"))s["Practo"]=(s["Practo"]||0)+1;
+    else if(src.includes("google"))s["Google"]=(s["Google"]||0)+1;
+    else if(src.includes("inbound"))s["Inbound"]=(s["Inbound"]||0)+1;
+    else if(src.includes("walk")||src.includes("direct"))s["Walk-in"]=(s["Walk-in"]||0)+1;
+    else s["Other/FB/Organic"]=(s["Other/FB/Organic"]||0)+1;
+  });
+  renderBar("srcBar",s,150);
+}
+
+// ===== L1 × GENDER TABLE =====
+function renderL1Gender(){
+  const el=document.getElementById("l1GenderTable"); if(!el)return;
+  const d={};
+  patients.forEach(p=>{
+    if(!p.l1)return;
+    if(!d[p.l1])d[p.l1]={n:0,m:0,f:0,srcs:{},ages:[]};
+    const r=d[p.l1]; r.n++;
+    if(/male/i.test(p.gender)&&!/female/i.test(p.gender))r.m++;
+    if(/female/i.test(p.gender))r.f++;
+    r.srcs[p.src]=(r.srcs[p.src]||0)+1;
+    if(p.age)r.ages.push(p.age);
+  });
+  el.innerHTML=Object.entries(d).sort((a,b)=>b[1].n-a[1].n).map(([l1,r])=>{
+    const t=TAXONOMY[l1];
+    const topSrc=Object.entries(r.srcs).sort((a,b)=>b[1]-a[1])[0]?.[0]||"—";
+    const avgAge=r.ages.length?Math.round(r.ages.reduce((a,b)=>a+b,0)/r.ages.length)+"":"—";
+    return`<tr><td><span class="bdg b-l1" style="background:${t?.bg||"var(--bg)"};color:${t?.color||"var(--muted)"};border-color:${t?.border||"var(--border)"}">${l1}</span></td><td class="c-n">${r.n}</td><td class="c-n">${r.m}</td><td class="c-n">${r.f}</td><td style="font-size:.74rem">${topSrc}</td><td class="c-n">${avgAge}</td></tr>`;
+  }).join("");
+}
+
+// ===== KPIs =====
+function updateKPIs(){
+  // Use buildWeeks() — total/ne/sti from weekBase, mhonly/sh_mh live from patients[]
+  const wks=buildWeeks();
+  const totSC   = wks.reduce((a,w)=>a+w.total,0);
+  const totNE   = wks.reduce((a,w)=>a+w.ne,0);
+  const totSTI  = wks.reduce((a,w)=>a+w.sti,0);
+  const totMH   = wks.reduce((a,w)=>a+w.mhonly,0);
+  const totSHMH = wks.reduce((a,w)=>a+w.sh_mh,0);
+  const eligible= totSC-totNE;
+  document.getElementById("k-tot").textContent=totSC;
+  document.getElementById("k-mh").textContent=totMH;
+  document.getElementById("k-sh").textContent=totSHMH;
+  document.getElementById("k-sti").textContent=totSTI;
+  document.getElementById("k-rate").textContent=eligible>0?Math.round((totMH+totSHMH)/eligible*100)+"%":"—";
+  // Demographics tab
+  const dt=document.getElementById("d-tot"); if(dt)dt.textContent=patients.length;
+  const dm=document.getElementById("d-male");
+  if(dm){const males=patients.filter(p=>/male/i.test(p.gender)&&!/female/i.test(p.gender)).length;dm.textContent=patients.length>0?Math.round(males/patients.length*100)+"%":"—";}
+}
+
+// ===== TAX TAB SWITCHER =====
+function switchTaxTab(n){
+  document.querySelectorAll("#taxTabs .itab").forEach((t,i)=>t.classList.toggle("active",i===n));
+  document.getElementById("txt0").classList.toggle("active",n===0);
+  document.getElementById("txt1").classList.toggle("active",n===1);
+}
+
+// ===== FLAG → L1/L2 MAPPING =====
+// Maps keywords found in comorbidity flags to L1 category + L2 subtype
+const FLAG_MAP = [
+  {re:/\bED\b|erectile/i,          l1:"Sexual Health",        l2:"Erectile Dysfunction (ED)"},
+  {re:/\bPE\b|premature ejac/i,     l1:"Sexual Health",        l2:"Premature Ejaculation (PE)"},
+  {re:/low desire/i,                l1:"Sexual Health",        l2:"Low Desire (Male/Female)"},
+  {re:/\bGUI\b/i,                   l1:"Sexual Health",        l2:"Genital / Urinary Issues (GUI)"},
+  {re:/delayed orgasm/i,            l1:"Sexual Health",        l2:"Delayed Orgasm"},
+  {re:/\bADHD\b/i,                  l1:"Neurodevelopmental",   l2:"ADHD — Combined"},
+  {re:/alcohol dependence/i,        l1:"Addiction / Substance",l2:"Alcohol Dependence"},
+  {re:/gambling/i,                  l1:"Addiction / Substance",l2:"Gambling Disorder"},
+  {re:/porn|CM\b|compulsive mast/i, l1:"OCD Spectrum",         l2:"Porn Addiction / CM (Compulsive Masturbation)"},
+  {re:/panic/i,                     l1:"Anxiety Disorders",    l2:"Panic Disorder"},
+  {re:/depression comorbid/i,       l1:"Depression",           l2:"Comorbid Depression (severity unknown)"},
+  {re:/anxiety comorbid/i,          l1:"Anxiety Disorders",    l2:"GAD — (severity unknown)"},
+  {re:/OCD comorbid/i,              l1:"OCD Spectrum",         l2:"OCD — (severity unknown)"},
+];
+
+// For each patient, return array of {l1, l2, source:"primary"|"comorbid"} instances
+function getInstances(p){
+  const insts=[];
+  // Primary L1/L2
+  if(p.l1) insts.push({l1:p.l1, l2:p.l2||"—", source:"primary"});
+  // Comorbidity flags — skip if same L1 as primary to avoid double-counting same category
+  const flags=p.flags||"";
+  if(flags){
+    FLAG_MAP.forEach(({re,l1,l2})=>{
+      if(re.test(flags) && l1!==p.l1){
+        // Only add once per L1 per patient
+        if(!insts.find(i=>i.l1===l1))
+          insts.push({l1, l2, source:"comorbid"});
+      }
+    });
+  }
+  return insts;
+}
+
+// ===== INSTANCE TAXONOMY GRID =====
+function renderTaxGridInst(){
+  const l1Counts={};   // {l1: {primary:0, comorbid:0, patients:Set}}
+  const l2Counts={};   // {l1||l2: {primary:0, comorbid:0}}
+  patients.forEach((p,pi)=>{
+    getInstances(p).forEach(({l1,l2,source})=>{
+      if(!l1Counts[l1]) l1Counts[l1]={primary:0,comorbid:0,patients:new Set()};
+      l1Counts[l1][source]++;
+      l1Counts[l1].patients.add(pi);
+      const k=l1+"||"+l2;
+      if(!l2Counts[k]) l2Counts[k]={primary:0,comorbid:0};
+      l2Counts[k][source]++;
+    });
+  });
+
+  const el=document.getElementById("taxGridInst"); if(!el)return;
+  el.innerHTML=Object.entries(TAXONOMY).map(([l1,t])=>{
+    const c=l1Counts[l1]||{primary:0,comorbid:0,patients:new Set()};
+    const total=c.primary+c.comorbid;
+    const l2rows=t.l2s.map(l2=>{
+      const k=l1+"||"+l2;
+      const lc=l2Counts[k]||{primary:0,comorbid:0};
+      const lt=lc.primary+lc.comorbid;
+      if(!lt) return`<div class="l2-row"><span class="l2-name">${l2}</span><span class="l2-n" style="color:var(--dim)">—</span></div>`;
+      return`<div class="l2-row">
+        <span class="l2-name">${l2}</span>
+        <span style="display:flex;gap:5px;align-items:center">
+          ${lc.primary?`<span class="bdg b-l1" style="font-size:.58rem;background:${t.bg};color:${t.color};border-color:${t.border}">${lc.primary}p</span>`:""}
+          ${lc.comorbid?`<span class="bdg b-flag" style="font-size:.58rem">${lc.comorbid}c</span>`:""}
+        </span>
+      </div>`;
+    }).join("");
+    // also show flag-derived L2s not in taxonomy definition
+    const extraL2s=Object.entries(l2Counts).filter(([k,v])=>k.startsWith(l1+"||")&&!t.l2s.some(l2=>k===l1+"||"+l2)).map(([k,v])=>{
+      const l2name=k.replace(l1+"||","");
+      const lt=v.primary+v.comorbid;
+      return`<div class="l2-row" style="opacity:.75">
+        <span class="l2-name" style="font-style:italic">${l2name}</span>
+        <span style="display:flex;gap:5px;align-items:center">
+          ${v.primary?`<span class="bdg b-l1" style="font-size:.58rem;background:${t.bg};color:${t.color};border-color:${t.border}">${v.primary}p</span>`:""}
+          ${v.comorbid?`<span class="bdg b-flag" style="font-size:.58rem">${v.comorbid}c</span>`:""}
+        </span>
+      </div>`;
+    }).join("");
+    return`<div class="tax-card">
+      <div class="tax-head" style="background:${t.bg};border-color:${t.border}">
+        <span>${t.icon} ${l1}</span>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
+          <span class="tax-n" style="color:${t.color}">${total} inst</span>
+          <span style="font-size:.6rem;color:var(--muted)">${c.patients.size} patients</span>
+        </span>
+      </div>
+      <div class="tax-body">${l2rows}${extraL2s}</div>
+    </div>`;
+  }).join("");
+
+  // Render instance patient table
+  renderInstTable(l1Counts);
+  // Render summary table
+  renderInstSummary(l1Counts);
+}
+
+function renderInstTable(l1Counts){
+  const el=document.getElementById("instTable"); if(!el)return;
+  let totalInst=0;
+  const rows=patients.map((p,i)=>{
+    const insts=getInstances(p);
+    totalInst+=insts.length;
+    const t=TAXONOMY[p.l1];
+    const comorbInsts=insts.filter(x=>x.source==="comorbid");
+    const comorbBadges=comorbInsts.map(x=>{const tx=TAXONOMY[x.l1];return`<span class="bdg b-flag" style="background:${tx?.bg||"var(--bg)"};color:${tx?.color||"var(--muted)"};border-color:${tx?.border||"var(--border)"};font-size:.58rem">${x.l1}: ${x.l2}</span>`;}).join(" ");
+    return`<tr>
+      <td class="c-n">${i+1}</td>
+      <td style="font-size:.7rem;white-space:nowrap">${p.date||"—"}</td>
+      <td><span class="bdg b-l1" style="background:${t?.bg||"var(--bg)"};color:${t?.color||"var(--muted)"};border-color:${t?.border||"var(--border)"}">${p.l1||"—"}</span></td>
+      <td><span class="bdg b-l2" style="font-size:.59rem">${p.l2||"—"}</span></td>
+      <td>${comorbBadges||'<span class="dash">—</span>'}</td>
+      <td>${p.gender||"—"}</td>
+      <td class="c-n">${p.age||"—"}</td>
+    </tr>`;
+  }).join("");
+  el.innerHTML=rows;
+  const ttl=document.getElementById("instTableTitle");
+  if(ttl)ttl.textContent=`All Condition Instances · ${patients.length} patients · ${totalInst} total instances`;
+}
+
+function renderInstSummary(l1Counts){
+  const el=document.getElementById("instSummary"); if(!el)return;
+  el.innerHTML=Object.entries(TAXONOMY).map(([l1,t])=>{
+    const c=l1Counts[l1]||{primary:0,comorbid:0,patients:new Set()};
+    const total=c.primary+c.comorbid;
+    if(!total) return`<tr><td><span class="bdg b-l1" style="background:${t.bg};color:${t.color};border-color:${t.border}">${t.icon} ${l1}</span></td><td class="dash" style="text-align:center">—</td><td class="dash" style="text-align:center">—</td><td class="dash" style="text-align:center">—</td><td class="dash" style="text-align:center">—</td></tr>`;
+    return`<tr>
+      <td><span class="bdg b-l1" style="background:${t.bg};color:${t.color};border-color:${t.border}">${t.icon} ${l1}</span></td>
+      <td class="c-n" style="text-align:center">${c.primary}</td>
+      <td class="c-n" style="text-align:center;color:var(--orange)">${c.comorbid||'<span class="dash">—</span>'}</td>
+      <td class="c-n" style="text-align:center;font-weight:700;color:${t.color}">${total}</td>
+      <td class="c-n" style="text-align:center">${c.patients.size}</td>
+    </tr>`;
+  }).join("");
+}
+function switchTab(n){
+  document.querySelectorAll(".sec").forEach((s,i)=>s.classList.toggle("active",i===n));
+  document.querySelectorAll(".ntab").forEach((t,i)=>t.classList.toggle("active",i===n));
+}
+function switchInner(n){
+  document.querySelectorAll(".tc").forEach((t,i)=>t.classList.toggle("active",i===n));
+  document.querySelectorAll(".itab").forEach((t,i)=>t.classList.toggle("active",i===n));
+}
+function switchDSS(n){
+  document.querySelectorAll(".dss-proto").forEach((p,i)=>p.classList.toggle("active",i===n));
+  document.querySelectorAll(".dss-btn").forEach((b,i)=>b.classList.toggle("active",i===n));
+}
+
+// ===== MODAL =====
+function openModal(t){document.getElementById("modal").classList.add("open");switchMTab(t);}
+function closeModal(){document.getElementById("modal").classList.remove("open");}
+function switchMTab(n){
+  document.querySelectorAll(".mtab").forEach((t,i)=>t.classList.toggle("active",i===n));
+  document.querySelectorAll(".mtc").forEach((t,i)=>t.classList.toggle("active",i===n));
+}
+document.getElementById("modal").addEventListener("click",e=>{if(e.target===document.getElementById("modal"))closeModal();});
+
+// ===== L2 DROPDOWN =====
+function updateL2(){
+  const l1=document.getElementById("f_l1").value;
+  const sel=document.getElementById("f_l2");
+  sel.innerHTML='<option value="">Select L2</option>';
+  if(l1&&TAXONOMY[l1]){TAXONOMY[l1].l2s.forEach(l2=>{const o=document.createElement("option");o.value=l2;o.textContent=l2;sel.appendChild(o);});}
+}
+
+// ===== ADD SINGLE =====
+function addSingle(){
+  const primary=document.getElementById("f_primary").value;
+  if(!primary){alert("Please select a primary category.");return;}
+  const np={
+    date:document.getElementById("f_date").value,
+    src:document.getElementById("f_src").value,
+    gender:document.getElementById("f_gender").value,
+    age:parseInt(document.getElementById("f_age").value)||null,
+    primary,secondary:document.getElementById("f_secondary").value,
+    l1:document.getElementById("f_l1").value,
+    l2:document.getElementById("f_l2").value,
+    diag:document.getElementById("f_diag").value,
+    flags:document.getElementById("f_flags").value,
+    meds:document.getElementById("f_meds").value,
+    therapy:document.getElementById("f_therapy").value,
+  };
+  patients.push(np);
+  updateWeekDataFromPatient(np);
+  refreshAll();
+  const m=document.getElementById("singleOK");m.style.display="block";
+  setTimeout(()=>m.style.display="none",3000);
+  ["f_date","f_age","f_diag","f_flags","f_meds","f_therapy"].forEach(id=>document.getElementById(id).value="");
+  ["f_src","f_gender","f_primary","f_secondary","f_l1","f_l2"].forEach(id=>document.getElementById(id).value="");
+}
+
+// ===== BULK UPLOAD =====
+function dov(e){e.preventDefault();document.getElementById("dropZ").classList.add("dragover");}
+function dol(){document.getElementById("dropZ").classList.remove("dragover");}
+function ddr(e){e.preventDefault();dol();const f=e.dataTransfer.files[0];if(f)procCSV(f);}
+function fsel(e){const f=e.target.files[0];if(f)procCSV(f);}
+function procCSV(file){
+  const r=new FileReader();
+  r.onload=e=>{
+    const lines=e.target.result.trim().split("\n");
+    if(lines.length<2){alert("CSV empty.");return;}
+    const hdrs=lines[0].split(",").map(h=>h.trim().toLowerCase().replace(/\s+/g,"_").replace(/[^a-z_]/g,""));
+    let added=0,skipped=0;const prev=[];
+    for(let i=1;i<lines.length;i++){
+      const vals=lines[i].split(",").map(v=>v.trim().replace(/^"|"$/g,""));
+      const o={};hdrs.forEach((h,j)=>o[h]=vals[j]||"");
+      const p={
+        date:o["appointment_date"]||o["date"]||"",
+        src:o["utm_source"]||o["source"]||"",
+        gender:o["gender"]||"",
+        age:parseInt(o["age"])||null,
+        primary:(o["primary_diagnosis"]||o["primary"]||"").toUpperCase(),
+        secondary:o["secondary_diagnosis"]||o["secondary"]||"-",
+        l1:o["l1_category"]||o["l1"]||"",
+        l2:o["l2_subtype"]||o["l2"]||"",
+        diag:o["diagnosis"]||o["diag"]||"",
+        flags:o["comorbidity_flags"]||o["flags"]||"",
+        meds:o["medicines"]||o["meds"]||"",
+        therapy:o["therapy"]||"",
+      };
+      if(!["MH","SH","STI"].includes(p.primary)){skipped++;continue;}
+      patients.push(p);updateWeekDataFromPatient(p);added++;if(prev.length<5)prev.push(p);
+    }
+    refreshAll();
+    document.getElementById("bulkPrev").innerHTML=prev.length?`<div style="margin-top:8px;font-size:.7rem;color:var(--muted)">Preview (first ${prev.length} valid rows):</div><div class="csv-prev"><table style="font-size:.68rem"><thead><tr><th>Date</th><th>Primary</th><th>L1</th><th>L2</th></tr></thead><tbody>${prev.map(p=>`<tr><td>${p.date}</td><td><span class="bdg b-${p.primary.toLowerCase()}">${p.primary}</span></td><td>${p.l1||"—"}</td><td>${p.l2||"—"}</td></tr>`).join("")}</tbody></table></div>`:"";
+    const m=document.getElementById("bulkOK");m.style.display="block";
+    m.textContent=`✓ ${lines.length-1} rows processed — ${added} added, ${skipped} skipped. Charts updated.`;
+  };
+  r.readAsText(file);
+}
+function dlTpl(){
+  const csv="appointment_date,utm_source,age,gender,primary_diagnosis,secondary_diagnosis,l1_category,l2_subtype,diagnosis,comorbidity_flags,medicines,therapy\n2026-04-07,GMB,28,Male,MH,-,Depression,Severe / MDD (PHQ-9 ≥20),Severe depression,IPR issues,\"Sertraline 50mg, Clonazepam 0.25mg\",CBT\n";
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="MH_upload_template.csv";a.click();
+}
+
+// ===== SH→MH CONVERTS TABLE =====
+function renderSHMHTable(){
+  const converts=patients.filter(p=>p.primary==="SH"&&p.secondary==="MH");
+  const el=document.getElementById("shMhTable"); if(!el)return;
+  const cnt=document.getElementById("sh-mh-count"); if(cnt)cnt.textContent=converts.length;
+  const t=converts.map(p=>{
+    const tx=TAXONOMY[p.l1];
+    const isUpdated=!!p.updated;
+    const flag=isUpdated
+      ?`<span style="background:var(--ol);color:var(--orange);border:1px solid var(--om);padding:2px 7px;border-radius:4px;font-size:.62rem;font-weight:700;white-space:nowrap">${p.updated.includes("Reclassified")?"🔁 Reclassified":"📝 Updated"}</span>`
+      :`<span class="dash">—</span>`;
+    return`<tr style="${isUpdated?"background:#fffbeb;":""}" >
+      <td style="font-size:.7rem;white-space:nowrap">${p.date}</td>
+      <td>${p.gender||"—"}</td>
+      <td class="c-n">${p.age||"—"}</td>
+      <td style="font-size:.74rem;color:var(--purple);font-weight:500">${p.shPresenting||p.diag||"—"}</td>
+      <td style="font-size:.74rem;font-weight:600">${p.diag||"—"}</td>
+      <td><span class="bdg b-l1" style="background:${tx?.bg||"var(--bg)"};color:${tx?.color||"var(--muted)"};border-color:${tx?.border||"var(--border)"};font-size:.6rem">${p.l1||"—"}</span></td>
+      <td><span class="bdg b-l2" style="font-size:.58rem">${p.l2||"—"}</span></td>
+      <td style="font-size:.7rem">${p.src||"—"}</td>
+      <td style="text-align:center">${flag}</td>
+    </tr>`;
+  }).join("");
+  el.innerHTML=t||`<tr><td colspan="9" style="text-align:center;color:var(--muted)">No SH→MH converts found</td></tr>`;
+}
+
+// ===== REFRESH =====
+function refreshAll(){renderSC();renderTaxGrid();renderTaxGridInst();renderPtTable();renderL1Bars();renderSrcBar();renderL1Gender();renderSHMHTable();updateKPIs();}
+refreshAll();
+</script>
+<!-- ===== SYNC MODAL ===== -->
+<div class="moverlay" id="syncModal">
+  <div class="modal" style="max-width:580px">
+    <div class="mhead">
+      <div>
+        <div class="mtitle">🔄 Connect Google Sheets</div>
+        <div class="msub">Apps Script Web App · No public sharing required · Data stays in your Google account</div>
+      </div>
+      <button class="mclose" onclick="closeSyncModal()">✕</button>
+    </div>
+
+    <!-- STEP INDICATOR -->
+    <div style="display:flex;gap:0;margin-bottom:18px">
+      <div id="stp1" style="flex:1;padding:8px 12px;background:var(--blue);color:#fff;border-radius:7px 0 0 7px;font-size:.72rem;font-weight:700;text-align:center">1 · Deploy Script</div>
+      <div id="stp2" style="flex:1;padding:8px 12px;background:var(--border);color:var(--muted);font-size:.72rem;font-weight:700;text-align:center">2 · Paste URL</div>
+      <div id="stp3" style="flex:1;padding:8px 12px;background:var(--border);color:var(--muted);border-radius:0 7px 7px 0;font-size:.72rem;font-weight:700;text-align:center">3 · Sync</div>
+    </div>
+
+    <!-- STEP 1 -->
+    <div id="step1panel">
+      <div class="slbl">Step 1 — Deploy Apps Script in your spreadsheet</div>
+      <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;font-size:.74rem;color:var(--text);line-height:1.8">
+        <strong>1.</strong> Open your Google Sheet<br>
+        <strong>2.</strong> Click <strong>Extensions → Apps Script</strong><br>
+        <strong>3.</strong> Delete everything in the editor and paste the script below<br>
+        <strong>4.</strong> Click <strong>Deploy → New deployment</strong><br>
+        <strong>5.</strong> Type: <strong>Web app</strong> · Execute as: <strong>Me</strong> · Who has access: <strong>Anyone</strong><br>
+        <strong>6.</strong> Click <strong>Deploy</strong> → copy the Web App URL → come to Step 2
+      </div>
+
+      <div style="position:relative;margin-bottom:12px">
+        <div style="background:#1e1e2e;border-radius:8px;padding:14px;overflow-x:auto">
+          <pre id="scriptCode" style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:#cdd6f4;line-height:1.6;margin:0;white-space:pre">function doGet(e) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const out = { sc: null, patients: null, meta: {} };
+
+  // SC calls category mix tab
+  const scSheet = ss.getSheetByName("SC calls category mix");
+  if (scSheet) {
+    out.sc = scSheet
+      .getRange(1, 1, scSheet.getLastRow(), scSheet.getLastColumn())
+      .getValues();
+  }
+
+  // All Patients Data tab
+  const ptSheet = ss.getSheetByName("All Patients Data");
+  if (ptSheet) {
+    out.patients = ptSheet
+      .getRange(1, 1, ptSheet.getLastRow(), ptSheet.getLastColumn())
+      .getValues();
+  }
+
+  out.meta = {
+    synced: new Date().toISOString(),
+    spreadsheetName: ss.getName()
+  };
+
+  return ContentService
+    .createTextOutput(JSON.stringify(out))
+    .setMimeType(ContentService.MimeType.JSON);
+}</pre>
+        </div>
+        <button onclick="copyScript()" style="position:absolute;top:8px;right:8px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#cdd6f4;padding:4px 10px;border-radius:5px;font-size:.66rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif" id="copyScriptBtn">Copy</button>
+      </div>
+      <button class="bfull b-blue" onclick="goStep(2)">I've deployed — go to Step 2 →</button>
+    </div>
+
+    <!-- STEP 2 -->
+    <div id="step2panel" style="display:none">
+      <div class="slbl">Step 2 — Paste your Web App URL</div>
+      <div class="alert a-blue" style="margin-bottom:12px">
+        The URL looks like: <code style="font-family:'JetBrains Mono',monospace;font-size:.67rem">https://script.google.com/macros/s/AKfy.../exec</code>
+      </div>
+      <div class="fg">
+        <label class="fl">Apps Script Web App URL</label>
+        <input class="fi" id="sync-url" placeholder="https://script.google.com/macros/s/.../exec" style="font-family:'JetBrains Mono',monospace;font-size:.72rem"/>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:4px">
+        <button onclick="goStep(1)" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid var(--border2);background:none;color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;font-size:.76rem;font-weight:600;cursor:pointer">← Back</button>
+        <button onclick="testAndSave()" class="bfull b-blue" style="flex:2;margin-top:0" id="testBtn">Test Connection & Save →</button>
+      </div>
+      <div id="test-status" style="display:none;margin-top:10px" class="alert a-blue">Testing...</div>
+      <div id="test-error"  style="display:none;margin-top:10px" class="alert a-red"></div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div id="step3panel" style="display:none">
+      <div class="slbl">Step 3 — Sync</div>
+      <div id="conn-info" class="alert a-blue" style="margin-bottom:12px"></div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+        <div style="background:var(--gl);border:1.5px solid var(--gm);border-radius:8px;padding:12px;text-align:center">
+          <div style="font-size:1.4rem;margin-bottom:4px">📊</div>
+          <div style="font-size:.72rem;font-weight:700;color:var(--green)">SC Calls Tab</div>
+          <div style="font-size:.67rem;color:var(--muted);margin-top:2px">Week totals · SH · STI · NE</div>
+        </div>
+        <div style="background:var(--gl);border:1.5px solid var(--gm);border-radius:8px;padding:12px;text-align:center">
+          <div style="font-size:1.4rem;margin-bottom:4px">👥</div>
+          <div style="font-size:.72rem;font-weight:700;color:var(--green)">Patients Tab</div>
+          <div style="font-size:.67rem;color:var(--muted);margin-top:2px">Diagnosis · L1/L2 · Meds · Flags</div>
+        </div>
+      </div>
+
+      <div id="sync-status2" style="display:none" class="alert a-blue"></div>
+      <div id="sync-error2" style="display:none" class="alert a-red"></div>
+      <div id="sync-ok2"    style="display:none;background:var(--gl);border:1.5px solid var(--gm);color:var(--green);border-radius:8px;padding:9px 12px;font-size:.73rem;margin-bottom:10px"></div>
+
+      <div id="last-sync" style="font-size:.68rem;color:var(--muted);text-align:center;margin-bottom:10px"></div>
+
+      <button class="bfull b-blue" onclick="runSync()" id="sync-btn">🔄 Sync Now</button>
+      <button onclick="goStep(2)" style="width:100%;margin-top:7px;padding:7px;border-radius:7px;border:1.5px solid var(--border2);background:none;color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer">Change URL</button>
+
+      <div class="fn">Dashboard auto-syncs on load if a URL is saved. Each sync replaces all data with the latest from your sheet. Your URL is saved in browser localStorage.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== SYNC STATE =====
+let savedUrl = localStorage.getItem("appsScriptUrl") || "";
+
+function goStep(n){
+  [1,2,3].forEach(i=>{
+    document.getElementById(`step${i}panel`).style.display = i===n?"block":"none";
+    const s=document.getElementById(`stp${i}`);
+    s.style.background = i===n?"var(--blue)":"var(--border)";
+    s.style.color = i===n?"#fff":"var(--muted)";
+  });
+  if(n===3){
+    if(savedUrl) document.getElementById("conn-info").textContent=`✓ Connected to: ${savedUrl.slice(0,60)}...`;
+    const ls=localStorage.getItem("lastSync");
+    if(ls) document.getElementById("last-sync").textContent=`Last synced: ${new Date(ls).toLocaleString()}`;
+  }
+}
+
+function openSyncModal(){
+  ["test-status","test-error","sync-status2","sync-error2","sync-ok2"].forEach(id=>{document.getElementById(id).style.display="none";});
+  if(savedUrl){
+    document.getElementById("sync-url").value=savedUrl;
+    goStep(3);
+  } else {
+    goStep(1);
+  }
+  document.getElementById("syncModal").classList.add("open");
+}
+function closeSyncModal(){document.getElementById("syncModal").classList.remove("open");}
+document.getElementById("syncModal").addEventListener("click",e=>{if(e.target===document.getElementById("syncModal"))closeSyncModal();});
+
+function copyScript(){
+  const code=document.getElementById("scriptCode").textContent;
+  navigator.clipboard.writeText(code).then(()=>{
+    const btn=document.getElementById("copyScriptBtn");
+    btn.textContent="Copied!"; btn.style.background="rgba(5,150,105,0.3)";
+    setTimeout(()=>{btn.textContent="Copy";btn.style.background="rgba(255,255,255,0.1)";},2000);
+  });
+}
+
+async function testAndSave(){
+  const url=document.getElementById("sync-url").value.trim();
+  if(!url){alert("Please paste your Apps Script URL.");return;}
+  const btn=document.getElementById("testBtn");
+  const st=document.getElementById("test-status");
+  const er=document.getElementById("test-error");
+  btn.disabled=true; btn.textContent="Testing...";
+  st.style.display="block"; st.textContent="Connecting to your Apps Script...";
+  er.style.display="none";
+  try{
+    const resp=await fetch(url);
+    if(!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data=await resp.json();
+    if(!data.sc && !data.patients) throw new Error("Response received but no sc or patients data found. Check your sheet tab names.");
+    savedUrl=url;
+    localStorage.setItem("appsScriptUrl",url);
+    st.style.display="none";
+    goStep(3);
+    // Auto-run sync after successful test
+    await runSync();
+  }catch(e){
+    st.style.display="none";
+    er.style.display="block";
+    er.innerHTML=`<strong>Connection failed:</strong> ${e.message}<br><br>
+      <strong>Checklist:</strong><br>
+      · Did you set "Who has access" to <strong>Anyone</strong>?<br>
+      · Did you click <strong>Deploy</strong> (not just Save)?<br>
+      · Copy the URL from the deployment screen, not the script editor URL`;
+    btn.disabled=false; btn.textContent="Test Connection & Save →";
+  }
+}
+
+// ===== MAIN SYNC =====
+async function runSync(){
+  const url=savedUrl||document.getElementById("sync-url")?.value?.trim();
+  if(!url) return;
+  const btn=document.getElementById("sync-btn");
+  const st=document.getElementById("sync-status2");
+  const er=document.getElementById("sync-error2");
+  const ok=document.getElementById("sync-ok2");
+  if(btn) btn.disabled=true;
+  if(st){st.style.display="block"; st.textContent="Fetching from Google Sheets via Apps Script...";}
+  if(er) er.style.display="none";
+  if(ok) ok.style.display="none";
+  try{
+    const resp=await fetch(url);
+    if(!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data=await resp.json();
+    const results=[];
+    if(data.sc){
+      const wksUpdated=parseSCGrid(data.sc);
+      results.push(`📊 SC Calls: ${wksUpdated} weeks updated`);
+    }
+    if(data.patients){
+      const n=parsePatientsGrid(data.patients);
+      results.push(`👥 Patients: ${n} records loaded`);
+    }
+    refreshAll();
+    const now=new Date().toISOString();
+    localStorage.setItem("lastSync",now);
+    if(st) st.style.display="none";
+    if(ok){
+      ok.style.display="block";
+      ok.textContent=`✓ Synced ${new Date().toLocaleTimeString()} · ${results.join(" · ")} · All charts updated`;
+    }
+    const ls=document.getElementById("last-sync");
+    if(ls) ls.textContent=`Last synced: ${new Date(now).toLocaleString()}`;
+  }catch(e){
+    if(st) st.style.display="none";
+    if(er){er.style.display="block"; er.textContent=`Sync failed: ${e.message}`;}
+  }
+  if(btn){btn.disabled=false; btn.textContent="🔄 Sync Now";}
+}
+
+// ===== PARSE SC GRID (2D array from Apps Script) =====
+function parseSCGrid(grid){
+  // Row 0: week-start dates (col 1+, newest first)
+  // Row 1: week-end dates
+  // Identify column → week key mapping from date headers
+  const colToWk={};
+  for(let c=1;c<grid[0].length;c++){
+    const sd=grid[0][c]; const ed=grid[1][c];
+    if(!sd||!ed) continue;
+    const sdDate=sd instanceof Date ? sd : new Date(sd);
+    const edDate=ed instanceof Date ? ed : new Date(ed);
+    if(isNaN(sdDate)||isNaN(edDate)) continue;
+    const mid=new Date((sdDate.getTime()+edDate.getTime())/2);
+    const wk=getWk(mid.toISOString().slice(0,10));
+    if(wk) colToWk[c]=wk;
+  }
+  // Build label→row map
+  const rowMap={};
+  grid.forEach(row=>{ const lbl=(row[0]||"").toString().trim().toLowerCase(); if(lbl) rowMap[lbl]=row; });
+  const findRow=(needle)=>Object.entries(rowMap).find(([k])=>k.includes(needle.toLowerCase()));
+  const getVal=(needle,col)=>{
+    const r=findRow(needle); if(!r) return null;
+    const v=parseFloat(r[1][col]);
+    return isNaN(v)?null:v;
+  };
+  let updated=0;
+  Object.entries(colToWk).forEach(([col,wk])=>{
+    if(!weekBase[wk]) return;
+    const total=getVal("total screening",col);
+    const ne=getVal("not eligible",col);
+    const sh=getVal("(rx) sh cases",col)||getVal("rx) sh cases",col);
+    const sti=getVal("sti cases",col)||getVal("(rx) sti",col);
+    if(total!==null) weekBase[wk].total=Math.round(total);
+    if(ne!==null) weekBase[wk].ne = ne>0&&ne<1 ? Math.round(ne*weekBase[wk].total) : Math.round(ne);
+    if(sh!==null) weekBase[wk].sh=Math.round(sh);
+    if(sti!==null) weekBase[wk].sti=Math.round(sti);
+    updated++;
+  });
+  return updated;
+}
+
+// ===== PARSE PATIENTS GRID (2D array from Apps Script) =====
+function parsePatientsGrid(grid){
+  if(grid.length<2) return 0;
+  const headers=grid[0].map(h=>h.toString().trim().toLowerCase().replace(/\s+/g,"_").replace(/[^a-z_]/g,""));
+  const get=(row,keys)=>{
+    for(const k of keys){ const i=headers.indexOf(k); if(i>=0&&row[i]!==undefined&&row[i]!=="") return row[i].toString().trim(); }
+    return "";
+  };
+  const newPts=[];
+  for(let i=1;i<grid.length;i++){
+    const row=grid[i];
+    if(row.every(c=>!c||c==="")) continue;
+    // Parse date — Apps Script returns Date objects or strings
+    let dateStr="";
+    const rawDate=row[headers.indexOf("appointment_date")]||row[headers.indexOf("date")]||"";
+    if(rawDate instanceof Date) dateStr=rawDate.toISOString().slice(0,10);
+    else if(rawDate) dateStr=rawDate.toString().slice(0,10);
+    const primary=(get(row,["primary_diagnosis","primary_category","primary"])||"").toUpperCase();
+    if(!["MH","SH","STI"].includes(primary)) continue;
+    newPts.push({
+      date: dateStr,
+      src:  get(row,["utm_source","referral_source","source"]),
+      gender: get(row,["gender"]),
+      age:  parseInt(get(row,["age"]))||null,
+      primary,
+      secondary: get(row,["secondary_diagnosis","secondary_category","secondary"])||"-",
+      l1:   get(row,["l1_category","l1"]),
+      l2:   get(row,["l2_subtype","l2"]),
+      diag: get(row,["diagnosis","detailed_diagnosis","diag"]),
+      flags:get(row,["comorbidity_flags","comorbidities","flags"]),
+      meds: get(row,["medicines","medications","meds"]),
+      therapy: get(row,["therapy","therapies"]),
+    });
+  }
+  if(newPts.length>0) patients=newPts;
+  return newPts.length;
+}
+
+// ===== AUTO-SYNC ON LOAD =====
+window.addEventListener("load",()=>{
+  if(savedUrl){
+    // Silent background sync — update data without opening modal
+    runSync().catch(()=>{});
+  }
+});
+</script>
+</body>
+</html>

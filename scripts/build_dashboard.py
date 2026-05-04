@@ -23,7 +23,7 @@ from googleapiclient.http import MediaIoBaseDownload
 # === CONFIG ===
 SHEET_ID = "1C1ZmeEmBjfXS9E81GqZFNLatzh3py4eNN0imkF-_2Zs"  # Mental Health Category Launch
 RX_DATA_GID = 0  # RX_Data tab gid — UPDATE if different
-DASHBOARD_PATH = "mh_dashboard.html"
+DASHBOARD_PATH = "index.html"
 ALLOWED_DOCTORS = {"Dr. Sandhiya", "Dr. Shraddha", "Dr. Adithya", "Dr. Basava Chetan"}
 DATE_CUTOFF = "2026-04-13"  # CSV-derived data starts here; pre-cutoff is manual
 

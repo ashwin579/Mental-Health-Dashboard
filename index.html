@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MH Intelligence Platform · v4</title>
+<title>MH Intelligence Platform · v6</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -36,7 +36,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .sec-head{margin-bottom:13px;}
 .card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:13px;box-shadow:0 1px 6px rgba(37,99,235,.05);margin-bottom:11px;}
 .ctitle{font-size:.63rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:9px;padding-bottom:7px;border-bottom:1.5px solid var(--border);}
-.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-bottom:11px;}
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:9px;margin-bottom:11px;}
 .kpi{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:11px 13px;box-shadow:0 1px 6px rgba(37,99,235,.05);}
 .kpi-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
 .kpi-ic{width:25px;height:25px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.82rem;}
@@ -126,16 +126,19 @@ tr:hover td{background:var(--bg);}
 <div class="topbar">
   <div class="logo">
     MH Intelligence <span class="logo-sub">· Multi-City Pilot</span>
-    <span class="logo-badge">v4</span>
+    <span class="logo-badge">v6</span>
   </div>
   <div class="nav-tabs">
     <button class="ntab active" onclick="switchTab(0)"><span class="tnum">1</span>Category Mix</button>
-    <button class="ntab" onclick="switchTab(1)"><span class="tnum">2</span>Demand</button>
-    <button class="ntab" onclick="switchTab(2)"><span class="tnum">3</span>Diagnosis Analysis</button>
-    <button class="ntab" onclick="switchTab(3)"><span class="tnum">4</span>DSS & Doctors</button>
-    <button class="ntab" onclick="switchTab(4)"><span class="tnum">5</span>Fulfilment</button>
+    <button class="ntab" onclick="switchTab(1)"><span class="tnum">2</span>Diagnosis Analysis</button>
+    <button class="ntab" onclick="switchTab(2)"><span class="tnum">3</span>DSS & Doctors</button>
+    <button class="ntab" onclick="switchTab(3)"><span class="tnum">4</span>Fulfilment</button>
+    <button class="ntab" onclick="switchTab(4)"><span class="tnum">5</span>Demand (WIP)</button>
   </div>
-  <div style="font-size:.66rem;color:var(--muted)">Mar 14 – Apr 12 2026 · Coimbatore</div>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
+    <div style="font-size:.66rem;color:var(--muted)">Mar 14 – May 3 2026 · Multi-City</div>
+    <div style="font-size:.6rem;color:var(--green);font-weight:600">↻ Last updated: <!-- LAST_UPDATED_START -->Manual build<!-- LAST_UPDATED_END --></div>
+  </div>
 </div>
 
 <!-- ==================== S1: CATEGORY MIX ==================== -->
@@ -149,36 +152,47 @@ tr:hover td{background:var(--bg);}
     <div class="date-ctrl">
       <input type="date" id="dateFrom" value="2026-03-09">
       <span style="font-size:.68rem;color:var(--muted)">to</span>
-      <input type="date" id="dateTo" value="2026-04-12">
+      <input type="date" id="dateTo">
     </div>
     <button class="btn-sm btn-blue" onclick="renderSection1()">Apply</button>
     <button class="btn-sm btn-gray" onclick="setRange('2026-03-09','2026-03-31');renderSection1()">Mar only</button>
-    <button class="btn-sm btn-gray" onclick="setRange('2026-04-01','2026-04-12');renderSection1()">Apr only</button>
-    <button class="btn-sm btn-gray" onclick="setRange('2026-03-09','2026-04-12');renderSection1()">Full period</button>
+    <button class="btn-sm btn-gray" onclick="setRange('2026-04-01','2026-04-30');renderSection1()">Apr only</button>
+    <button class="btn-sm btn-gray" onclick="setRange('2026-05-01',YESTERDAY);renderSection1()">May only</button>
+    <button class="btn-sm btn-gray" onclick="setRange('2026-03-09',YESTERDAY);renderSection1()">Full period</button>
     <span class="filter-lbl" style="margin-left:6px">City:</span>
     <select class="filter-sel" id="filterCity" onchange="renderSection1()">
-      <option value="all">All Cities</option>
+            <option value="all">All Cities</option>
       <option value="Coimbatore">Coimbatore</option>
+      <option value="Chennai">Chennai</option>
+      <option value="Bengaluru">Bengaluru</option>
+      <option value="Mumbai">Mumbai</option>
+      <option value="Chennai">Chennai</option>
+      <option value="Bangalore">Bangalore</option>
+      <option value="Mumbai">Mumbai</option>
     </select>
     <span class="filter-lbl">Doctor:</span>
     <select class="filter-sel" id="filterDoctor" onchange="renderSection1()">
       <option value="all">All Doctors</option>
-      <option value="Dr. Sandhiya">Dr. Sandhiya</option>
+      <option value="Dr. Sandhiya">Dr. Sandhiya (Coimbatore)</option>
+      <option value="Dr. Shraddha">Dr. Shraddha (Bangalore)</option>
+      <option value="Dr. Adithya">Dr. Adithya (Bangalore)</option>
+      <option value="Dr. Basava Chetan">Dr. Basava Chetan (Bangalore)</option>
     </select>
   </div>
   <div class="kpi-row">
     <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Total SC Calls</div><div class="kpi-ic" style="background:var(--bl)">📞</div></div><div class="kpi-val" id="k-tot">150</div><div class="kpi-s">In selected period</div></div>
     <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">MH Only</div><div class="kpi-ic" style="background:var(--bl)">🧠</div></div><div class="kpi-val" style="color:var(--blue)" id="k-mh">24</div><div class="kpi-s">Primary = MH</div></div>
     <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">SH → MH</div><div class="kpi-ic" style="background:var(--pl)">🔄</div></div><div class="kpi-val" style="color:var(--purple)" id="k-sh">11</div><div class="kpi-s">SH entry, MH found</div></div>
+    <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">STI → MH overlap</div><div class="kpi-ic" style="background:var(--ol)">⚠️</div></div><div class="kpi-val" style="color:var(--orange)" id="k-sti-mh">0</div><div class="kpi-s">STI/GUI visit, MH co-flagged</div></div>
     <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Pure SH/STI</div><div class="kpi-ic" style="background:var(--gl)">🔬</div></div><div class="kpi-val" style="color:var(--green)" id="k-sti">115</div><div class="kpi-s">No MH identified</div></div>
-    <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Eff. MH%</div><div class="kpi-ic" style="background:var(--ol)">📊</div></div><div class="kpi-val" style="color:var(--orange)" id="k-rate">23%</div><div class="kpi-s">(MH+SH→MH)/Eligible</div></div>
+    <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Eff. MH%</div><div class="kpi-ic" style="background:var(--ol)">📊</div></div><div class="kpi-val" style="color:var(--orange)" id="k-rate">23%</div><div class="kpi-s">(MH+SH→MH+STI→MH)/Eligible</div></div>
   </div>
 
   <div class="card">
     <div class="ctitle">SC Calls Category Mix · Month-on-Month then Week-on-Week</div>
     <div style="overflow-x:auto"><table><thead><tr id="scHead"></tr></thead><tbody id="scBody"></tbody></table></div>
     <div style="margin-top:8px;font-size:.61rem;color:var(--muted)">
-      ✱ <strong>MH + SH→MH + Pure SH/STI = Total Eligible</strong> · Month columns show complete month totals from offline tracker · Week totals are within-month sub-splits · W3 straddles March/April (Mar 30–Apr 5) and is counted in April total per tracker · ✓ sum-check row confirms alignment
+      ✱ <strong>MH + SH→MH + STI→MH + Pure SH + Pure STI = Total Eligible</strong> · Month columns show complete month totals from offline tracker · Week totals are within-month sub-splits · W3 straddles March/April (Mar 30–Apr 5) and is counted in April total per tracker · ✓ sum-check row confirms alignment
     </div>
   </div>
 
@@ -192,7 +206,447 @@ tr:hover td{background:var(--bg);}
 </div>
 
 <!-- ==================== S2: DEMAND ==================== -->
+
 <div class="sec" id="sec1">
+  <div class="sec-head">
+    <div class="sec-title">Diagnosis Level Analysis</div>
+    <div class="sec-sub">L1 diagnosis trends · Trend by week + month · Demographics breakdown · <strong style="color:var(--orange)">Note:</strong> 2 NE patients (4ea7e8a6, 61e926b2) are flagged Not Eligible in RX_Data but counted in MH-identified totals per business rule</div>
+  </div>
+  <div class="filter-bar">
+    <span class="filter-lbl">&#128197;</span>
+    <div class="date-ctrl">
+      <input type="date" id="dxFrom" value="2026-03-09">
+      <span style="font-size:.68rem;color:var(--muted)">to</span>
+      <input type="date" id="dxTo">
+    </div>
+    <button class="btn-sm btn-blue" onclick="renderSection3()">Apply</button>
+    <button class="btn-sm btn-gray" onclick="setDxRange('2026-03-09','2026-03-31')">Mar only</button>
+    <button class="btn-sm btn-gray" onclick="setDxRange('2026-04-01','2026-04-30')">Apr only</button>
+    <button class="btn-sm btn-gray" onclick="setDxRange('2026-05-01','2026-05-31')">May only</button>
+    <button class="btn-sm btn-gray" onclick="setDxRange('2026-03-09','2026-05-03')">Full period</button>
+    <select class="filter-sel" id="dxCity" onchange="renderSection3()">
+            <option value="all">All Cities</option>
+      <option value="Coimbatore">Coimbatore</option>
+      <option value="Chennai">Chennai</option>
+      <option value="Bengaluru">Bengaluru</option>
+      <option value="Mumbai">Mumbai</option>
+      <option value="Chennai">Chennai</option>
+      <option value="Bangalore">Bangalore</option>
+      <option value="Mumbai">Mumbai</option>
+      <option value="Chennai">Chennai</option>
+      <option value="Bangalore">Bangalore</option>
+      <option value="Mumbai">Mumbai</option>
+    </select>
+    <select class="filter-sel" id="dxDoc" onchange="renderSection3()">
+      <option value="all">All Doctors</option>
+      <option value="Dr. Sandhiya">Dr. Sandhiya (Coimbatore)</option>
+      <option value="Dr. Shraddha">Dr. Shraddha (Bangalore)</option>
+      <option value="Dr. Adithya">Dr. Adithya (Bangalore)</option>
+      <option value="Dr. Basava Chetan">Dr. Basava Chetan (Bangalore)</option>
+    </select>
+  </div>
+  <div class="itabs">
+    <div class="itab active" data-grp="dx" onclick="switchItab('dx',0)">Trend Analysis</div>
+    <div class="itab" data-grp="dx" onclick="switchItab('dx',1)">Diagnosis × Demographics</div>
+  </div>
+
+  <!-- Trend Analysis: MoM cols → WoW cols → Cumulative, 4 stacked tables -->
+  <div class="tc active" data-grp="dx" id="dx0">
+    <div class="card">
+      <div class="ctitle">L1 Diagnosis · Month-on-Month → Week-on-Week → Cumulative</div>
+      <div style="overflow-x:auto"><table><thead><tr id="dxTrendHeadL1"></tr></thead><tbody id="dxTrendBodyL1"></tbody></table></div>
+    </div>
+    <div class="card">
+      <div class="ctitle">L1 × L2 Diagnosis · Month-on-Month → Week-on-Week → Cumulative</div>
+      <div style="overflow-x:auto"><table><thead><tr id="dxTrendHeadL2"></tr></thead><tbody id="dxTrendBodyL2"></tbody></table></div>
+    </div>
+    <div class="card">
+      <div class="ctitle">Age Group · Month-on-Month → Week-on-Week → Cumulative</div>
+      <div style="overflow-x:auto"><table><thead><tr id="dxTrendHeadAge"></tr></thead><tbody id="dxTrendBodyAge"></tbody></table></div>
+    </div>
+    <div class="card">
+      <div class="ctitle">Gender · Month-on-Month → Week-on-Week → Cumulative</div>
+      <div style="overflow-x:auto"><table><thead><tr id="dxTrendHeadGen"></tr></thead><tbody id="dxTrendBodyGen"></tbody></table></div>
+    </div>
+  </div>
+
+  <!-- Diagnosis × Demographics tab -->
+  <div class="tc" data-grp="dx" id="dx1">
+    <div class="card"><div class="ctitle">L1 × Age · with % contribution per age bucket</div><div style="overflow-x:auto"><table><thead><tr>
+      <th>L1</th>
+      <th style="text-align:center">18–24<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
+      <th style="text-align:center">25–30<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
+      <th style="text-align:center">31–36<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
+      <th style="text-align:center">37–42<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
+      <th style="text-align:center">43–54<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
+      <th style="text-align:center">55+<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
+      <th style="text-align:center;background:var(--bl);color:var(--blue)">Total</th>
+      <th style="text-align:center">Mean</th>
+      <th style="text-align:center">Median</th>
+    </tr></thead><tbody id="dxABody"></tbody></table></div></div>
+    <div class="card"><div class="ctitle">L2 × Age · with % contribution per age bucket</div><div style="overflow-x:auto"><table><thead><tr>
+      <th>L1</th><th>L2</th>
+      <th style="text-align:center">18–24<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
+      <th style="text-align:center">25–30<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
+      <th style="text-align:center">31–36<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
+      <th style="text-align:center">37–42<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
+      <th style="text-align:center">43–54<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
+      <th style="text-align:center">55+<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
+      <th style="text-align:center;background:var(--bl);color:var(--blue)">Total</th>
+      <th style="text-align:center">Median</th>
+    </tr></thead><tbody id="dxL2ABody"></tbody></table></div></div>
+    <div class="card"><div class="ctitle">L1 × Gender · M:F Ratio with % contribution</div><div style="overflow-x:auto"><table><thead><tr>
+      <th>L1</th>
+      <th style="text-align:center">M<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
+      <th style="text-align:center">F<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
+      <th style="text-align:center;background:var(--bl);color:var(--blue)">Total</th>
+      <th style="text-align:center">M:F</th>
+    </tr></thead><tbody id="dxTGBody"></tbody></table></div></div>
+    <div class="card"><div class="ctitle">Age Group × Diagnosis · with % of age group</div><div style="overflow-x:auto"><table><thead><tr>
+      <th>Age</th>
+      <th style="text-align:center">Depression<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
+      <th style="text-align:center">Anxiety<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
+      <th style="text-align:center">Other<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
+      <th style="text-align:center;background:var(--bl);color:var(--blue)">Total</th>
+    </tr></thead><tbody id="dxTABody"></tbody></table></div></div>
+
+    <div class="card"><div class="ctitle">Age Group × Diagnosis × Gender · M / F split per diagnosis per age band</div><div style="overflow-x:auto"><table><thead><tr>
+      <th>Age</th>
+      <th style="text-align:center;border-left:2px solid var(--bm)" colspan="2">Depression</th>
+      <th style="text-align:center;border-left:2px solid var(--om)" colspan="2">Anxiety</th>
+      <th style="text-align:center;border-left:2px solid var(--border2)" colspan="2">Other</th>
+      <th style="text-align:center;background:var(--bl);color:var(--blue);border-left:2px solid var(--blue)" colspan="2">Total</th>
+    </tr><tr>
+      <th></th>
+      <th style="text-align:center;font-size:.62rem;border-left:2px solid var(--bm)">M</th><th style="text-align:center;font-size:.62rem">F</th>
+      <th style="text-align:center;font-size:.62rem;border-left:2px solid var(--om)">M</th><th style="text-align:center;font-size:.62rem">F</th>
+      <th style="text-align:center;font-size:.62rem;border-left:2px solid var(--border2)">M</th><th style="text-align:center;font-size:.62rem">F</th>
+      <th style="text-align:center;font-size:.62rem;background:var(--bl);color:var(--blue);border-left:2px solid var(--blue)">M</th>
+      <th style="text-align:center;font-size:.62rem;background:var(--bl);color:var(--blue)">F</th>
+    </tr></thead><tbody id="dxTAGBody"></tbody></table></div></div>
+  </div>
+</div>
+
+<!-- ==================== S4: DSS PROTOCOL ==================== -->
+<div class="sec" id="sec2">
+  <div class="sec-head">
+    <div class="sec-title">DSS Protocol · Prescribing Guidelines & Doctor Analysis</div>
+    <div class="sec-sub">Taxonomy · Allo Health Ideal DSS · Doctor-level patterns · Deviation tracking</div>
+  </div>
+
+  <div class="itabs">
+    <div class="itab active" data-grp="dss" onclick="switchItab('dss',0)">Taxonomy</div>
+    <div class="itab" data-grp="dss" onclick="switchItab('dss',1)">DSS · Depression</div>
+    <div class="itab" data-grp="dss" onclick="switchItab('dss',2)">DSS · Anxiety</div>
+    <div class="itab" data-grp="dss" onclick="switchItab('dss',3)">DSS · Other Diagnoses</div>
+    <div class="itab" data-grp="dss" onclick="switchItab('dss',4)">Doctor Analysis</div>
+    <div class="itab" data-grp="dss" onclick="switchItab('dss',5);renderDiscussionPointers()">💬 Discussion Pointers</div>
+  </div>
+
+  <!-- Taxonomy -->
+  <div class="tc active" data-grp="dss" id="dss0">
+    <div style="background:var(--pl);border:1.5px solid var(--pm);border-radius:10px;padding:12px 16px;margin-bottom:14px">
+      <div style="font-size:.78rem;font-weight:800;color:var(--purple);margin-bottom:6px">📋 What is the Allo Health DSS?</div>
+      <div style="font-size:.72rem;color:var(--text);line-height:1.7">
+        The <strong>Decision Support System (DSS)</strong> is Allo's standardised clinical protocol — a step-by-step prescribing guide for each diagnosis. It specifies the first-line drug, bridging agent, adjuncts, assessments, and escalation triggers for each L1→L2 combination.<br>
+        <span style="color:var(--purple);font-weight:600">Allo Health DSS</span> is evidence-based (NICE CG90/CG113, WHO mhGAP, WFSBP guidelines) and <strong>pending Dr. Sandip's formal approval</strong> before deployment to doctors.
+        <span style="color:var(--muted);font-weight:600">Doctor's DSS</span> reflects actual prescribing patterns from the pilot data.
+        Deviations from the Allo Health DSS drive doctor coaching or DSS updates — both are valid outcomes.
+      </div>
+    </div>
+    <div class="alert a-blue">L1→L2 taxonomy · Each patient belongs to exactly one L1. ICD-11 codes from screening assessments added where available.</div>
+    <div id="taxGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px"></div>
+  </div>
+
+  <!-- DSS: Depression -->
+  <div class="tc" data-grp="dss" id="dss1">
+    <div class="itabs" style="margin-bottom:12px">
+      <div class="itab active" data-grp="dss-dep" onclick="switchSubTab('dss-dep',0)">🏥 Allo Health DSS</div>
+      <div class="itab" data-grp="dss-dep" onclick="switchSubTab('dss-dep',1)">👩‍⚕️ Doctor's DSS</div>
+    </div>
+    <div class="tc active" data-grp="dss-dep" id="dss-dep-0">
+      <div class="alert a-green">✓ <strong>Meds DSS finalised</strong> · Source: Allo Health Mental Health Category Launch sheet. Tier 1 SSRI → Tier 2 SNRI/alt + 4 adjunct branches (sexual concerns, mild anxiety, moderate anxiety, sleep). Severity bands: Mild · Moderate–Severe · Severe + Psychosis (with Risperidone augmentation). Tests, therapy, follow-up retained from prior protocol pending Dr. Sandip's review.</div>
+      <div id="dssDepAlloContent"></div>
+    </div>
+    <div class="tc" data-grp="dss-dep" id="dss-dep-1">
+      <div class="alert a-blue">Comparison: Allo Health DSS expected protocol vs % of cases where doctor followed each element. Filter by doctor.</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+        <span style="font-size:.7rem;font-weight:700;color:var(--muted)">Doctor:</span>
+        <div id="drDepDoctorPills" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+      </div>
+      <div id="dssDepDrContent"></div>
+    </div>
+  </div>
+
+  <!-- DSS: Anxiety -->
+  <div class="tc" data-grp="dss" id="dss2">
+    <div class="itabs" style="margin-bottom:12px">
+      <div class="itab active" data-grp="dss-anx" onclick="switchSubTab('dss-anx',0)">🏥 Allo Health DSS</div>
+      <div class="itab" data-grp="dss-anx" onclick="switchSubTab('dss-anx',1)">👩‍⚕️ Doctor's DSS</div>
+    </div>
+    <div class="tc active" data-grp="dss-anx" id="dss-anx-0">
+      <div class="alert a-amber">⚠ Pending Dr. Sandip's formal approval. Based on NICE CG113, WHO mhGAP, WFSBP.</div>
+      <div id="dssAnxAlloContent"></div>
+    </div>
+    <div class="tc" data-grp="dss-anx" id="dss-anx-1">
+      <div class="alert a-blue">Comparison: Allo Health DSS expected protocol vs % of cases where doctor followed each element. Filter by doctor.</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+        <span style="font-size:.7rem;font-weight:700;color:var(--muted)">Doctor:</span>
+        <div id="drAnxDoctorPills" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+      </div>
+      <div id="dssAnxDrContent"></div>
+    </div>
+  </div>
+
+  <!-- DSS: Other -->
+  <div class="tc" data-grp="dss" id="dss3">
+    <div class="itabs" style="margin-bottom:12px">
+      <div class="itab active" data-grp="dss-oth" onclick="switchSubTab('dss-oth',0)">🏥 Allo Health DSS</div>
+      <div class="itab" data-grp="dss-oth" onclick="switchSubTab('dss-oth',1)">👩‍⚕️ Doctor's DSS</div>
+    </div>
+    <div class="tc active" data-grp="dss-oth" id="dss-oth-0">
+      <div class="alert a-amber">⚠ Pending Dr. Sandip's formal approval. OCD / Addiction / ADHD / Dementia / Bipolar — NICE, WHO mhGAP, BNF.</div>
+      <div id="dssOtherAlloContent"></div>
+    </div>
+    <div class="tc" data-grp="dss-oth" id="dss-oth-1">
+      <div class="alert a-blue">Comparison: Allo Health DSS expected protocol vs % of cases where doctor followed each element. Filter by doctor.</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+        <span style="font-size:.7rem;font-weight:700;color:var(--muted)">Doctor:</span>
+        <div id="drOthDoctorPills" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+      </div>
+      <div id="dssOtherDrContent"></div>
+    </div>
+  </div>
+
+  <!-- Doctor Analysis — unified, 2 sub-tabs -->
+  <div class="tc" data-grp="dss" id="dss4">
+    <div class="alert a-amber"><strong>⚠ Single-doctor pilot.</strong> DSS adherence measured against Allo Health Ideal DSS. As more doctors join, inter-doctor variance surfaces automatically.</div>
+
+    <div class="kpi-row" style="grid-template-columns:repeat(5,1fr)">
+      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Doctors in Pilot</div><div class="kpi-ic" style="background:var(--bl)">👨‍⚕️</div></div><div class="kpi-val">1</div><div class="kpi-s">Scaling to 15</div></div>
+      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">MH Cases</div><div class="kpi-ic" style="background:var(--pl)">🧠</div></div><div class="kpi-val" style="color:var(--purple)">35</div><div class="kpi-s">All L1</div></div>
+      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Cases Reviewed</div><div class="kpi-ic" style="background:var(--gl)">✓</div></div><div class="kpi-val" style="color:var(--green)" id="casesReviewed">0</div><div class="kpi-s">Commented + closed</div></div>
+      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">High Deviations</div><div class="kpi-ic" style="background:var(--rl)">⚠</div></div><div class="kpi-val" style="color:var(--red)" id="highDevCount">—</div><div class="kpi-s">Need discussion</div></div>
+      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">DSS Adherence</div><div class="kpi-ic" style="background:var(--ol)">📊</div></div><div class="kpi-val" style="color:var(--orange)" id="dssAdh">—</div><div class="kpi-s">vs Ideal DSS</div></div>
+    </div>
+
+    <div class="itabs" style="margin-bottom:12px">
+      <div class="itab active" data-grp="da" onclick="switchSubTab('da',0)">Doctor × Diagnosis</div>
+      <div class="itab" data-grp="da" onclick="switchSubTab('da',1)">Diagnosis × Doctor</div>
+    </div>
+
+    <!-- Sub-tab 0: Doctor × Diagnosis (rows=doctors, cols=L1s, cells=adherence%) -->
+    <div class="tc active" data-grp="da" id="da-0">
+      <div class="card">
+        <div class="ctitle">Doctor × Diagnosis · DSS Adherence % <span style="font-size:.62rem;font-weight:400;color:var(--muted)">· Click ▶ to expand L2</span></div>
+        <div style="overflow-x:auto"><table id="daDocDxTable">
+          <thead><tr>
+            <th>Doctor</th>
+            <th style="text-align:center">Total</th>
+            <th style="text-align:center">Depression</th>
+            <th style="text-align:center">Anxiety</th>
+            <th style="text-align:center">OCD</th>
+            <th style="text-align:center">Addiction</th>
+            <th style="text-align:center">ADHD</th>
+            <th style="text-align:center">Neuro­cognitive</th>
+            <th style="text-align:center">Bipolar</th>
+            <th style="text-align:center;background:var(--bl);color:var(--blue)">Overall</th>
+          </tr></thead>
+          <tbody id="daDocDxBody"></tbody>
+        </table></div>
+      </div>
+      <!-- Per-doctor L2 drilldown (collapsed by default, one per doctor) -->
+      <div id="daDocDrilldown"></div>
+    </div>
+
+    <!-- Sub-tab 1: Diagnosis × Doctor (rows=L1 collapsed, expandable L2) -->
+    <div class="tc" data-grp="da" id="da-1">
+      <div class="card">
+        <div class="ctitle">Diagnosis × Doctor · DSS Adherence % <span style="font-size:.62rem;font-weight:400;color:var(--muted)">· Click L1 row to expand L2</span></div>
+        <div style="overflow-x:auto"><table id="daDxDocTable">
+          <thead><tr>
+            <th>L1 (click to expand)</th>
+            <th style="text-align:center">n</th>
+            <th style="text-align:center">Dr. Sandhiya</th>
+            <th style="text-align:center;background:var(--bl);color:var(--blue)">Avg</th>
+          </tr></thead>
+          <tbody id="daDxDocBody"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+  </div>
+  <!-- Discussion Pointers with Doctors -->
+  <div class="tc" data-grp="dss" id="dss5">
+    <div class="alert a-blue">High deviation cases + all discussion items — tagged with doctor, L1, L2, severity, deviation type. Comment, close and flag here. Agenda for doctor review calls.</div>
+    <div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+      <select id="dpDocFilter" onchange="renderDiscussionPointers()" style="font-size:.71rem;padding:3px 8px;border-radius:6px;border:1.5px solid var(--border);font-family:'Plus Jakarta Sans',sans-serif">
+              <option value="all">All Doctors</option>
+      <option value="Dr. Sandhiya">Dr. Sandhiya (Coimbatore)</option>
+      <option value="Dr. Adithya">Dr. Adithya (Bengaluru)</option>
+      <option value="Dr. Shraddha">Dr. Shraddha (Bengaluru)</option>
+      <option value="Dr. Basava Chetan">Dr. Basava Chetan (Bengaluru)</option>
+      </select>
+      <select id="dpL1Filter" onchange="renderDiscussionPointers()" style="font-size:.71rem;padding:3px 8px;border-radius:6px;border:1.5px solid var(--border);font-family:'Plus Jakarta Sans',sans-serif">
+        <option value="all">All Diagnoses</option>
+        <option value="Depression">Depression</option>
+        <option value="Anxiety Disorders">Anxiety Disorders</option>
+        <option value="OCD Spectrum">OCD Spectrum</option>
+        <option value="Addiction / Substance">Addiction</option>
+        <option value="Neurodevelopmental">Neurodevelopmental</option>
+        <option value="Bipolar / Psychotic Spectrum">Bipolar / Psychotic</option>
+        <option value="Neurocognitive Disorders">Neurocognitive</option>
+      </select>
+      <select id="dpStatusFilter" onchange="renderDiscussionPointers()" style="font-size:.71rem;padding:3px 8px;border-radius:6px;border:1.5px solid var(--border);font-family:'Plus Jakarta Sans',sans-serif">
+        <option value="all">All Statuses</option>
+        <option value="open">Open (not discussed)</option>
+        <option value="closed">Closed</option>
+        <option value="flagged">DSS Update Flagged</option>
+      </select>
+    </div>
+    <!-- High deviation cards with comment/close/flag actions -->
+    <div id="discussionCases"></div>
+    <!-- Closed cases log -->
+    <div class="card" style="margin-top:12px">
+      <div class="ctitle">✅ Closed Cases · Comments on file</div>
+      <div id="closedCases"><div style="color:var(--muted);font-size:.72rem;font-style:italic">No cases closed yet.</div></div>
+    </div>
+    <div id="dpContent"></div>
+  </div>
+</div>
+
+<!-- ==================== S5: FULFILMENT ==================== -->
+<div class="sec" id="sec3">
+  <div class="sec-head">
+    <div class="sec-title">Fulfilment · Rx Dispensation & Procurement</div>
+    <div class="sec-sub">Two views: actual prescription pattern vs if every doctor followed DSS</div>
+  </div>
+  <div class="alert a-amber"><strong>⚠ Placeholder inventory.</strong> Load actual clinic list via CSV.</div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Rx Written / Total</div><div class="kpi-ic" style="background:var(--bl)">📝</div></div><div class="kpi-val" id="fulTot">—</div><div class="kpi-s">Prescribed / 35 MH patients</div></div>
+    <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Unique Salts</div><div class="kpi-ic" style="background:var(--pl)">💊</div></div><div class="kpi-val" style="color:var(--purple)" id="fulUniq">—</div><div class="kpi-s">Across MH Rx</div></div>
+    <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Full Fulfilment</div><div class="kpi-ic" style="background:var(--gl)">✓</div></div><div class="kpi-val" style="color:var(--green)" id="fulFull">—</div><div class="kpi-s">All meds in stock</div></div>
+    <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Partial</div><div class="kpi-ic" style="background:var(--ol)">~</div></div><div class="kpi-val" style="color:var(--orange)" id="fulPart">—</div><div class="kpi-s">Some missing</div></div>
+    <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Procurement Gaps</div><div class="kpi-ic" style="background:var(--rl)">⚠</div></div><div class="kpi-val" style="color:var(--red)" id="fulGaps">—</div><div class="kpi-s">Salts to procure</div></div>
+  </div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div class="ctitle" style="margin:0;padding:0;border:none">Clinic Inventory (generic salt names)</div>
+      <button onclick="document.getElementById('invFile').click()" style="background:var(--blue);color:#fff;border:none;padding:4px 10px;border-radius:6px;font-size:.68rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">⬆ Load CSV</button>
+      <input type="file" id="invFile" accept=".csv" style="display:none" onchange="loadInventory(event)"/>
+    </div>
+    <div id="invBadges" style="display:flex;flex-wrap:wrap;gap:5px"></div>
+  </div>
+
+  <div class="itabs">
+    <div class="itab active" data-grp="ful" onclick="switchItab('ful',0)">Actual Prescription Pattern</div>
+    <div class="itab" data-grp="ful" onclick="switchItab('ful',1)">If Everyone Followed DSS</div>
+    <div class="itab" data-grp="ful" onclick="switchItab('ful',2)">Assumptions</div>
+  </div>
+
+  <!-- TAB 1: Actual Rx -->
+  <div class="tc active" data-grp="ful" id="ful0">
+    <div class="alert a-blue">Based on actual prescriptions across 35 MH patients (32 with meds, 3 therapy-only). 14 days assumed as standard supply. AOV KPIs below are per-patient averages across Rx patients only.</div>
+    <div class="kpi-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:12px">
+      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Avg Meds AOV</div><div class="kpi-ic" style="background:var(--bl)">💊</div></div><div class="kpi-val" id="actAovMeds">—</div><div class="kpi-s">Serv + Non-Serv · 14d</div></div>
+      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Serviceable Meds</div><div class="kpi-ic" style="background:var(--gl)">✓</div></div><div class="kpi-val" style="color:var(--green)" id="actAovServ">—</div><div class="kpi-s">In-stock value / Rx</div></div>
+      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Non-Serviceable</div><div class="kpi-ic" style="background:var(--rl)">✗</div></div><div class="kpi-val" style="color:var(--red)" id="actAovNS">—</div><div class="kpi-s">Not-stocked value / Rx</div></div>
+      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Procurement Gaps</div><div class="kpi-ic" style="background:var(--ol)">⚠</div></div><div class="kpi-val" style="color:var(--orange)" id="actAovGaps">—</div><div class="kpi-s">Unique salts to procure</div></div>
+    </div>
+
+    <!-- Doctor multi-select filter -->
+    <div class="card" style="margin-bottom:11px">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <div class="ctitle" style="margin:0;padding:0;border:none;flex-shrink:0">Filter by Doctor</div>
+        <div id="fulDocFilter" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+        <button onclick="fulSelectAllDocs()" style="font-size:.65rem;padding:3px 8px;border-radius:5px;border:1.5px solid var(--border2);background:var(--surface);cursor:pointer;color:var(--muted)">Select All</button>
+        <button onclick="fulClearDocs()" style="font-size:.65rem;padding:3px 8px;border-radius:5px;border:1.5px solid var(--border2);background:var(--surface);cursor:pointer;color:var(--muted)">Clear</button>
+        <span id="fulDocSummary" style="font-size:.67rem;color:var(--muted);font-style:italic"></span>
+      </div>
+    </div>
+
+    <div class="card"><div class="ctitle">Top Salts Prescribed · by L1+L2 Diagnosis (✓ in stock · ✗ not stocked) · AOV per prescription</div>
+      <div style="overflow-x:auto"><table><thead><tr>
+        <th>L1 / L2 Diagnosis</th>
+        <th style="text-align:center">Total Pts</th>
+        <th style="text-align:center;color:var(--muted)">Rx Count</th>
+        <th style="text-align:center;background:var(--gl);color:var(--green)">Serv. AOV ₹</th>
+        <th style="text-align:center;background:var(--rl);color:var(--red)">Non-Serv. AOV ₹</th>
+        <th style="text-align:center;background:var(--bl);color:var(--blue)">Total AOV ₹</th>
+        <th>Salts prescribed (✓ in stock · ✗ not stocked · hover for price)</th>
+      </tr></thead><tbody id="fulActualMedsBody"></tbody></table></div>
+    </div>
+    <div class="card"><div class="ctitle">Fulfilment Rate · Actual Rx</div>
+      <div style="overflow-x:auto"><table><thead><tr>
+        <th>L1 Diagnosis</th>
+        <th style="text-align:center">Total Pts</th>
+        <th style="text-align:center;color:var(--muted)">Rx Count</th>
+        <th style="text-align:center">% of total</th>
+        <th style="text-align:center;background:var(--gl);color:var(--green)">Full ✓</th>
+        <th style="text-align:center;background:var(--ol);color:var(--orange)">Partial ~</th>
+        <th style="text-align:center;background:var(--rl);color:var(--red)">Zero ✗</th>
+        <th style="text-align:center">Fulfil %</th>
+        <th style="text-align:center;background:var(--gl);color:var(--green)">Value Serviceability %</th>
+      </tr></thead><tbody id="fulActualRateBody"></tbody></table></div>
+    </div>
+    <div class="card"><div class="ctitle">Procurement List · Salts to procure (from selected doctors' Rx)</div>
+      <div style="overflow-x:auto"><table><thead><tr>
+        <th>Salt (generic)</th><th style="text-align:center">Times prescribed</th><th style="text-align:center">% of Rx</th><th>Top L1</th><th>Market price</th><th style="text-align:center">Priority</th>
+      </tr></thead><tbody id="fulActualProcBody"></tbody></table></div>
+    </div>
+
+    <!-- Raw patient reference — collapsed -->
+    <details style="margin-top:8px">
+      <summary style="cursor:pointer;font-size:.69rem;font-weight:700;color:var(--muted);padding:8px 12px;background:var(--surface2);border-radius:8px;border:1.5px solid var(--border);list-style:none;display:flex;align-items:center;gap:6px">
+        <span>▶</span> Raw Patient Reference · Appointment ID × Medicines × Location × Doctor
+        <span style="font-size:.62rem;font-weight:400;color:var(--dim)">(click to expand)</span>
+      </summary>
+      <div style="margin-top:6px;overflow-x:auto">
+        <table id="fulRawTable"><thead><tr>
+          <th style="min-width:280px">Appointment ID</th>
+          <th>L2 / Subtype</th>
+          <th></th>
+          <th>Medicines Prescribed</th>
+          <th style="text-align:center;background:var(--ol);color:var(--orange)">PM Approval</th>
+          <th style="text-align:center">Doctor</th>
+          <th style="text-align:center">City</th>
+          <th style="text-align:center">Date</th>
+        </tr></thead><tbody id="fulRawBody"></tbody></table>
+      </div>
+    </details>
+  </div>
+
+    <!-- TAB 2: DSS-based -->
+  <div class="tc" data-grp="ful" id="ful1">
+    <div class="kpi-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:12px">
+      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Avg Total AOV (DSS)</div><div class="kpi-ic" style="background:var(--bl)">₹</div></div><div class="kpi-val" id="dssAovTotal">—</div><div class="kpi-s">Meds + Diag + Therapy</div></div>
+      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Avg Meds AOV (DSS)</div><div class="kpi-ic" style="background:var(--pl)">💊</div></div><div class="kpi-val" style="color:var(--purple)" id="dssAovMeds">—</div><div class="kpi-s">Serv + Non-Serv · 14d</div></div>
+      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Avg Diag AOV (DSS)</div><div class="kpi-ic" style="background:var(--gl)">🧪</div></div><div class="kpi-val" style="color:var(--green)" id="dssAovDiag">—</div><div class="kpi-s">DSS indicated tests</div></div>
+      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Therapy AOV/Patient</div><div class="kpi-ic" style="background:var(--ol)">🧠</div></div><div class="kpi-val" style="color:var(--orange)" id="dssAovTherapy">—</div><div class="kpi-s">Dep/Anx 100% · Other 60%</div></div>
+    </div>
+    <div id="dssFulContent"></div>
+  </div>
+
+
+  <!-- TAB 2: Assumptions -->
+  <div class="tc" data-grp="ful" id="ful2">
+    <div class="alert a-blue">Pricing assumptions for non-serviceable medicines. Serviceable prices sourced directly from Meds_level_consumption CSV (col G = Effective MRP). Non-serviceable prices sourced from Apollo Pharmacy / 1mg based on March actual consumption (post-discount). Tagged ✓ Verified where confirmed; ~ Claude est. for 4 medicines not in the actuals file (Etizolam 0.25mg, Risperidone 2mg, Zolpidem 5mg, Melatonin 3mg).</div>
+    <div class="card">
+      <div class="ctitle">Serviceable Medicines · From Allo Clinic Inventory File</div>
+      <div style="overflow-x:auto"><table><thead><tr>
+        <th>Salt + Dosage (normMed key)</th><th>Brand</th><th>Manufacturer</th><th style="text-align:center">Effective MRP ₹</th><th style="text-align:center">Selling ₹</th><th>Source</th>
+      </tr></thead><tbody id="assumpServBody"></tbody></table></div>
+    </div>
+    <div class="card">
+      <div class="ctitle">Non-Serviceable Medicines · Research Assumptions</div>
+      <div style="overflow-x:auto"><table><thead><tr>
+        <th>Salt + Dosage</th><th>Recommended Brand</th><th>Manufacturer</th><th style="text-align:center">MRP ₹/tab</th><th style="text-align:center">Selling ₹ (MRP×0.85)</th><th>Source</th>
+      </tr></thead><tbody id="assumpNonServBody"></tbody></table></div>
+    </div>
+  </div>
+</div>
+
+<div class="sec" id="sec4">
   <div class="sec-head">
     <div class="sec-title">Demand · MH Potential & Hidden MH</div>
     <div class="sec-sub">MH Potential · Hidden MH in non-MH cases · Precision computed across 138 SC patients (158 appt IDs, 20 not in RX) · 33 MH · 105 non-MH · Sources: encounter_diagnoses + provider notes + screening assessments</div>
@@ -209,14 +663,22 @@ tr:hover td{background:var(--bg);}
   <!-- Filters same as Category Mix -->
   <div class="filter-bar">
     <span class="filter-lbl">City:</span>
-    <select class="filter-sel" id="potFilterCity"><option value="all">All Cities</option><option value="Coimbatore">Coimbatore</option></select>
+    <select class="filter-sel" id="potFilterCity">      <option value="all">All Cities</option>
+      <option value="Coimbatore">Coimbatore</option>
+      <option value="Chennai">Chennai</option>
+      <option value="Bengaluru">Bengaluru</option>
+      <option value="Mumbai">Mumbai</option><option value="Chennai">Chennai</option><option value="Bangalore">Bangalore</option><option value="Mumbai">Mumbai</option></select>
     <span class="filter-lbl">Doctor:</span>
-    <select class="filter-sel" id="potFilterDoctor"><option value="all">All Doctors</option><option value="Dr. Sandhiya">Dr. Sandhiya</option></select>
+    <select class="filter-sel" id="potFilterDoctor">      <option value="all">All Doctors</option>
+      <option value="Dr. Sandhiya">Dr. Sandhiya (Coimbatore)</option>
+      <option value="Dr. Adithya">Dr. Adithya (Bengaluru)</option>
+      <option value="Dr. Shraddha">Dr. Shraddha (Bengaluru)</option>
+      <option value="Dr. Basava Chetan">Dr. Basava Chetan (Bengaluru)</option></select>
     <span class="filter-lbl" style="margin-left:6px">📅</span>
     <div class="date-ctrl">
       <input type="date" id="potFrom" value="2026-03-09">
       <span style="font-size:.68rem;color:var(--muted)">to</span>
-      <input type="date" id="potTo" value="2026-04-12">
+      <input type="date" id="potTo">
     </div>
     <button class="btn-sm btn-blue" onclick="renderSection2()">Apply</button>
   </div>
@@ -307,14 +769,22 @@ tr:hover td{background:var(--bg);}
 
     <div class="filter-bar">
       <span class="filter-lbl">City:</span>
-      <select class="filter-sel" id="adjCity"><option value="all">All Cities</option><option value="Coimbatore">Coimbatore</option></select>
+      <select class="filter-sel" id="adjCity">      <option value="all">All Cities</option>
+      <option value="Coimbatore">Coimbatore</option>
+      <option value="Chennai">Chennai</option>
+      <option value="Bengaluru">Bengaluru</option>
+      <option value="Mumbai">Mumbai</option><option value="Chennai">Chennai</option><option value="Bangalore">Bangalore</option><option value="Mumbai">Mumbai</option></select>
       <span class="filter-lbl">Doctor:</span>
-      <select class="filter-sel" id="adjDoctor"><option value="all">All Doctors</option><option value="Dr. Sandhiya">Dr. Sandhiya</option></select>
+      <select class="filter-sel" id="adjDoctor">      <option value="all">All Doctors</option>
+      <option value="Dr. Sandhiya">Dr. Sandhiya (Coimbatore)</option>
+      <option value="Dr. Adithya">Dr. Adithya (Bengaluru)</option>
+      <option value="Dr. Shraddha">Dr. Shraddha (Bengaluru)</option>
+      <option value="Dr. Basava Chetan">Dr. Basava Chetan (Bengaluru)</option></select>
       <span class="filter-lbl" style="margin-left:6px">📅</span>
       <div class="date-ctrl">
         <input type="date" id="adjFrom" value="2026-03-09">
         <span style="font-size:.68rem;color:var(--muted)">to</span>
-        <input type="date" id="adjTo" value="2026-04-12">
+        <input type="date" id="adjTo">
       </div>
       <button class="btn-sm btn-blue" onclick="renderAdjusted()">Apply</button>
     </div>
@@ -472,433 +942,18 @@ tr:hover td{background:var(--bg);}
     </div>
   </details>
 </div>
-<div class="sec" id="sec2">
-  <div class="sec-head">
-    <div class="sec-title">Diagnosis Level Analysis</div>
-    <div class="sec-sub">MoM → WoW → Cumulative trend · same format as Category Mix · Diagnosis × Demographics</div>
-  </div>
-  <div class="filter-bar">
-    <span class="filter-lbl">&#128197;</span>
-    <div class="date-ctrl">
-      <input type="date" id="dxFrom" value="2026-03-09">
-      <span style="font-size:.68rem;color:var(--muted)">to</span>
-      <input type="date" id="dxTo" value="2026-04-12">
-    </div>
-    <button class="btn-sm btn-blue" onclick="renderSection3()">Apply</button>
-    <button class="btn-sm btn-gray" onclick="setDxRange('2026-03-09','2026-03-31')">Mar only</button>
-    <button class="btn-sm btn-gray" onclick="setDxRange('2026-04-01','2026-04-12')">Apr only</button>
-    <button class="btn-sm btn-gray" onclick="setDxRange('2026-03-09','2026-04-12')">Full period</button>
-    <select class="filter-sel" id="dxCity" onchange="renderSection3()">
-      <option value="all">All Cities</option>
-      <option value="Coimbatore">Coimbatore</option>
-    </select>
-    <select class="filter-sel" id="dxDoc" onchange="renderSection3()">
-      <option value="all">All Doctors</option>
-      <option value="Dr. Sandhiya">Dr. Sandhiya</option>
-    </select>
-  </div>
-  <div class="itabs">
-    <div class="itab active" data-grp="dx" onclick="switchItab('dx',0)">Trend Analysis</div>
-    <div class="itab" data-grp="dx" onclick="switchItab('dx',1)">Diagnosis × Demographics</div>
-  </div>
-
-  <!-- Trend Analysis: MoM cols → WoW cols → Cumulative, 4 stacked tables -->
-  <div class="tc active" data-grp="dx" id="dx0">
-    <div class="card">
-      <div class="ctitle">L1 Diagnosis · Month-on-Month → Week-on-Week → Cumulative</div>
-      <div style="overflow-x:auto"><table><thead><tr id="dxTrendHeadL1"></tr></thead><tbody id="dxTrendBodyL1"></tbody></table></div>
-    </div>
-    <div class="card">
-      <div class="ctitle">L1 × L2 Diagnosis · Month-on-Month → Week-on-Week → Cumulative</div>
-      <div style="overflow-x:auto"><table><thead><tr id="dxTrendHeadL2"></tr></thead><tbody id="dxTrendBodyL2"></tbody></table></div>
-    </div>
-    <div class="card">
-      <div class="ctitle">Age Group · Month-on-Month → Week-on-Week → Cumulative</div>
-      <div style="overflow-x:auto"><table><thead><tr id="dxTrendHeadAge"></tr></thead><tbody id="dxTrendBodyAge"></tbody></table></div>
-    </div>
-    <div class="card">
-      <div class="ctitle">Gender · Month-on-Month → Week-on-Week → Cumulative</div>
-      <div style="overflow-x:auto"><table><thead><tr id="dxTrendHeadGen"></tr></thead><tbody id="dxTrendBodyGen"></tbody></table></div>
-    </div>
-  </div>
-
-  <!-- Diagnosis × Demographics tab -->
-  <div class="tc" data-grp="dx" id="dx1">
-    <div class="card"><div class="ctitle">L1 × Age · with % contribution per age bucket</div><div style="overflow-x:auto"><table><thead><tr>
-      <th>L1</th>
-      <th style="text-align:center">18–24<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
-      <th style="text-align:center">25–30<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
-      <th style="text-align:center">31–36<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
-      <th style="text-align:center">37–42<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
-      <th style="text-align:center">43–54<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
-      <th style="text-align:center">55+<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
-      <th style="text-align:center;background:var(--bl);color:var(--blue)">Total</th>
-      <th style="text-align:center">Mean</th>
-      <th style="text-align:center">Median</th>
-    </tr></thead><tbody id="dxABody"></tbody></table></div></div>
-    <div class="card"><div class="ctitle">L2 × Age · with % contribution per age bucket</div><div style="overflow-x:auto"><table><thead><tr>
-      <th>L1</th><th>L2</th>
-      <th style="text-align:center">18–24<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
-      <th style="text-align:center">25–30<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
-      <th style="text-align:center">31–36<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
-      <th style="text-align:center">37–42<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
-      <th style="text-align:center">43–54<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
-      <th style="text-align:center">55+<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
-      <th style="text-align:center;background:var(--bl);color:var(--blue)">Total</th>
-      <th style="text-align:center">Median</th>
-    </tr></thead><tbody id="dxL2ABody"></tbody></table></div></div>
-    <div class="card"><div class="ctitle">L1 × Gender · M:F Ratio with % contribution</div><div style="overflow-x:auto"><table><thead><tr>
-      <th>L1</th>
-      <th style="text-align:center">M<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
-      <th style="text-align:center">F<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
-      <th style="text-align:center;background:var(--bl);color:var(--blue)">Total</th>
-      <th style="text-align:center">M:F</th>
-    </tr></thead><tbody id="dxTGBody"></tbody></table></div></div>
-    <div class="card"><div class="ctitle">Age Group × Diagnosis · with % of age group</div><div style="overflow-x:auto"><table><thead><tr>
-      <th>Age</th>
-      <th style="text-align:center">Depression<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
-      <th style="text-align:center">Anxiety<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
-      <th style="text-align:center">Other<br><span style="font-size:.58rem;font-weight:400">n · %</span></th>
-      <th style="text-align:center;background:var(--bl);color:var(--blue)">Total</th>
-    </tr></thead><tbody id="dxTABody"></tbody></table></div></div>
-
-    <div class="card"><div class="ctitle">Age Group × Diagnosis × Gender · M / F split per diagnosis per age band</div><div style="overflow-x:auto"><table><thead><tr>
-      <th>Age</th>
-      <th style="text-align:center;border-left:2px solid var(--bm)" colspan="2">Depression</th>
-      <th style="text-align:center;border-left:2px solid var(--om)" colspan="2">Anxiety</th>
-      <th style="text-align:center;border-left:2px solid var(--border2)" colspan="2">Other</th>
-      <th style="text-align:center;background:var(--bl);color:var(--blue);border-left:2px solid var(--blue)" colspan="2">Total</th>
-    </tr><tr>
-      <th></th>
-      <th style="text-align:center;font-size:.62rem;border-left:2px solid var(--bm)">M</th><th style="text-align:center;font-size:.62rem">F</th>
-      <th style="text-align:center;font-size:.62rem;border-left:2px solid var(--om)">M</th><th style="text-align:center;font-size:.62rem">F</th>
-      <th style="text-align:center;font-size:.62rem;border-left:2px solid var(--border2)">M</th><th style="text-align:center;font-size:.62rem">F</th>
-      <th style="text-align:center;font-size:.62rem;background:var(--bl);color:var(--blue);border-left:2px solid var(--blue)">M</th>
-      <th style="text-align:center;font-size:.62rem;background:var(--bl);color:var(--blue)">F</th>
-    </tr></thead><tbody id="dxTAGBody"></tbody></table></div></div>
-  </div>
-</div>
-
-<!-- ==================== S4: DSS PROTOCOL ==================== -->
-<div class="sec" id="sec3">
-  <div class="sec-head">
-    <div class="sec-title">DSS Protocol · Prescribing Guidelines & Doctor Analysis</div>
-    <div class="sec-sub">Taxonomy · Allo Health Ideal DSS · Doctor-level patterns · Deviation tracking</div>
-  </div>
-
-  <div class="itabs">
-    <div class="itab active" data-grp="dss" onclick="switchItab('dss',0)">Taxonomy</div>
-    <div class="itab" data-grp="dss" onclick="switchItab('dss',1)">DSS · Depression</div>
-    <div class="itab" data-grp="dss" onclick="switchItab('dss',2)">DSS · Anxiety</div>
-    <div class="itab" data-grp="dss" onclick="switchItab('dss',3)">DSS · Other Diagnoses</div>
-    <div class="itab" data-grp="dss" onclick="switchItab('dss',4)">Doctor Analysis</div>
-    <div class="itab" data-grp="dss" onclick="switchItab('dss',5);renderDiscussionPointers()">💬 Discussion Pointers</div>
-  </div>
-
-  <!-- Taxonomy -->
-  <div class="tc active" data-grp="dss" id="dss0">
-    <div style="background:var(--pl);border:1.5px solid var(--pm);border-radius:10px;padding:12px 16px;margin-bottom:14px">
-      <div style="font-size:.78rem;font-weight:800;color:var(--purple);margin-bottom:6px">📋 What is the Allo Health DSS?</div>
-      <div style="font-size:.72rem;color:var(--text);line-height:1.7">
-        The <strong>Decision Support System (DSS)</strong> is Allo's standardised clinical protocol — a step-by-step prescribing guide for each diagnosis. It specifies the first-line drug, bridging agent, adjuncts, assessments, and escalation triggers for each L1→L2 combination.<br>
-        <span style="color:var(--purple);font-weight:600">Allo Health DSS</span> is evidence-based (NICE CG90/CG113, WHO mhGAP, WFSBP guidelines) and <strong>pending Dr. Sandip's formal approval</strong> before deployment to doctors.
-        <span style="color:var(--muted);font-weight:600">Doctor's DSS</span> reflects actual prescribing patterns from the pilot data.
-        Deviations from the Allo Health DSS drive doctor coaching or DSS updates — both are valid outcomes.
-      </div>
-    </div>
-    <div class="alert a-blue">L1→L2 taxonomy · Each patient belongs to exactly one L1. ICD-11 codes from screening assessments added where available.</div>
-    <div id="taxGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px"></div>
-  </div>
-
-  <!-- DSS: Depression -->
-  <div class="tc" data-grp="dss" id="dss1">
-    <div class="itabs" style="margin-bottom:12px">
-      <div class="itab active" data-grp="dss-dep" onclick="switchSubTab('dss-dep',0)">🏥 Allo Health DSS</div>
-      <div class="itab" data-grp="dss-dep" onclick="switchSubTab('dss-dep',1)">👩‍⚕️ Doctor's DSS</div>
-    </div>
-    <div class="tc active" data-grp="dss-dep" id="dss-dep-0">
-      <div class="alert a-amber">⚠ Pending Dr. Sandip's formal approval. Based on NICE CG90/CG113, WHO mhGAP, WFSBP. Durations are clinically indicated.</div>
-      <div id="dssDepAlloContent"></div>
-    </div>
-    <div class="tc" data-grp="dss-dep" id="dss-dep-1">
-      <div class="alert a-blue">Comparison: Allo Health DSS expected protocol vs % of cases where doctor followed each element. Filter by doctor.</div>
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap">
-        <span style="font-size:.7rem;font-weight:700;color:var(--muted)">Doctor:</span>
-        <div id="drDepDoctorPills" style="display:flex;gap:5px;flex-wrap:wrap"></div>
-      </div>
-      <div id="dssDepDrContent"></div>
-    </div>
-  </div>
-
-  <!-- DSS: Anxiety -->
-  <div class="tc" data-grp="dss" id="dss2">
-    <div class="itabs" style="margin-bottom:12px">
-      <div class="itab active" data-grp="dss-anx" onclick="switchSubTab('dss-anx',0)">🏥 Allo Health DSS</div>
-      <div class="itab" data-grp="dss-anx" onclick="switchSubTab('dss-anx',1)">👩‍⚕️ Doctor's DSS</div>
-    </div>
-    <div class="tc active" data-grp="dss-anx" id="dss-anx-0">
-      <div class="alert a-amber">⚠ Pending Dr. Sandip's formal approval. Based on NICE CG113, WHO mhGAP, WFSBP.</div>
-      <div id="dssAnxAlloContent"></div>
-    </div>
-    <div class="tc" data-grp="dss-anx" id="dss-anx-1">
-      <div class="alert a-blue">Comparison: Allo Health DSS expected protocol vs % of cases where doctor followed each element. Filter by doctor.</div>
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap">
-        <span style="font-size:.7rem;font-weight:700;color:var(--muted)">Doctor:</span>
-        <div id="drAnxDoctorPills" style="display:flex;gap:5px;flex-wrap:wrap"></div>
-      </div>
-      <div id="dssAnxDrContent"></div>
-    </div>
-  </div>
-
-  <!-- DSS: Other -->
-  <div class="tc" data-grp="dss" id="dss3">
-    <div class="itabs" style="margin-bottom:12px">
-      <div class="itab active" data-grp="dss-oth" onclick="switchSubTab('dss-oth',0)">🏥 Allo Health DSS</div>
-      <div class="itab" data-grp="dss-oth" onclick="switchSubTab('dss-oth',1)">👩‍⚕️ Doctor's DSS</div>
-    </div>
-    <div class="tc active" data-grp="dss-oth" id="dss-oth-0">
-      <div class="alert a-amber">⚠ Pending Dr. Sandip's formal approval. OCD / Addiction / ADHD / Dementia / Bipolar — NICE, WHO mhGAP, BNF.</div>
-      <div id="dssOtherAlloContent"></div>
-    </div>
-    <div class="tc" data-grp="dss-oth" id="dss-oth-1">
-      <div class="alert a-blue">Comparison: Allo Health DSS expected protocol vs % of cases where doctor followed each element. Filter by doctor.</div>
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap">
-        <span style="font-size:.7rem;font-weight:700;color:var(--muted)">Doctor:</span>
-        <div id="drOthDoctorPills" style="display:flex;gap:5px;flex-wrap:wrap"></div>
-      </div>
-      <div id="dssOtherDrContent"></div>
-    </div>
-  </div>
-
-  <!-- Doctor Analysis — unified, 2 sub-tabs -->
-  <div class="tc" data-grp="dss" id="dss4">
-    <div class="alert a-amber"><strong>⚠ Single-doctor pilot.</strong> DSS adherence measured against Allo Health Ideal DSS. As more doctors join, inter-doctor variance surfaces automatically.</div>
-
-    <div class="kpi-row" style="grid-template-columns:repeat(5,1fr)">
-      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Doctors in Pilot</div><div class="kpi-ic" style="background:var(--bl)">👨‍⚕️</div></div><div class="kpi-val">1</div><div class="kpi-s">Scaling to 15</div></div>
-      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">MH Cases</div><div class="kpi-ic" style="background:var(--pl)">🧠</div></div><div class="kpi-val" style="color:var(--purple)">35</div><div class="kpi-s">All L1</div></div>
-      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Cases Reviewed</div><div class="kpi-ic" style="background:var(--gl)">✓</div></div><div class="kpi-val" style="color:var(--green)" id="casesReviewed">0</div><div class="kpi-s">Commented + closed</div></div>
-      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">High Deviations</div><div class="kpi-ic" style="background:var(--rl)">⚠</div></div><div class="kpi-val" style="color:var(--red)" id="highDevCount">—</div><div class="kpi-s">Need discussion</div></div>
-      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">DSS Adherence</div><div class="kpi-ic" style="background:var(--ol)">📊</div></div><div class="kpi-val" style="color:var(--orange)" id="dssAdh">—</div><div class="kpi-s">vs Ideal DSS</div></div>
-    </div>
-
-    <div class="itabs" style="margin-bottom:12px">
-      <div class="itab active" data-grp="da" onclick="switchSubTab('da',0)">Doctor × Diagnosis</div>
-      <div class="itab" data-grp="da" onclick="switchSubTab('da',1)">Diagnosis × Doctor</div>
-    </div>
-
-    <!-- Sub-tab 0: Doctor × Diagnosis (rows=doctors, cols=L1s, cells=adherence%) -->
-    <div class="tc active" data-grp="da" id="da-0">
-      <div class="card">
-        <div class="ctitle">Doctor × Diagnosis · DSS Adherence % <span style="font-size:.62rem;font-weight:400;color:var(--muted)">· Click ▶ to expand L2</span></div>
-        <div style="overflow-x:auto"><table id="daDocDxTable">
-          <thead><tr>
-            <th>Doctor</th>
-            <th style="text-align:center">Total</th>
-            <th style="text-align:center">Depression</th>
-            <th style="text-align:center">Anxiety</th>
-            <th style="text-align:center">OCD</th>
-            <th style="text-align:center">Addiction</th>
-            <th style="text-align:center">ADHD</th>
-            <th style="text-align:center">Neuro­cognitive</th>
-            <th style="text-align:center">Bipolar</th>
-            <th style="text-align:center;background:var(--bl);color:var(--blue)">Overall</th>
-          </tr></thead>
-          <tbody id="daDocDxBody"></tbody>
-        </table></div>
-      </div>
-      <!-- Per-doctor L2 drilldown (collapsed by default, one per doctor) -->
-      <div id="daDocDrilldown"></div>
-    </div>
-
-    <!-- Sub-tab 1: Diagnosis × Doctor (rows=L1 collapsed, expandable L2) -->
-    <div class="tc" data-grp="da" id="da-1">
-      <div class="card">
-        <div class="ctitle">Diagnosis × Doctor · DSS Adherence % <span style="font-size:.62rem;font-weight:400;color:var(--muted)">· Click L1 row to expand L2</span></div>
-        <div style="overflow-x:auto"><table id="daDxDocTable">
-          <thead><tr>
-            <th>L1 (click to expand)</th>
-            <th style="text-align:center">n</th>
-            <th style="text-align:center">Dr. Sandhiya</th>
-            <th style="text-align:center;background:var(--bl);color:var(--blue)">Avg</th>
-          </tr></thead>
-          <tbody id="daDxDocBody"></tbody>
-        </table></div>
-      </div>
-    </div>
-
-  </div>
-  <!-- Discussion Pointers with Doctors -->
-  <div class="tc" data-grp="dss" id="dss5">
-    <div class="alert a-blue">High deviation cases + all discussion items — tagged with doctor, L1, L2, severity, deviation type. Comment, close and flag here. Agenda for doctor review calls.</div>
-    <div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-      <select id="dpDocFilter" onchange="renderDiscussionPointers()" style="font-size:.71rem;padding:3px 8px;border-radius:6px;border:1.5px solid var(--border);font-family:'Plus Jakarta Sans',sans-serif">
-        <option value="all">All Doctors</option>
-        <option value="Dr. Sandhiya">Dr. Sandhiya</option>
-      </select>
-      <select id="dpL1Filter" onchange="renderDiscussionPointers()" style="font-size:.71rem;padding:3px 8px;border-radius:6px;border:1.5px solid var(--border);font-family:'Plus Jakarta Sans',sans-serif">
-        <option value="all">All Diagnoses</option>
-        <option value="Depression">Depression</option>
-        <option value="Anxiety Disorders">Anxiety Disorders</option>
-        <option value="OCD Spectrum">OCD Spectrum</option>
-        <option value="Addiction / Substance">Addiction</option>
-        <option value="Neurodevelopmental">Neurodevelopmental</option>
-        <option value="Bipolar / Psychotic Spectrum">Bipolar / Psychotic</option>
-        <option value="Neurocognitive Disorders">Neurocognitive</option>
-      </select>
-      <select id="dpStatusFilter" onchange="renderDiscussionPointers()" style="font-size:.71rem;padding:3px 8px;border-radius:6px;border:1.5px solid var(--border);font-family:'Plus Jakarta Sans',sans-serif">
-        <option value="all">All Statuses</option>
-        <option value="open">Open (not discussed)</option>
-        <option value="closed">Closed</option>
-        <option value="flagged">DSS Update Flagged</option>
-      </select>
-    </div>
-    <!-- High deviation cards with comment/close/flag actions -->
-    <div id="discussionCases"></div>
-    <!-- Closed cases log -->
-    <div class="card" style="margin-top:12px">
-      <div class="ctitle">✅ Closed Cases · Comments on file</div>
-      <div id="closedCases"><div style="color:var(--muted);font-size:.72rem;font-style:italic">No cases closed yet.</div></div>
-    </div>
-    <div id="dpContent"></div>
-  </div>
-</div>
-
-<!-- ==================== S5: FULFILMENT ==================== -->
-<div class="sec" id="sec4">
-  <div class="sec-head">
-    <div class="sec-title">Fulfilment · Rx Dispensation & Procurement</div>
-    <div class="sec-sub">Two views: actual prescription pattern vs if every doctor followed DSS</div>
-  </div>
-  <div class="alert a-amber"><strong>⚠ Placeholder inventory.</strong> Load actual clinic list via CSV.</div>
-  <div class="kpi-row">
-    <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Rx Written / Total</div><div class="kpi-ic" style="background:var(--bl)">📝</div></div><div class="kpi-val" id="fulTot">—</div><div class="kpi-s">Prescribed / 35 MH patients</div></div>
-    <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Unique Salts</div><div class="kpi-ic" style="background:var(--pl)">💊</div></div><div class="kpi-val" style="color:var(--purple)" id="fulUniq">—</div><div class="kpi-s">Across MH Rx</div></div>
-    <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Full Fulfilment</div><div class="kpi-ic" style="background:var(--gl)">✓</div></div><div class="kpi-val" style="color:var(--green)" id="fulFull">—</div><div class="kpi-s">All meds in stock</div></div>
-    <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Partial</div><div class="kpi-ic" style="background:var(--ol)">~</div></div><div class="kpi-val" style="color:var(--orange)" id="fulPart">—</div><div class="kpi-s">Some missing</div></div>
-    <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Procurement Gaps</div><div class="kpi-ic" style="background:var(--rl)">⚠</div></div><div class="kpi-val" style="color:var(--red)" id="fulGaps">—</div><div class="kpi-s">Salts to procure</div></div>
-  </div>
-  <div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-      <div class="ctitle" style="margin:0;padding:0;border:none">Clinic Inventory (generic salt names)</div>
-      <button onclick="document.getElementById('invFile').click()" style="background:var(--blue);color:#fff;border:none;padding:4px 10px;border-radius:6px;font-size:.68rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">⬆ Load CSV</button>
-      <input type="file" id="invFile" accept=".csv" style="display:none" onchange="loadInventory(event)"/>
-    </div>
-    <div id="invBadges" style="display:flex;flex-wrap:wrap;gap:5px"></div>
-  </div>
-
-  <div class="itabs">
-    <div class="itab active" data-grp="ful" onclick="switchItab('ful',0)">Actual Prescription Pattern</div>
-    <div class="itab" data-grp="ful" onclick="switchItab('ful',1)">If Everyone Followed DSS</div>
-    <div class="itab" data-grp="ful" onclick="switchItab('ful',2)">Assumptions</div>
-  </div>
-
-  <!-- TAB 1: Actual Rx -->
-  <div class="tc active" data-grp="ful" id="ful0">
-    <div class="alert a-blue">Based on actual prescriptions across 35 MH patients (32 with meds, 3 therapy-only). 14 days assumed as standard supply. AOV KPIs below are per-patient averages across Rx patients only.</div>
-    <div class="kpi-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:12px">
-      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Avg Meds AOV</div><div class="kpi-ic" style="background:var(--bl)">💊</div></div><div class="kpi-val" id="actAovMeds">—</div><div class="kpi-s">Serv + Non-Serv · 14d</div></div>
-      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Serviceable Meds</div><div class="kpi-ic" style="background:var(--gl)">✓</div></div><div class="kpi-val" style="color:var(--green)" id="actAovServ">—</div><div class="kpi-s">In-stock value / Rx</div></div>
-      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Non-Serviceable</div><div class="kpi-ic" style="background:var(--rl)">✗</div></div><div class="kpi-val" style="color:var(--red)" id="actAovNS">—</div><div class="kpi-s">Not-stocked value / Rx</div></div>
-      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Procurement Gaps</div><div class="kpi-ic" style="background:var(--ol)">⚠</div></div><div class="kpi-val" style="color:var(--orange)" id="actAovGaps">—</div><div class="kpi-s">Unique salts to procure</div></div>
-    </div>
-
-    <!-- Doctor multi-select filter -->
-    <div class="card" style="margin-bottom:11px">
-      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-        <div class="ctitle" style="margin:0;padding:0;border:none;flex-shrink:0">Filter by Doctor</div>
-        <div id="fulDocFilter" style="display:flex;flex-wrap:wrap;gap:6px"></div>
-        <button onclick="fulSelectAllDocs()" style="font-size:.65rem;padding:3px 8px;border-radius:5px;border:1.5px solid var(--border2);background:var(--surface);cursor:pointer;color:var(--muted)">Select All</button>
-        <button onclick="fulClearDocs()" style="font-size:.65rem;padding:3px 8px;border-radius:5px;border:1.5px solid var(--border2);background:var(--surface);cursor:pointer;color:var(--muted)">Clear</button>
-        <span id="fulDocSummary" style="font-size:.67rem;color:var(--muted);font-style:italic"></span>
-      </div>
-    </div>
-
-    <div class="card"><div class="ctitle">Top Salts Prescribed · by L1+L2 Diagnosis (✓ in stock · ✗ not stocked) · AOV per prescription</div>
-      <div style="overflow-x:auto"><table><thead><tr>
-        <th>L1 / L2 Diagnosis</th>
-        <th style="text-align:center">Total Pts</th>
-        <th style="text-align:center;color:var(--muted)">Rx Count</th>
-        <th style="text-align:center;background:var(--gl);color:var(--green)">Serv. AOV ₹</th>
-        <th style="text-align:center;background:var(--rl);color:var(--red)">Non-Serv. AOV ₹</th>
-        <th style="text-align:center;background:var(--bl);color:var(--blue)">Total AOV ₹</th>
-        <th>Salts prescribed (✓ in stock · ✗ not stocked · hover for price)</th>
-      </tr></thead><tbody id="fulActualMedsBody"></tbody></table></div>
-    </div>
-    <div class="card"><div class="ctitle">Fulfilment Rate · Actual Rx</div>
-      <div style="overflow-x:auto"><table><thead><tr>
-        <th>L1 Diagnosis</th>
-        <th style="text-align:center">Total Pts</th>
-        <th style="text-align:center;color:var(--muted)">Rx Count</th>
-        <th style="text-align:center">% of total</th>
-        <th style="text-align:center;background:var(--gl);color:var(--green)">Full ✓</th>
-        <th style="text-align:center;background:var(--ol);color:var(--orange)">Partial ~</th>
-        <th style="text-align:center;background:var(--rl);color:var(--red)">Zero ✗</th>
-        <th style="text-align:center">Fulfil %</th>
-        <th style="text-align:center;background:var(--gl);color:var(--green)">Value Serviceability %</th>
-      </tr></thead><tbody id="fulActualRateBody"></tbody></table></div>
-    </div>
-    <div class="card"><div class="ctitle">Procurement List · Salts to procure (from selected doctors' Rx)</div>
-      <div style="overflow-x:auto"><table><thead><tr>
-        <th>Salt (generic)</th><th style="text-align:center">Times prescribed</th><th style="text-align:center">% of Rx</th><th>Top L1</th><th>Market price</th><th style="text-align:center">Priority</th>
-      </tr></thead><tbody id="fulActualProcBody"></tbody></table></div>
-    </div>
-
-    <!-- Raw patient reference — collapsed -->
-    <details style="margin-top:8px">
-      <summary style="cursor:pointer;font-size:.69rem;font-weight:700;color:var(--muted);padding:8px 12px;background:var(--surface2);border-radius:8px;border:1.5px solid var(--border);list-style:none;display:flex;align-items:center;gap:6px">
-        <span>▶</span> Raw Patient Reference · Appointment ID × Medicines × Location × Doctor
-        <span style="font-size:.62rem;font-weight:400;color:var(--dim)">(click to expand)</span>
-      </summary>
-      <div style="margin-top:6px;overflow-x:auto">
-        <table id="fulRawTable"><thead><tr>
-          <th style="min-width:280px">Appointment ID</th>
-          <th>L2 / Subtype</th>
-          <th></th>
-          <th>Medicines Prescribed</th>
-          <th style="text-align:center;background:var(--ol);color:var(--orange)">PM Approval</th>
-          <th style="text-align:center">Doctor</th>
-          <th style="text-align:center">City</th>
-          <th style="text-align:center">Date</th>
-        </tr></thead><tbody id="fulRawBody"></tbody></table>
-      </div>
-    </details>
-  </div>
-
-    <!-- TAB 2: DSS-based -->
-  <div class="tc" data-grp="ful" id="ful1">
-    <div class="kpi-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:12px">
-      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Avg Total AOV (DSS)</div><div class="kpi-ic" style="background:var(--bl)">₹</div></div><div class="kpi-val" id="dssAovTotal">—</div><div class="kpi-s">Meds + Diag + Therapy</div></div>
-      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Avg Meds AOV (DSS)</div><div class="kpi-ic" style="background:var(--pl)">💊</div></div><div class="kpi-val" style="color:var(--purple)" id="dssAovMeds">—</div><div class="kpi-s">Serv + Non-Serv · 14d</div></div>
-      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Avg Diag AOV (DSS)</div><div class="kpi-ic" style="background:var(--gl)">🧪</div></div><div class="kpi-val" style="color:var(--green)" id="dssAovDiag">—</div><div class="kpi-s">DSS indicated tests</div></div>
-      <div class="kpi"><div class="kpi-top"><div class="kpi-lbl">Therapy AOV/Patient</div><div class="kpi-ic" style="background:var(--ol)">🧠</div></div><div class="kpi-val" style="color:var(--orange)" id="dssAovTherapy">—</div><div class="kpi-s">Dep/Anx 100% · Other 60%</div></div>
-    </div>
-    <div id="dssFulContent"></div>
-  </div>
-
-
-  <!-- TAB 2: Assumptions -->
-  <div class="tc" data-grp="ful" id="ful2">
-    <div class="alert a-blue">Pricing assumptions for non-serviceable medicines. Serviceable prices sourced directly from Meds_level_consumption CSV (col G = Effective MRP). Non-serviceable prices sourced from Apollo Pharmacy / 1mg based on March actual consumption (post-discount). Tagged ✓ Verified where confirmed; ~ Claude est. for 4 medicines not in the actuals file (Etizolam 0.25mg, Risperidone 2mg, Zolpidem 5mg, Melatonin 3mg).</div>
-    <div class="card">
-      <div class="ctitle">Serviceable Medicines · From Allo Clinic Inventory File</div>
-      <div style="overflow-x:auto"><table><thead><tr>
-        <th>Salt + Dosage (normMed key)</th><th>Brand</th><th>Manufacturer</th><th style="text-align:center">Effective MRP ₹</th><th style="text-align:center">Selling ₹</th><th>Source</th>
-      </tr></thead><tbody id="assumpServBody"></tbody></table></div>
-    </div>
-    <div class="card">
-      <div class="ctitle">Non-Serviceable Medicines · Research Assumptions</div>
-      <div style="overflow-x:auto"><table><thead><tr>
-        <th>Salt + Dosage</th><th>Recommended Brand</th><th>Manufacturer</th><th style="text-align:center">MRP ₹/tab</th><th style="text-align:center">Selling ₹ (MRP×0.85)</th><th>Source</th>
-      </tr></thead><tbody id="assumpNonServBody"></tbody></table></div>
-    </div>
-  </div>
-</div>
 
 <script>
+const YESTERDAY=(()=>{const d=new Date();d.setDate(d.getDate()-1);return d.toISOString().slice(0,10);})();
+function initDateDefaults(){
+  ['dateTo','potTo','adjTo','dxTo'].forEach(id=>{const el=document.getElementById(id);if(el&&!el.value)el.value=YESTERDAY;});
+}
+initDateDefaults();
+
 // ==================== DATA ====================
 const TAXONOMY={
-  "Depression":{color:"#2563eb",bg:"#eff6ff",border:"#bfdbfe",icon:"😔",l2s:["Severe / MDD","Moderate","Mild","Mixed Anxiety-Depression","Adjustment Disorder w/ Depressive Features","Grief Disorder w/ Depressive Features"]},
+  "Depression": {color:"#2563eb",bg:"#eff6ff",border:"#bfdbfe",icon:"😔",l2s:["Mild*","Moderate–Severe*","Severe + Psychosis"]},
+  "Adjustment / Grief Spectrum": {color:"#0891b2",bg:"#ecfeff",border:"#a5f3fc",icon:"🌿",l2s:["Adjustment Disorder","Grief Disorder","Mixed Anxiety-Depression"]},
   "Anxiety Disorders":{color:"#d97706",bg:"#fffbeb",border:"#fde68a",icon:"😰",l2s:["GAD — Severe","GAD — Moderate","GAD — Mild","Panic Disorder","Adjustment / Acute Stress","Health Anxiety","Mixed Anxiety-Depression"]},
   "Bipolar / Psychotic Spectrum":{color:"#be185d",bg:"#fdf2f8",border:"#fbcfe8",icon:"🌀",l2s:["Bipolar I","Bipolar II","Schizoaffective Disorder","Psychotic Depression"]},
   "Neurodevelopmental":{color:"#7c3aed",bg:"#f5f3ff",border:"#ddd6fe",icon:"🧩",l2s:["ADHD — Inattentive","ADHD — Hyperactive","ADHD — Combined","ADHD + Comorbid Addiction","Impulse Control Disorder"]},
@@ -909,16 +964,16 @@ const TAXONOMY={
 
 // 35 MH patients with id linking to ASSESSMENT_MAP (appointment ID from screening form)
 const patients=[
-  {id:"2af897ba-dab6-487d-91ea-e2439a0b44ee",date:"2026-03-14",src:"Practo",primary:"MH",secondary:"-",gender:"Female",age:23,l1:"Depression",l2:"Severe / MDD",meds:"Fluoxetine Tab 20mg, Propranolol 20mg, Clonazepam Tab 0.25mg",therapy:"Therapy",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
-  {id:"60e9cf2d-9981-464e-a379-f62a9e2387e9",date:"2026-03-15",src:"Fb",primary:"SH",secondary:"MH",gender:"Female",age:25,l1:"Depression",l2:"Mixed Anxiety-Depression",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"Mixed anxiety-depression presenting as SH",severity:"Moderately ill"},
-  {id:"3324b578-9a9c-42c2-89a0-7800347f52b1",date:"2026-03-16",src:"GMB",primary:"SH",secondary:"MH",gender:"Female",age:26,l1:"Depression",l2:"Adjustment Disorder w/ Depressive Features",meds:"Bupropion Tab 150mg",therapy:"Couples counselling",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"Relationship / PE complaint",severity:"Mildly ill"},
-  {id:"5c171bfd-1c56-4346-a77f-b4685ed5c3f7",date:"2026-03-16",src:"Practo",primary:"SH",secondary:"MH",gender:"Male",age:22,l1:"Depression",l2:"Severe / MDD",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"Therapy",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"CM / Porn addiction entry",severity:"Markedly ill"},
-  {id:"da023419-4fd1-4f4f-9a13-729d84a82820",date:"2026-03-16",src:"Google",primary:"SH",secondary:"MH",gender:"Female",age:30,l1:"Depression",l2:"Severe / MDD",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"Couples counselling",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"NSSD / Low desire",severity:"Moderately ill"},
-  {id:"b5526997-248e-4936-9d1a-9f918a813535",date:"2026-03-18",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:27,l1:"Depression",l2:"Adjustment Disorder w/ Depressive Features",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"Couples counselling",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Borderline ill"},
+  {id:"2af897ba-dab6-487d-91ea-e2439a0b44ee",date:"2026-03-14",src:"Practo",primary:"MH",secondary:"-",gender:"Female",age:23,l1:"Depression",l2:"Moderate–Severe*",meds:"Fluoxetine Tab 20mg, Propranolol 20mg, Clonazepam Tab 0.25mg",therapy:"Therapy",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
+  {id:"60e9cf2d-9981-464e-a379-f62a9e2387e9",date:"2026-03-15",src:"Fb",primary:"SH",secondary:"MH",gender:"Female",age:25,l1:"Adjustment / Grief Spectrum",l2:"Mixed Anxiety-Depression",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"Mixed anxiety-depression presenting as SH",severity:"Moderately ill"},
+  {id:"3324b578-9a9c-42c2-89a0-7800347f52b1",date:"2026-03-16",src:"GMB",primary:"SH",secondary:"MH",gender:"Female",age:26,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",meds:"Bupropion Tab 150mg",therapy:"Couples counselling",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"Relationship / PE complaint",severity:"Mildly ill"},
+  {id:"5c171bfd-1c56-4346-a77f-b4685ed5c3f7",date:"2026-03-16",src:"Practo",primary:"SH",secondary:"MH",gender:"Male",age:22,l1:"Depression",l2:"Moderate–Severe*",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"Therapy",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"CM / Porn addiction entry",severity:"Markedly ill"},
+  {id:"da023419-4fd1-4f4f-9a13-729d84a82820",date:"2026-03-16",src:"Google",primary:"SH",secondary:"MH",gender:"Female",age:30,l1:"Depression",l2:"Moderate–Severe*",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"Couples counselling",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"NSSD / Low desire",severity:"Moderately ill"},
+  {id:"b5526997-248e-4936-9d1a-9f918a813535",date:"2026-03-18",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:27,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"Couples counselling",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Borderline ill"},
   {id:"a0da6832-7a2e-43a7-b0ab-c3e55e01dcad",date:"2026-03-20",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:20,l1:"Neurodevelopmental",l2:"ADHD — Combined",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"Therapy",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
-  {id:"84347127-dd96-49c0-86f0-c2069a63d409",date:"2026-03-21",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:37,l1:"Depression",l2:"Moderate",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Mildly ill"},
+  {id:"84347127-dd96-49c0-86f0-c2069a63d409",date:"2026-03-21",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:37,l1:"Depression",l2:"Moderate–Severe*",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Mildly ill"},
   {id:"32e65e7b-dc82-43dd-a4f0-f6758d106711",date:"2026-03-22",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:35,l1:"Anxiety Disorders",l2:"GAD — Severe",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"ED + work stress",severity:"Mildly ill"},
-  {id:"a64162c5-f3d1-441b-8dcd-6a8db037882e",date:"2026-03-22",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:48,l1:"Depression",l2:"Mild",meds:"",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"PE + Low desire",severity:"Borderline ill"},
+  {id:"a64162c5-f3d1-441b-8dcd-6a8db037882e",date:"2026-03-22",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:48,l1:"Depression",l2:"Mild*",meds:"",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"PE + Low desire",severity:"Borderline ill"},
   {id:"8cee8c6a-8402-431b-b3a1-197c6c678cde",date:"2026-03-22",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:38,l1:"Anxiety Disorders",l2:"GAD — Moderate",meds:"Sertraline Tab 25mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"GUI as SH",severity:"Moderately ill"},
   {id:"c8822153-477b-4896-84e9-f4878265dac3",date:"2026-03-27",src:"Practo",primary:"MH",secondary:"-",gender:"Male",age:36,l1:"Anxiety Disorders",l2:"GAD — Moderate",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Mildly ill"},
   {id:"53e924b5-936f-434c-a3f3-153e49d841e1",date:"2026-03-27",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:27,l1:"OCD Spectrum",l2:"Porn Addiction / CM",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"CM as SH",severity:"Moderately ill"},
@@ -926,24 +981,56 @@ const patients=[
   {id:"37b12fb4-8055-40c9-89d4-deeb9625acd8",date:"2026-03-29",src:"Practo",primary:"MH",secondary:"-",gender:"Male",age:33,l1:"Anxiety Disorders",l2:"GAD — Moderate",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"Therapy",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Moderately ill"},
   {id:"02057af8-ee1c-45f9-9795-49b3d74e5ad3",date:"2026-03-29",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:44,l1:"Anxiety Disorders",l2:"Panic Disorder",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"ED",severity:"Moderately ill"},
   {id:"627ade9a-922a-4fc1-826a-2d34d1b22b5c",date:"2026-03-30",src:"GMB",primary:"MH",secondary:"-",gender:"Male",age:49,l1:"Anxiety Disorders",l2:"GAD — Severe",meds:"Etizolam 0.5mg, Venlafaxine 75mg, Risperidone 2mg, Mirtazapine 7.5mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Severely ill"},
-  {id:"70af95bc-4828-4bca-8d02-adda9ac0f288",date:"2026-03-30",src:"Direct walk-in",primary:"MH",secondary:"-",gender:"Male",age:39,l1:"Depression",l2:"Severe / MDD",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"Couples counselling",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
-  {id:"5dbf424a-c173-4a96-b7f5-1d30ba2840ae",date:"2026-03-31",src:"GMB",primary:"MH",secondary:"-",gender:"Female",age:54,l1:"Depression",l2:"Severe / MDD",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
-  {id:"31fde950-8141-4ac2-8ec3-78650248fe16",date:"2026-04-01",src:"GMB",primary:"MH",secondary:"-",gender:"Male",age:21,l1:"Depression",l2:"Adjustment Disorder w/ Depressive Features",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"Supportive Psychotherapy",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Mildly ill"},
-  {id:"4ea7e8a6-ce1d-4479-91bc-53c01b1f7f44",date:"2026-04-01",src:"Google",primary:"MH",secondary:"-",gender:"Female",age:20,l1:"Depression",l2:"Mild",meds:"",therapy:"Individual + Couple",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Mildly ill"},
+  {id:"70af95bc-4828-4bca-8d02-adda9ac0f288",date:"2026-03-30",src:"Direct walk-in",primary:"MH",secondary:"-",gender:"Male",age:39,l1:"Depression",l2:"Moderate–Severe*",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"Couples counselling",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
+  {id:"5dbf424a-c173-4a96-b7f5-1d30ba2840ae",date:"2026-03-31",src:"GMB",primary:"MH",secondary:"-",gender:"Female",age:54,l1:"Depression",l2:"Moderate–Severe*",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
+  {id:"31fde950-8141-4ac2-8ec3-78650248fe16",date:"2026-04-01",src:"GMB",primary:"MH",secondary:"-",gender:"Male",age:21,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"Supportive Psychotherapy",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Mildly ill"},
   {id:"9de30bdb-012e-40d8-a2aa-49d05219087a",date:"2026-04-02",src:"Practo",primary:"MH",secondary:"-",gender:"Male",age:33,l1:"Anxiety Disorders",l2:"GAD — Moderate",meds:"",therapy:"Individual therapy",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Mildly ill"},
-  {id:"fc3b8d56-c700-4ad9-b18c-b0190db7e00a",date:"2026-04-03",src:"GMB",primary:"MH",secondary:"-",gender:"Female",age:24,l1:"Depression",l2:"Severe / MDD",meds:"Sertraline Tab 25mg, Clonazepam Tab 0.25mg",therapy:"Supportive Psychotherapy",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
+  {id:"fc3b8d56-c700-4ad9-b18c-b0190db7e00a",date:"2026-04-03",src:"GMB",primary:"MH",secondary:"-",gender:"Female",age:24,l1:"Depression",l2:"Moderate–Severe*",meds:"Sertraline Tab 25mg, Clonazepam Tab 0.25mg",therapy:"Supportive Psychotherapy",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
   {id:"f9792c72-741b-4c38-8b67-6f5b748ff111",date:"2026-04-03",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:36,l1:"Anxiety Disorders",l2:"GAD — Severe",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"Couples counselling",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"ED + GUI",severity:"Moderately ill"},
   {id:"d10591c7-e4ce-4dae-af65-4e2e90a45ca3",date:"2026-04-04",src:"GMB",primary:"MH",secondary:"-",gender:"Female",age:27,l1:"Neurodevelopmental",l2:"ADHD — Inattentive",meds:"Atomoxetine 40mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Moderately ill"},
-  {id:"dee0559c-b5a3-4a21-be72-aa2d2e4d7363",date:"2026-04-05",src:"GMB",primary:"MH",secondary:"-",gender:"Female",age:32,l1:"Depression",l2:"Severe / MDD",meds:"Fluoxetine Tab 20mg, Etizolam 0.5mg",therapy:"Couples counselling",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
+  {id:"dee0559c-b5a3-4a21-be72-aa2d2e4d7363",date:"2026-04-05",src:"GMB",primary:"MH",secondary:"-",gender:"Female",age:32,l1:"Depression",l2:"Moderate–Severe*",meds:"Fluoxetine Tab 20mg, Etizolam 0.5mg",therapy:"Couples counselling",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
   {id:"38ac05e1-ae56-4279-a9c7-c70aa5d38e9d",date:"2026-04-05",src:"Practo",primary:"MH",secondary:"-",gender:"Male",age:32,l1:"Addiction / Substance",l2:"Alcohol Dependence",meds:"Clonazepam Tab 0.25mg, Thiamine 100mg, Naltrexone 50mg, Sertraline Tab 50mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Severely ill"},
   {id:"fb149909-d6d2-408b-b50d-c1f75b2f0a71",date:"2026-04-06",src:"Organic",primary:"MH",secondary:"-",gender:"Male",age:22,l1:"OCD Spectrum",l2:"OCD — Severe",meds:"Fluoxetine Tab 20mg, Etizolam 0.5mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Severely ill"},
-  {id:"61e926b2-63c3-4a8e-a9a5-c8e3f4a69900",date:"2026-04-08",src:"Walk-in",primary:"MH",secondary:"-",gender:"Female",age:67,l1:"Neurocognitive Disorders",l2:"Dementia — Mixed",meds:"Quetiapine 25mg, Melatonin 3mg, Risperidone 1mg, Donepezil 5mg, Memantine 10mg, Sertraline Tab 50mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Severely ill"},
-  {id:"7b5f6f43-9435-4f81-b1ef-142fdfe7b254",date:"2026-04-09",src:"Walk-in",primary:"MH",secondary:"-",gender:"Female",age:48,l1:"Depression",l2:"Severe / MDD",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
+  {id:"7b5f6f43-9435-4f81-b1ef-142fdfe7b254",date:"2026-04-09",src:"Walk-in",primary:"MH",secondary:"-",gender:"Female",age:48,l1:"Depression",l2:"Moderate–Severe*",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
   {id:"8c57b4c6-a6cf-4b28-b6e3-0a0bc702157b",date:"2026-04-10",src:"GMB",primary:"MH",secondary:"SH",gender:"Female",age:42,l1:"Bipolar / Psychotic Spectrum",l2:"Schizoaffective Disorder",meds:"Bupropion Tab 150mg, Zolpidem 5mg, Escitalopram 10mg, Lamotrigine 25mg, Quetiapine 25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Severely ill"},
-  {id:"e60090af-9b44-4bb6-a84b-2c76638ca7f8",date:"2026-04-10",src:"Direct walk-in",primary:"MH",secondary:"-",gender:"Male",age:26,l1:"Depression",l2:"Severe / MDD",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
+  {id:"e60090af-9b44-4bb6-a84b-2c76638ca7f8",date:"2026-04-10",src:"Direct walk-in",primary:"MH",secondary:"-",gender:"Male",age:26,l1:"Depression",l2:"Moderate–Severe*",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
   {id:"1f452f1a-adf7-404c-891b-016367ef727b",date:"2026-04-12",src:"GMB",primary:"MH",secondary:"-",gender:"Male",age:25,l1:"OCD Spectrum",l2:"OCD — Severe",meds:"Escitalopram 10mg, Etizolam 0.25mg, Risperidone 1mg",therapy:"ERP Therapy",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Severely ill"},
-  {id:"082cf291-427a-4241-9665-981c2147a7bc",date:"2026-04-12",src:"Practo",primary:"MH",secondary:"-",gender:"Female",age:27,l1:"Depression",l2:"Grief Disorder w/ Depressive Features",meds:"Sertraline Tab 25mg, Clonazepam Tab 0.25mg",therapy:"Therapy",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Moderately ill"},
-  {id:"f301aff1-fcd9-4b56-b096-887ad491f153",date:"2026-04-12",src:"Google",primary:"MH",secondary:"-",gender:"Male",age:27,l1:"Depression",l2:"Severe / MDD",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
+  {id:"082cf291-427a-4241-9665-981c2147a7bc",date:"2026-04-12",src:"Practo",primary:"MH",secondary:"-",gender:"Female",age:27,l1:"Adjustment / Grief Spectrum",l2:"Grief Disorder",meds:"Sertraline Tab 25mg, Clonazepam Tab 0.25mg",therapy:"Therapy",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Moderately ill"},
+  {id:"f301aff1-fcd9-4b56-b096-887ad491f153",date:"2026-04-12",src:"Google",primary:"MH",secondary:"-",gender:"Male",age:27,l1:"Depression",l2:"Moderate–Severe*",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
+  // ===== APR 13+ MH-IDENTIFIED · CSV-DERIVED · revised logic · NE excluded · 4 allowed doctors only =====
+  {id:"25c6eb37-5b2e-4aa6-b7cb-8e9004675374",patientId:"e00b4389-c7d9-4d83-8240-5147bad25275",date:"2026-04-25",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:21,l1:"Depression",l2:"Mild*",diag:"Moderate Depression",meds:"Melatonin 3 mg",therapy:"-",doctor:"Dr. Adithya",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"ca048203-1d00-4f78-812a-89826ac332ab",patientId:"34b93d30-93c3-46e6-8bc6-7dfd5e2409b3",date:"2026-04-25",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:41,l1:"Depression",l2:"Mild*",diag:"Alcohol Harmful use ; Adjustment Disorder- Depressive type",meds:"Lorazepam 2 mg, Inj. Optinueronron, Thiamine 100 mg, PAN 40, NEXITO 10 mg",therapy:"-",doctor:"Dr. Adithya",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"0613c5e2-a2cb-497c-b8aa-14a72cf44ba6",patientId:"2e82a8e2-32c3-4065-b9bc-586f10fbecc7",date:"2026-04-25",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:33,l1:"Depression",l2:"Moderate–Severe*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill",bucket:"MH_ONLY"},
+  {id:"72a38714-6307-4b50-8f36-23563cc84c3a",patientId:"a2b8757a-5892-4adf-bc75-7a9d34837ded",date:"2026-04-25",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:40,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",diag:"Adjustment Disorder (6B43)",meds:"Paroxetine Tab 12.5mg",therapy:"-",doctor:"Dr. Shraddha",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"d770ca3c-5f60-4629-8a52-515acb45c945",patientId:"ec976b0b-d82f-4628-b24c-00b7767cdc82",date:"2026-04-26",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:30,l1:"OCD Spectrum",l2:"OCD — Moderate",diag:"?OCD",meds:"Fluoxetine Tab 20mg",therapy:"-",doctor:"Dr. Adithya",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"f1e3c7c3-4737-4461-bd8d-8e0f5858ae29",patientId:"c894d35b-a58b-42b6-85b2-5eded3aa8890",date:"2026-04-26",src:"Inbound",primary:"SH",secondary:"MH",gender:"Male",age:39,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",diag:"Adjustment Disorder (6B43)",meds:"Sertraline Tab 25mg, Clonazepam Tab 0.25mg, Water Based Lubricant 82gms",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Borderline ill",bucket:"STI_OVERLAP_MH",shPresenting:"Genito Urinary Infection (GUI) ; phimosis ; Mental Health Concerns"},
+  {id:"1db550ad-234e-42d2-824c-6ad211f2e706",patientId:"baf2df44-8306-4e3c-b83f-e729a36a3a28",date:"2026-04-26",src:"Inbound",primary:"SH",secondary:"MH",gender:"Male",age:26,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Tadalafil Tab 5mg, L-Arginine 2.5g + Zinc Sulphate 12mg + Vitamin B6 1.2mg, Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Borderline ill",bucket:"SH_TO_MH",shPresenting:"Mental Health Concerns ; Erectile Dysfunction"},
+  {id:"1f646b63-6385-4bbf-bb04-aecf95b3ab8e",patientId:"2346c209-4dfc-4e84-9521-ceb24a7e5b1e",date:"2026-04-27",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:37,l1:"Anxiety Disorders",l2:"Panic Disorder",diag:"Panic Disorder (6B01)",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg, Vitamin D Capsule",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill",bucket:"MH_ONLY"},
+  {id:"b93b385d-87ef-4301-91d2-21ee8ea388c2",patientId:"1aa7cd2e-01ab-499f-97dd-3eb3c82933b9",date:"2026-04-27",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:25,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Escitalopram 10 mg, Etizolam 0.5 mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
+  {id:"e9d88087-c790-4ce1-89df-5c129828f043",patientId:"ae668508-6f77-48b7-a9c8-170d49b98829",date:"2026-04-27",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:27,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Fluoxetine Tab 20mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"6fcf4042-e95c-4900-ac06-c3b5a8fc23ac",patientId:"fb125d27-0896-4bab-aa64-0f08be84a1d0",date:"2026-04-28",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:24,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
+  {id:"3b336d7e-abc5-4926-9ac8-869e4dc65ae9",patientId:"e765f9fa-1a1f-48e4-81db-50c16caf6774",date:"2026-04-28",src:"Inbound",primary:"SH",secondary:"MH",gender:"Male",age:33,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70) ; ADHD (6A05)",meds:"tab atomoxetine 18mg, Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Borderline ill",bucket:"SH_TO_MH",shPresenting:"Premature Ejaculation ; Porn Addiction ; Compulsive Masturbation ; Mental Health Concerns"},
+  {id:"a043430f-8a63-4f50-9569-d6a0dfef4346",patientId:"7776f4b2-7278-4171-a2ad-74f0afe63009",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:23,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
+  {id:"ea1e7770-1fe7-46e6-9cbe-9457ac71e1e2",patientId:"e587cf5c-518f-4573-98a6-25d7029e9c1e",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:29,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Sertraline Tab 25mg, Clonazepam Tab 0.25mg, Vitamin D Capsule",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
+  {id:"17f00082-4120-4179-a9b1-d6a9129353e5",patientId:"992a6c09-6c1c-4184-a93d-ee52f0caa201",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:19,l1:"Bipolar / Psychotic Spectrum",l2:"Bipolar I/II",diag:"bipolar disorder",meds:"tab lithium 600mg, tab quetiapine 25mg, tab zolcalm 10mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Normal, not at all ill",bucket:"MH_ONLY"},
+  {id:"4975830a-0804-41de-913d-1afaa5810dee",patientId:"bc1d3a82-4816-4f6f-9120-b619def058d0",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:50,l1:"Anxiety Disorders",l2:"GAD — Moderate",diag:"Generalized Anxiety Disorder (6B00) ; Alcohol Use Disorder (6C40)",meds:"Escitalopram 10 mg, Clonazepam 0.5 mg, Zolpidem 5 mg, tab nexpro rd 40mg, tab thiabion 100mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Pollachi",severity:"Moderately ill",bucket:"MH_ONLY"},
+  {id:"234396ac-ffd7-49e3-895b-a55fb5618232",patientId:"e7aadb51-3072-40d0-af73-acfb7ed1c830",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:21,l1:"OCD Spectrum",l2:"OCD — Moderate",diag:"Obsessive-Compulsive Disorder (6B20)",meds:"Fluvoxamine Tab 50mg, T. Risnia 2mg, T. Pacitane",therapy:"-",doctor:"Dr. Shraddha",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"74294fd5-5403-461f-af8d-c0d29e2d1bfb",patientId:"613c8556-86c0-4e00-ace5-6a58fd1d8ebf",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:26,l1:"Anxiety Disorders",l2:"GAD — Moderate",diag:"Generalized Anxiety Disorder (6B00)",meds:"Sertraline Tab 50mg, Clonazepam 0.5 mg",therapy:"-",doctor:"Dr. Shraddha",city:"Bangalore",severity:"Moderately ill",bucket:"MH_ONLY"},
+  {id:"2562f042-cf03-490b-bf63-e61e44ccec56",patientId:"9f45680d-7a28-41f2-a1e8-a674bb242632",date:"2026-05-01",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:43,l1:"Depression",l2:"Moderate–Severe*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Moderately ill",bucket:"MH_ONLY"},
+  {id:"6f7bff12-66bf-4601-b261-11531e3cf6e4",patientId:"2cd6189c-27bb-448d-bac5-6a0ea8cc03e8",date:"2026-05-01",src:"Inbound",primary:"SH",secondary:"MH",gender:"Female",age:34,l1:"Depression",l2:"Moderate–Severe*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Bupropion Tab 150mg, Clonazepam 0.5 mg",therapy:"-",doctor:"Dr. Shraddha",city:"Bangalore",severity:"Moderately ill",bucket:"SH_TO_MH",shPresenting:"Vaginismus ; Mental Health Concerns ; Low Sexual Desire"},
+  {id:"fb5bfab9-4015-4292-990d-1e7ac036f080",patientId:"e1470e08-c064-4e12-8040-07117839deac",date:"2026-05-02",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:24,l1:"Trauma & Stress-Related",l2:"Complex PTSD",diag:"Complex PTSD (6B41)",meds:"Fluoxetine Tab 20mg, Lithosum 300mg",therapy:"-",doctor:"Dr. Adithya",city:"Mangaluru",severity:"Borderline ill",bucket:"MH_ONLY"},
+  {id:"358e3d20-c2cc-4cd4-849c-f4c1aedef5e9",patientId:"79953455-828d-4a9d-8247-776b32a07aec",date:"2026-05-02",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:25,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Escitalopram 10 mg",therapy:"-",doctor:"Dr. Shraddha",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"38f54bcb-7e8c-4888-8a7c-9e676d68bbc4",patientId:"cc75b4e0-7ac5-4006-a757-429ddec7970e",date:"2026-05-03",src:"Inbound",primary:"SH",secondary:"MH",gender:"Male",age:26,l1:"Addiction / Substance",l2:"Cannabis Use Disorder",diag:"Cannabis Use Disorder (6C41) ; Nicotine Use Disorder (6C4A)",meds:"Tadalafil Tab 10mg, L-Arginine 2.5g + Zinc Sulphate 12mg + Vitamin B6 1.2mg",therapy:"-",doctor:"Dr. Adithya",city:"Bangalore",severity:"Mildly ill",bucket:"SH_TO_MH",shPresenting:"Atypical Erectile Dysfunction ; Mental Health Concerns"},
+  {id:"83315ce3-bb91-497b-8d1b-250b7192debc",patientId:"ec6b0f85-55f6-45e9-8851-cdb56b4285ed",date:"2026-05-03",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:28,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00) ; ?OC- need further evaluation",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Adithya",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"e84b5026-0ff3-45ff-91c4-030e8489ddf4",patientId:"a7f25e71-580a-40d2-89ee-c4b09b70def7",date:"2026-05-03",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:45,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Ooty",severity:"Borderline ill",bucket:"MH_ONLY"},
+  {id:"56276d7f-80bc-410e-bdb8-bc14338c6357",patientId:"456b20ee-3eb0-433f-b7ab-ba86fa12aa8c",date:"2026-05-03",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:29,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Escitalopram 10 mg, Zolpidem 10 mg, Clonazepam 0.5 mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
+  {id:"14b77464-c4e7-44c1-88c9-01402c8ddee5",patientId:"caf08838-a774-4710-8f3e-d64d81d97034",date:"2026-05-03",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:19,l1:"Trauma & Stress-Related",l2:"PTSD",diag:"PTSD (6B40)",meds:"Fluoxetine Tab 20mg, tab inderal LA 20mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Moderately ill",bucket:"MH_ONLY"},
+  {id:"9c443250-e0e8-4444-bc14-e44a955c4319",patientId:"86646862-d972-4814-af5c-7e6b0212d1b2",date:"2026-05-04",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:30,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg, Zolpidem 5 mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Kalapatti",severity:"Borderline ill",bucket:"MH_ONLY"},
+  {id:"7c64bb39-7984-4851-b834-f9ffea59faed",patientId:"695581f1-7359-40e4-9676-c230b0b5826a",date:"2026-05-04",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:45,l1:"Anxiety Disorders",l2:"Panic Disorder",diag:"Generalized Anxiety Disorder (6B00) ; Panic Disorder (6B01)",meds:"Escitalopram 10 mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Shraddha",city:"Pune",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"6a3101d8-3571-4c72-a67b-08f124b6fe80",patientId:"b008bbbf-57ae-4aca-9013-36238faa42ec",date:"2026-05-04",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:35,l1:"Depression",l2:"Mild*",diag:"Recurrent Depressive Disorder (6A71)",meds:"Escitalopram 10 mg",therapy:"-",doctor:"Dr. Shraddha",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  // ===== NE patients counted in MH-identified per business rule =====
+  {id:"4ea7e8a6-ne-apr01-dep",date:"2026-04-01",src:"Google",primary:"MH",secondary:"-",gender:"Female",age:20,l1:"Depression",l2:"Mild*",diag:"Depression (NE in RX_Data)",meds:"-",therapy:"Individual + Couple",doctor:"Dr. Sandhiya",city:"Coimbatore",isNE:true},
+  {id:"61e926b2-ne-apr08-dem",date:"2026-04-08",src:"Walk-in",primary:"MH",secondary:"-",gender:"Female",age:67,l1:"Neurocognitive Disorders",l2:"Dementia — Mixed",diag:"Dementia (NE in RX_Data)",meds:"Quetiapine, Memantine, Donepezil",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",isNE:true},
 ];
 
 // ===== TEST PRESCRIPTION DATA (from RX_data gen_tests col + package resolution) =====
@@ -981,15 +1068,292 @@ const DSS_TEST_NAME = {
 // Total = 150 ✓
 const MONTHLY={
   Mar:{total:92,ne:0,sti:23,lbl:"March 2026",start:"2026-03-01",end:"2026-03-31"},
-  Apr:{total:58,ne:5,sti:8,lbl:"April 2026",start:"2026-04-01",end:"2026-04-30"},
+  Apr:{total:61,ne:2,sti:11,lbl:"April 2026",start:"2026-04-01",end:"2026-04-30"},
+  May:{total:0,ne:0,sti:0,lbl:"May 2026 (multi-city only)",start:"2026-05-01",end:"2026-05-03"},
+  // Apr: W4(29 calls, Apr6-12) + W5(0, leave) + W6(25, Apr20-26) + W7 Coimbatore portion(7, Apr27-28) = 61 actual
+  // May: Coimbatore offline tracker not updated for May; multi-city raw counts present in SC_APPTS only
+  // NE: 2 (W4) | STI: W4(5)+W6(5)+W7(1) = 11
 };
+// W5: Apr 13–19 (Dr. Sandhiya on leave — Coimbatore only, minimal activity)
+// W6: Apr 20–26 (Apr 22 Dr. Sandhiya back; Apr 23 multi-city launch)
+// W7: Apr 27–May 3 — Coimbatore tracker captured only Apr 27–28 (7 calls). Multi-city activity Apr 28–May 3 visible in SC_APPTS / patients but NOT yet in offline weekly tracker totals below.
 const WEEKLY={
   W0:{total:24,ne:0,sti:5,lbl:"W0: Mar 9–15",start:"2026-03-09",end:"2026-03-15"},
   W1:{total:32,ne:0,sti:6,lbl:"W1: Mar 16–22",start:"2026-03-16",end:"2026-03-22"},
   W2:{total:24,ne:0,sti:8,lbl:"W2: Mar 23–29",start:"2026-03-23",end:"2026-03-29"},
   W3:{total:41,ne:3,sti:7,lbl:"W3: Mar 30–Apr 5",start:"2026-03-30",end:"2026-04-05"},
   W4:{total:29,ne:2,sti:5,lbl:"W4: Apr 6–12",start:"2026-04-06",end:"2026-04-12"},
+  W5:{total:0,ne:0,sti:0,lbl:"W5: Apr 13–19",start:"2026-04-13",end:"2026-04-19"},
+  W6:{total:25,ne:0,sti:0,lbl:"W6: Apr 20–26",start:"2026-04-20",end:"2026-04-26"},
+  W7:{total:7,ne:0,sti:0,lbl:"W7: Apr 27–May 3",start:"2026-04-27",end:"2026-05-03"},
 };
+
+const SC_APPTS=[
+  {id:'e56fc797',date:'2026-03-09',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'9141b09d',date:'2026-03-09',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'81727268',date:'2026-03-09',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'36121c7b',date:'2026-03-10',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:true},
+  {id:'d16776bd',date:'2026-03-10',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'b71e6eea',date:'2026-03-10',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'093b65cd',date:'2026-03-10',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'958d4821',date:'2026-03-10',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'d6e089f2',date:'2026-03-11',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'1e9a5d65',date:'2026-03-11',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'f4409323',date:'2026-03-11',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'445647e4',date:'2026-03-11',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'8f2caa03',date:'2026-03-13',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'e98138d6',date:'2026-03-13',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'4bb5335a',date:'2026-03-14',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'75985ad8',date:'2026-03-13',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'d896690f',date:'2026-03-14',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'60e9cf2d',date:'2026-03-15',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'eefe4582',date:'2026-03-14',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'2af897ba',date:'2026-03-14',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'MH',ne:false},
+  {id:'e1556675',date:'2026-03-15',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'e66ceaab',date:'2026-03-14',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'34279170',date:'2026-03-15',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'da023419',date:'2026-03-16',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Google',cat:'SH',ne:false},
+  {id:'894525ee',date:'2026-03-15',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'3324b578',date:'2026-03-16',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
+  {id:'52c43848',date:'2026-03-16',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'5c171bfd',date:'2026-03-16',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'SH',ne:false},
+  {id:'47e0b0a8',date:'2026-03-16',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'2495b4c3',date:'2026-03-16',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'5012793e',date:'2026-03-17',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:true},
+  {id:'be986d54',date:'2026-03-17',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'b5526997',date:'2026-03-18',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'446b53ea',date:'2026-03-18',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'f9ffd0d6',date:'2026-03-21',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'32e65e7b',date:'2026-03-22',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
+  {id:'ab92a253',date:'2026-03-20',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'38d2a514',date:'2026-03-20',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'452c465d',date:'2026-03-20',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'c1abfcc6',date:'2026-03-20',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'d0cecff1',date:'2026-03-20',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'a64162c5',date:'2026-03-22',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
+  {id:'20094c8e',date:'2026-03-20',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:true},
+  {id:'e9cc1711',date:'2026-03-20',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'a0da6832',date:'2026-03-20',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'b975c178',date:'2026-03-21',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'84347127',date:'2026-03-21',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'ff4dba4c',date:'2026-03-21',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'5b00def0',date:'2026-03-21',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'55902527',date:'2026-03-22',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'99025bee',date:'2026-03-22',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'ce175589',date:'2026-03-22',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'39ef9123',date:'2026-03-22',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'22d35953',date:'2026-03-22',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'416199df',date:'2026-03-22',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'8cee8c6a',date:'2026-03-22',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'STI',ne:false},
+  {id:'3a8ad38b',date:'2026-03-22',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'74924fdb',date:'2026-03-23',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'7f27d9d6',date:'2026-03-23',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'3ef12893',date:'2026-03-23',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'1129465b',date:'2026-03-23',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'9a0344ec',date:'2026-03-26',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'68550e4b',date:'2026-03-26',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'c8822153',date:'2026-03-27',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'MH',ne:false},
+  {id:'7d78607f',date:'2026-03-26',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'8516fa40',date:'2026-03-26',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'c247ce63',date:'2026-03-26',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'53e924b5',date:'2026-03-27',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
+  {id:'f90fc88b',date:'2026-03-27',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'e13114f3',date:'2026-03-27',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'0f9be3c1',date:'2026-03-29',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'c4c44885',date:'2026-03-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'SH',ne:false},
+  {id:'0007895e',date:'2026-03-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'87c6a80e',date:'2026-03-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'37b12fb4',date:'2026-03-29',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'MH',ne:false},
+  {id:'ff264716',date:'2026-03-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'3a8b8e6c',date:'2026-03-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'d68dba01',date:'2026-03-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'57276454',date:'2026-03-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'68b56c1f',date:'2026-03-31',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'e49f6f4e',date:'2026-03-29',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'02057af8',date:'2026-03-29',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
+  {id:'6145c4d5',date:'2026-03-30',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'7ef53f63',date:'2026-03-31',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'97339298',date:'2026-03-30',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'8ae7d23c',date:'2026-03-31',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'a3224bc6',date:'2026-03-30',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'831375a1',date:'2026-03-30',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'70af95bc',date:'2026-03-30',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'3107844c',date:'2026-03-30',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'627ade9a',date:'2026-03-31',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
+  {id:'5dbf424a',date:'2026-03-31',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
+  {id:'d52f667d',date:'2026-03-31',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'8c3c950e',date:'2026-04-01',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'a1db7053',date:'2026-04-01',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'31fde950',date:'2026-04-01',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
+  {id:'4ea7e8a6',date:'2026-04-01',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Google',cat:'MH',ne:true},
+  {id:'45214cfc',date:'2026-04-01',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'9de30bdb',date:'2026-04-02',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'MH',ne:false},
+  {id:'372a3727',date:'2026-04-02',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'4a291905',date:'2026-04-02',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'51b3a562',date:'2026-04-02',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'29e70212',date:'2026-04-02',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'923baae1',date:'2026-04-02',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'f9792c72',date:'2026-04-03',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
+  {id:'9379184a',date:'2026-04-03',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'c8dcac20',date:'2026-04-03',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'fc3b8d56',date:'2026-04-03',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
+  {id:'e0e86aa2',date:'2026-04-04',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'d2235576',date:'2026-04-05',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'60cd5e96',date:'2026-04-05',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'d10591c7',date:'2026-04-04',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
+  {id:'44f09329',date:'2026-04-04',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'dee0559c',date:'2026-04-05',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
+  {id:'d3cc10f7',date:'2026-04-04',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'59c0e322',date:'2026-04-04',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'158db978',date:'2026-04-06',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'d2ff1122',date:'2026-04-05',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'fe64305f',date:'2026-04-04',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'38ac05e1',date:'2026-04-05',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'MH',ne:false},
+  {id:'fb149909',date:'2026-04-06',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Organic',cat:'MH',ne:false},
+  {id:'8a050b71',date:'2026-04-05',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'6349aefc',date:'2026-04-05',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'080178b7',date:'2026-04-05',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'88457d97',date:'2026-04-05',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'4c61659e',date:'2026-04-06',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'9283be9e',date:'2026-04-06',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'4d5c0675',date:'2026-04-06',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'523761fb',date:'2026-04-07',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Google',cat:'STI',ne:false},
+  {id:'cea64626',date:'2026-04-07',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'SH',ne:false},
+  {id:'1e38918c',date:'2026-04-07',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Organic',cat:'SH',ne:false},
+  {id:'b9a7092a',date:'2026-04-08',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'STI',ne:false},
+  {id:'15e3b97b',date:'2026-04-08',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Organic',cat:'SH',ne:false},
+  {id:'61e926b2',date:'2026-04-08',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:true},
+  {id:'4bdc2c57',date:'2026-04-09',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Google',cat:'STI',ne:false},
+  {id:'e4da6700',date:'2026-04-08',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'SH',ne:false},
+  {id:'fb5db2b8',date:'2026-04-09',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'SH',ne:false},
+  {id:'56a0a650',date:'2026-04-09',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Organic',cat:'SH',ne:false},
+  {id:'1f452f1a',date:'2026-04-09',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'12059f69',date:'2026-04-09',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Organic',cat:'SH',ne:false},
+  {id:'ac6f5016',date:'2026-04-09',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'STI',ne:false},
+  {id:'d07366e7',date:'2026-04-09',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
+  {id:'8c57b4c6',date:'2026-04-10',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
+  {id:'47ebff1f',date:'2026-04-10',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
+  {id:'246f765d',date:'2026-04-10',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Google',cat:'SH',ne:false},
+  {id:'e60090af',date:'2026-04-10',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'8716add9',date:'2026-04-11',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'e9623171',date:'2026-04-11',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'STI',ne:false},
+  {id:'f301aff1',date:'2026-04-12',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
+  {id:'082cf291',date:'2026-04-12',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'MH',ne:false},
+  {id:'7b5f6f43',date:'2026-04-12',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Google',cat:'MH',ne:false},
+  {id:'92c870c3',date:'2026-04-12',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'SH',ne:false},
+  // ===== APR 13+ SC_APPTS · CSV-DERIVED · revised logic (NE first → STI overlap → ismhorsh+moqlq → STI keyword) · 4 allowed doctors only =====
+  {id:'d531ac6e',date:'2026-04-17',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:true},
+  {id:'39d46561',date:'2026-04-18',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:true},
+  {id:'607d3343',date:'2026-04-22',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:true},
+  {id:'35fa78a3',date:'2026-04-23',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:true},
+  {id:'6600a778',date:'2026-04-23',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'fea6639a',date:'2026-04-23',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
+  {id:'8392f5a0',date:'2026-04-23',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
+  {id:'f9b3dbae',date:'2026-04-23',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:true},
+  {id:'5a8f6ac0',date:'2026-04-24',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'7cd108da',date:'2026-04-24',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'STI',ne:false},
+  {id:'bd3c1e0d',date:'2026-04-24',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'67279afe',date:'2026-04-24',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'5573bcbd',date:'2026-04-24',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'120ad162',date:'2026-04-25',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'25c6eb37',date:'2026-04-25',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
+  {id:'2b23ea3e',date:'2026-04-25',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'ca048203',date:'2026-04-25',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
+  {id:'3ba72318',date:'2026-04-25',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
+  {id:'55431bd8',date:'2026-04-25',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'93594e75',date:'2026-04-25',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'a91caefb',date:'2026-04-25',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'32f2eed2',date:'2026-04-25',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'42533279',date:'2026-04-25',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'3f010cff',date:'2026-04-25',city:'Chennai',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'637869d5',date:'2026-04-25',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'0613c5e2',date:'2026-04-25',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'17ff63c9',date:'2026-04-25',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'43dc9b1d',date:'2026-04-25',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
+  {id:'72a38714',date:'2026-04-25',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
+  {id:'03a7ac3a',date:'2026-04-25',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'1d79a706',date:'2026-04-25',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'0ae669c0',date:'2026-04-25',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'e6d8a002',date:'2026-04-26',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'d770ca3c',date:'2026-04-26',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
+  {id:'5202dad1',date:'2026-04-26',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:true},
+  {id:'5181bb45',date:'2026-04-26',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'7561fd10',date:'2026-04-26',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'f1e3c7c3',date:'2026-04-26',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'0bddd663',date:'2026-04-26',city:'Jharkand',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'1db550ad',date:'2026-04-26',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'6114bd9e',date:'2026-04-27',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
+  {id:'0bfce69b',date:'2026-04-27',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'1f646b63',date:'2026-04-27',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'b93b385d',date:'2026-04-27',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'e9d88087',date:'2026-04-27',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'19de0519',date:'2026-04-27',city:'Tiruppur',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'ed924597',date:'2026-04-27',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
+  {id:'b42171fd',date:'2026-04-27',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
+  {id:'d061eb74',date:'2026-04-27',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'f7aa48e3',date:'2026-04-27',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
+  {id:'3779c23b',date:'2026-04-28',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
+  {id:'51b74407',date:'2026-04-28',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
+  {id:'6ef6a50e',date:'2026-04-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'6fcf4042',date:'2026-04-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'603c8592',date:'2026-04-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'7d675126',date:'2026-04-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'b0885ea2',date:'2026-04-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'3b336d7e',date:'2026-04-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'214f009b',date:'2026-04-28',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'71cab10d',date:'2026-04-28',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'3f12652d',date:'2026-04-29',city:'Tiruvannamalai',doctor:'Dr. Adithya',src:'Inbound',cat:'STI',ne:false},
+  {id:'faa95c50',date:'2026-04-29',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'STI',ne:false},
+  {id:'76c79bfd',date:'2026-04-29',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'be6f16f4',date:'2026-04-29',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'1ade63ae',date:'2026-04-29',city:'Chennai',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'e476fb3d',date:'2026-04-30',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'a043430f',date:'2026-04-30',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'ea1e7770',date:'2026-04-30',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'17f00082',date:'2026-04-30',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'90bdcd61',date:'2026-04-30',city:'Pollachi',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'9e800499',date:'2026-04-30',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'4975830a',date:'2026-04-30',city:'Pollachi',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'234396ac',date:'2026-04-30',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
+  {id:'74294fd5',date:'2026-04-30',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
+  {id:'8551fcde',date:'2026-05-01',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
+  {id:'b705ad1d',date:'2026-05-01',city:'Kerala',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'d81cdb50',date:'2026-05-01',city:'Palakkad',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'44c50af7',date:'2026-05-01',city:'Erode',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'2562f042',date:'2026-05-01',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'b8548094',date:'2026-05-01',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'a1b48a8e',date:'2026-05-01',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'c04a9857',date:'2026-05-01',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'48c4813c',date:'2026-05-01',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'6f7bff12',date:'2026-05-01',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'eedf9200',date:'2026-05-01',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'fb5bfab9',date:'2026-05-02',city:'Mangaluru',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
+  {id:'9cde6bfb',date:'2026-05-02',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'STI',ne:false},
+  {id:'4457bf5b',date:'2026-05-02',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:true},
+  {id:'65ebf35d',date:'2026-05-02',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'2f7f4c81',date:'2026-05-02',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'a6235d58',date:'2026-05-02',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'d858b9e3',date:'2026-05-02',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:true},
+  {id:'358e3d20',date:'2026-05-02',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
+  {id:'7bb39479',date:'2026-05-02',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'9bdb65fe',date:'2026-05-03',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'38f54bcb',date:'2026-05-03',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'83315ce3',date:'2026-05-03',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
+  {id:'93b6ee2e',date:'2026-05-03',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'e84b5026',date:'2026-05-03',city:'Ooty',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'56276d7f',date:'2026-05-03',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'77d42bd9',date:'2026-05-03',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'36435e36',date:'2026-05-03',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'441119bc',date:'2026-05-03',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'58d5bdbc',date:'2026-05-03',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'14b77464',date:'2026-05-03',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'ca521db6',date:'2026-05-04',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
+  {id:'feb7d256',date:'2026-05-04',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
+  {id:'9c443250',date:'2026-05-04',city:'Kalapatti',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'b4341002',date:'2026-05-04',city:'Tenkasi',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'7c64bb39',date:'2026-05-04',city:'Pune',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
+  {id:'6a3101d8',date:'2026-05-04',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false}
+];
 
 // ===== HYPOTHESES =====
 // Precision computed across 138 SC patients from correct 158 SC appt IDs
@@ -1287,12 +1651,21 @@ const MEDICINE_DB={
   'Lamotrigine 25mg':           {brand:'Lamitor 25mg',           manufacturer:'Torrent Pharma',           mrp:4.50,  selling:3.82,  serviceable:false, verified:true},
   'Zolpidem 5mg':               {brand:'Zolfresh 5mg',           manufacturer:'Mankind Pharma',           mrp:4.20,  selling:3.57,  serviceable:false, verified:false},
   'Olanzapine 5mg':             {brand:'Oleanz 5mg',             manufacturer:'Sun Pharma',               mrp:5.20,  selling:4.42,  serviceable:false, verified:true},
+  'Bupropion XL 150mg':         {brand:'Bupron XL 150mg',       manufacturer:'Sun Pharma',               mrp:21.50, selling:18.27, serviceable:false, verified:true},
+  'Desvenlafaxine 50mg':        {brand:'D-Veniz 50mg',           manufacturer:'Alkem (Cachet Pharma)',    mrp:25.00, selling:21.25, serviceable:false, verified:true, source:'1mg.com/brands/d-veniz'},
+  'Desvenlafaxine 100mg':       {brand:'D-Veniz 100mg',          manufacturer:'Alkem (Cachet Pharma)',    mrp:40.00, selling:34.00, serviceable:false, verified:true, source:'1mg.com/brands/d-veniz'},
   'Atomoxetine 40mg':           {brand:'Axepta 40mg',            manufacturer:'Intas Pharmaceuticals',    mrp:52.00, selling:44.20, serviceable:false, verified:true},
 };
 // Derive inventory from serviceable entries
 let inventory=Object.entries(MEDICINE_DB).filter(([,v])=>v.serviceable).map(([k])=>k);
 
 const THERAPY_PRICE=1499;
+// Sandip v2 branch rates — derived from current Rx data (sleep) + placeholder (sexual) until prescription form captures these flags
+const DSS_BRANCH_RATES={
+  sleepIssueRate: 0.15,    // 15% — based on Etizolam/Mirtazapine/Zolpidem markers in current Depression Rx (2/17 = 12%, rounded up)
+  sexualConcernRate: 0.10, // 10% placeholder — no current data; awaiting prescription form
+  testPanelRate: 0.25,     // 25% per Sandip v2 — clinical-judgement-driven panel
+};
 // DSS therapy assumption: Depression + Anxiety = 100% (compulsory), all other L1s = 60%
 function dssTherapyRate(l1){
   return(l1==='Depression'||l1==='Anxiety Disorders')?1.0:0.60;
@@ -1357,32 +1730,42 @@ const DIAG_DB={
 };
 
 const DSS_DIAG={
-  'Severe / MDD':          ['TSH/T3/T4','CBC','Vitamin B12','Vitamin D'],
-  'Moderate':              ['TSH/T3/T4','CBC'],
-  'Mild':                  ['TSH/T3/T4'],
-  'Adjustment Disorder':   [],
-  'Adjustment Disorder w/ Depressive Features':   [],
-  'Grief Disorder':        [],
-  'Grief Disorder w/ Depressive Features':        [],
+  // Depression — Sandip v2 (₹2000 panel; applied to 25% of cases — see DSS_TEST_PROB)
+  'Mild*':                  ['LFT','Vitamin B12','Vitamin D','TSH/T3/T4','Urea+Creatinine+Electrolytes','CBC','HbA1c'],
+  'Moderate–Severe*':       ['LFT','Vitamin B12','Vitamin D','TSH/T3/T4','Urea+Creatinine+Electrolytes','CBC','HbA1c'],
+  'Severe + Psychosis':     ['LFT','Vitamin B12','Vitamin D','TSH/T3/T4','Urea+Creatinine+Electrolytes','CBC','HbA1c'],
+  // Adjustment / Grief Spectrum
+  'Adjustment Disorder':    [],
+  'Grief Disorder':         [],
   'Mixed Anxiety-Depression':['TSH/T3/T4','CBC'],
-  'GAD — Severe':          ['TSH/T3/T4','CBC','Vitamin B12','Vitamin D'],
-  'GAD — Moderate':        ['TSH/T3/T4','CBC'],
-  'GAD — Mild':            ['TSH/T3/T4'],
-  'Panic Disorder':        ['TSH/T3/T4','CBC'],
-  'Health Anxiety':        ['TSH/T3/T4','CBC','LFT'],
-  'OCD — Severe':          ['TSH/T3/T4','CBC'],
-  'OCD — Moderate':        ['TSH/T3/T4'],
-  'Porn Addiction / CM':   [],
+  // Anxiety (unchanged)
+  'GAD — Severe':           ['TSH/T3/T4','CBC','Vitamin B12','Vitamin D'],
+  'GAD — Moderate':         ['TSH/T3/T4','CBC'],
+  'GAD — Mild':             ['TSH/T3/T4'],
+  'Panic Disorder':         ['TSH/T3/T4','CBC'],
+  'Health Anxiety':         ['TSH/T3/T4','CBC','LFT'],
+  // Other (unchanged)
+  'OCD — Severe':           ['TSH/T3/T4','CBC'],
+  'OCD — Moderate':         ['TSH/T3/T4'],
+  'Porn Addiction / CM':    [],
   'Porn Addiction / Behavioural Compulsion': [],
-  'Alcohol Dependence':    ['LFT','CBC','Vitamin B12'],
-  'ADHD — Combined':       ['TSH/T3/T4'],
-  'ADHD — Inattentive':    ['TSH/T3/T4'],
+  'Alcohol Dependence':     ['LFT','CBC','Vitamin B12'],
+  'ADHD — Combined':        ['TSH/T3/T4'],
+  'ADHD — Inattentive':     ['TSH/T3/T4'],
   'ADHD + Comorbid Addiction':['TSH/T3/T4','LFT'],
   'ADHD — Adult (Combined / Inattentive)': ['TSH/T3/T4'],
-  'Dementia — Mixed':      ['TSH/T3/T4','CBC','Vitamin B12','Vitamin D','RBS'],
+  'Dementia — Mixed':       ['TSH/T3/T4','CBC','Vitamin B12','Vitamin D','RBS'],
   'Dementia — Mixed / Alzheimer\'s + BPSD': ['TSH/T3/T4','CBC','Vitamin B12','Vitamin D','RBS'],
   'Schizoaffective Disorder':['TSH/T3/T4','CBC','Lipid Profile'],
 };
+
+// Test probability: Depression panel applied to 25% of cases per Sandip v2
+const DSS_TEST_PROB={
+  'Mild*': 0.25,
+  'Moderate–Severe*': 0.25,
+  'Severe + Psychosis': 0.25,
+};
+function dssTestRate(l2){return DSS_TEST_PROB[l2]??1.0;}
 
 function calcMedAOV(medList){
   let serv=0,nonServ=0,total=0;
@@ -1409,13 +1792,14 @@ function calcDiagAOV(testKeys){
 // ── DSS_AOV (med cost per L2) ─────────────────────────────────────────────
 const DSS_AOV={
   "Depression":{
-    "Severe / MDD":                        [{salt:"Escitalopram 10mg",freqPerDay:1,supplyDays:30},{salt:"Clonazepam 0.25mg",freqPerDay:2,supplyDays:14},{salt:"Mirtazapine 7.5mg",freqPerDay:1,supplyDays:30}],
-    "Moderate":                            [{salt:"Sertraline 50mg",freqPerDay:1,supplyDays:30},{salt:"Clonazepam 0.25mg",freqPerDay:1,supplyDays:14}],
-    "Mild":                                [{salt:"Escitalopram 10mg",freqPerDay:1,supplyDays:30}],
+    // Sandip v2 — Mild — primary path Sertraline 50mg D1-4 ½ tab → D5+ 1 tab (avg ~25 tabs/30d)
+    "Mild*":                               [{salt:"Sertraline 50mg",freqPerDay:1,supplyDays:30},{salt:"Clonazepam 0.25mg",freqPerDay:0.3,supplyDays:14,note:"PRN — avg ~0.3/day"}],
+    // Sandip v2 — Mod-Sev — Sertraline titrated to 100mg by D9 (avg ~52 tabs/30d ≈ 1.75/day)
+    "Moderate–Severe*":                    [{salt:"Sertraline 50mg",freqPerDay:1.75,supplyDays:30},{salt:"Clonazepam 0.25mg",freqPerDay:1,supplyDays:28,note:"1 nocte daily × 4 weeks"}],
+    "Severe + Psychosis":                  [{salt:"Sertraline 50mg",freqPerDay:1,supplyDays:30,note:"On hold — refer"}],
+    // Adjustment / Grief / Mixed
     "Adjustment Disorder":                 [{salt:"Escitalopram 10mg",freqPerDay:1,supplyDays:30}],
-    "Adjustment Disorder w/ Depressive Features": [{salt:"Escitalopram 10mg",freqPerDay:1,supplyDays:30}],
     "Grief Disorder":                      [{salt:"Escitalopram 10mg",freqPerDay:1,supplyDays:30}],
-    "Grief Disorder w/ Depressive Features": [{salt:"Escitalopram 10mg",freqPerDay:1,supplyDays:30}],
     "Mixed Anxiety-Depression":            [{salt:"Sertraline 50mg",freqPerDay:1,supplyDays:30},{salt:"Clonazepam 0.25mg",freqPerDay:2,supplyDays:14}],
   },
   "Anxiety":{
@@ -1508,43 +1892,66 @@ function scoreDeviation(p){
 // ── ALLO_DSS (full DSS protocol data for the Allo Health DSS tab) ─────────
 const ALLO_DSS={
   "Depression":[
-    {l2:"Severe / MDD",col:"#dc2626",bg:"#fef2f2",bc:"#fecaca",
+    // ===== Depression DSS — meds updated per Allo Health DSS (Mental health Category Launch · gid=904715570). Tests/therapy/follow-up retained. =====
+    {l2:"Mild*",col:"#059669",bg:"#ecfdf5",bc:"#a7f3d0",
      meds:[
-       {salt:"Escitalopram 10mg",dose:"10mg OD → 20mg at 2 weeks",duration:"6 months minimum after remission",supply:"30 days",note:"NICE first-line; best tolerability in MDD"},
-       {salt:"Sertraline 50mg",dose:"50mg OD → 100mg at 2–4 weeks",duration:"6 months minimum",supply:"30 days",note:"Alt first-line; preferred if anxiety-dominant"},
-       {salt:"Clonazepam 0.25mg",dose:"0.25–0.5mg BD",duration:"2–4 weeks only — MUST taper",supply:"14 days",note:"BZD bridge for SSRI onset lag; not maintenance"},
-       {salt:"Mirtazapine 7.5mg",dose:"7.5mg ON → 15mg",duration:"3–6 months augmentation",supply:"30 days",note:"Add if partial response at week 4; addresses sleep + appetite"},
+       {salt:"1A · Sertraline 50mg",dose:"D1–4: ½ tab (25mg) OD (4 days) → D5+: 1 tab (50mg) OD (4 weeks)",duration:"4 weeks acute + 6–9 mo maintenance",supply:"30 days",note:"TIER 1 default · ideally for younger patients, no major sleep issues, no other medical co-morbidities"},
+       {salt:"1B · Escitalopram 10mg",dose:"D1–4: ½ tab (5mg) OD (4 days) → D5+: 1 tab (10mg) OD (4 weeks)",duration:"4 weeks acute + 6 mo maintenance",supply:"30 days",note:"TIER 1 alt · if sleep issues prominent as part of Depression"},
+       {salt:"2A · Desvenlafaxine 50mg",dose:"D1+: 1 tab (50mg) OD (4 weeks)",duration:"4 weeks acute + 6 mo maintenance",supply:"30 days",note:"⏭ TIER 2 SNRI · if 1st-line SSRI not worked OR prominent anxiety. Avoid in hypertension/obesity"},
+       {salt:"2B · Paroxetine 12.5mg",dose:"D1–7: 1 tab (12.5mg) OD (4 weeks)",duration:"4 weeks acute + 6 mo maintenance",supply:"30 days",note:"⏭ TIER 2 alternative · also FDA-approved (use if Sertraline not tolerated). Avoid in hypertension/obesity"},
+       {salt:"ADJUNCT · Bupropion XL 150mg",dose:"150mg/day as an add-on",duration:"With SSRI · 4 weeks",supply:"30 days",note:"💜 If sexual concerns (delayed climax / low desire) — added on top of TIER 1, not switched"},
+       {salt:"ADJUNCT · Clonazepam 0.25mg (SOS)",dose:"SOS only — up to 2 tabs/24h PRN",duration:"PRN bridge for SSRI lag (~2 wks)",supply:"14 days",note:"😰 If mild anxiety / anxiety after starting SSRI"},
+       {salt:"ADJUNCT · Clonazepam 0.25mg (nocte)",dose:"1 tab at night daily + SOS up to 2 tabs/24h",duration:"4 weeks max — strict taper",supply:"28 days",note:"😨 If moderate anxiety. Breakthrough use SOS"},
+       {salt:"ADJUNCT · Mirtazapine 7.5mg",dose:"1 tab at night daily",duration:"4 weeks",supply:"30 days",note:"😴 If major sleep issues — sub-antidepressant sleep-inducer dose"},
      ],
-     assessments:["PHQ-9 at baseline, Week 4, Week 8","C-SSRS — mandatory for Severe","GAD-7 (comorbid anxiety screen)","AUDIT-C if substance risk"],
-     therapy:"CBT or IPT — 16 sessions",followup:"Week 1 (safety), Week 2 (tolerability), Week 4 (PHQ-9), Week 8 (dose review)",
-     escalation:"Active SI → IPD · Psychotic features → Psychiatrist · 2 failed SSRI trials → Venlafaxine 75mg or Specialist"},
-    {l2:"Moderate",col:"#d97706",bg:"#fffbeb",bc:"#fde68a",
+     assessments:["PHQ-9 5–9 (Mild) — confirm severity*","Sleep questionnaire (drives Escitalopram)*","Sexual function questions (drives Bupropion adjunct)*","TSH/T3/T4 + LFT + B12/D + CBC + HbA1c + KFT panel — applied to 25% of cases (clinical judgement)"],
+     therapy:"CBT or Behavioural Activation — first-line · all Depression cases",
+     followup:"Week 2 (tolerability), Week 4 (PHQ-9 reassess)",
+     escalation:"No improvement at 4 weeks → escalate to Moderate–Severe protocol or switch SSRI"},
+    {l2:"Moderate–Severe*",col:"#dc2626",bg:"#fef2f2",bc:"#fecaca",
      meds:[
-       {salt:"Sertraline 50mg",dose:"50mg OD → 100mg at 4 weeks",duration:"6 months",supply:"30 days",note:"NICE first-line for moderate depression"},
-       {salt:"Clonazepam 0.25mg",dose:"0.25mg ON",duration:"2 weeks only",supply:"14 days",note:"Short bridge; optional"},
+       {salt:"1A · Sertraline 50mg",dose:"Mod: D1–4: ½ tab (25mg) OD (4 days) → D5+: 1 tab (50mg) OD (4 weeks)<br>Severe (no psy): D1–4: ½ tab (25mg) OD → D5–8: 1 tab (50mg) OD → D9+: 2 tabs (100mg) OD (3 weeks)",duration:"4 weeks acute titration + 6–12 mo maintenance",supply:"30 days",note:"TIER 1 default · ideally for younger patients, no major sleep issues, no other medical co-morbidities"},
+       {salt:"1B · Escitalopram 10mg",dose:"Mod: D1–4: ½ tab (5mg) OD → D5+: 1 tab (10mg) OD (4 weeks)<br>Severe (no psy): D1–4: ½ tab (5mg) OD → D5–8: 1 tab (10mg) OD → D9+: 1½ tabs (15mg) OD (3 weeks)",duration:"4 weeks acute + 6–12 mo maintenance",supply:"30 days",note:"TIER 1 alt · if sleep issues prominent"},
+       {salt:"2A · Desvenlafaxine 50mg",dose:"Mod: D1+: 1 tab (50mg) OD (4 weeks)<br>Severe (no psy): Wk 1: 1 tab (50mg) OD → Wk 2+: 2 tabs (100mg) OD (3 weeks)",duration:"4 weeks acute + 6–12 mo maintenance",supply:"30 days",note:"⏭ TIER 2 SNRI · if 1st-line SSRI not worked OR prominent anxiety. Avoid in hypertension/obesity"},
+       {salt:"2B · Paroxetine 12.5mg",dose:"Mod: D1–7: 1 tab (12.5mg) OD (4 weeks)<br>Severe (no psy): D1–7: 1 tab (12.5mg) OD (1 wk) → Wk 2–4: 2 tabs (25mg) OD (≥6–12 mo)",duration:"4 weeks acute + 6–12 mo maintenance",supply:"30 days",note:"⏭ TIER 2 alternative · also FDA-approved. Avoid in hypertension/obesity"},
+       {salt:"ADJUNCT · Bupropion XL 150mg",dose:"150mg/day as an add-on",duration:"With SSRI · 4 weeks acute",supply:"30 days",note:"💜 If sexual concerns — added on top of TIER 1"},
+       {salt:"ADJUNCT · Clonazepam 0.25mg (SOS)",dose:"SOS only — up to 2 tabs/24h PRN",duration:"PRN bridge for SSRI lag (~2 wks)",supply:"14 days",note:"😰 If mild anxiety / anxiety after starting SSRI"},
+       {salt:"ADJUNCT · Clonazepam 0.25mg (nocte)",dose:"1 tab at night daily + SOS up to 2 tabs/24h",duration:"4 weeks max — strict taper",supply:"28 days",note:"😨 If moderate anxiety"},
+       {salt:"ADJUNCT · Mirtazapine 7.5mg",dose:"1 tab at night daily",duration:"4 weeks",supply:"30 days",note:"😴 If major sleep issues — sub-AD dose"},
      ],
-     assessments:["PHQ-9 at baseline + Week 4","GAD-7 if mixed features"],
-     therapy:"CBT or Behavioural Activation — 12 sessions",followup:"Week 2 (tolerability), Week 4 (PHQ-9), Week 12 (taper)",
-     escalation:"PHQ-9 <50% reduction at Week 8 → increase dose or switch SSRI"},
-    {l2:"Mild",col:"#059669",bg:"#ecfdf5",bc:"#a7f3d0",
-     meds:[{salt:"Escitalopram 10mg",dose:"10mg OD",duration:"6 months if pharmacotherapy chosen",supply:"30 days",note:"Therapy-first is acceptable alternative"}],
-     assessments:["PHQ-9 at baseline + Week 6"],therapy:"Behavioural Activation — first-line",
-     followup:"Week 6 review — if no improvement, step up",escalation:"No improvement at 6 weeks → step up"},
-    {l2:"Adjustment Disorder w/ Depressive Features",col:"#0891b2",bg:"#ecfeff",bc:"#a5f3fc",
-     meds:[{salt:"Escitalopram 10mg",dose:"10mg OD",duration:"3 months (only if symptoms persist >4 weeks)",supply:"30 days",note:"Pharmacotherapy not routine — use only if symptoms persist"}],
+     assessments:["PHQ-9 ≥10 (Mod–Sev) — confirm severity*","C-SSRS — mandatory for Severe","Sleep questionnaire (drives Escitalopram)*","Sexual function (drives Bupropion adjunct)*","TSH/T3/T4 + LFT + B12/D + CBC + HbA1c + KFT panel — 25% of cases"],
+     therapy:"CBT or IPT — 16 sessions (all Mod–Sev)",
+     followup:"Week 1 (safety), Week 2 (tolerability), Week 4 (PHQ-9), Week 8 (review)",
+     escalation:"Active SI → IPD · 2 failed SSRI trials → step up to TIER 2 (Desvenlafaxine / Paroxetine) · Refractory → Psychiatrist"},
+    {l2:"Severe + Psychosis",col:"#7c3aed",bg:"#f5f3ff",bc:"#ddd6fe",
+     meds:[
+       {salt:"1A · Sertraline 100mg + Risperidone 2mg",dose:"Sertraline: D1–6: 1 tab (50mg) OD → D7+: 2 tabs (100mg) OD (3 weeks)<br>Risperidone: D1–6: ½ tab (1mg) OD → D7+: 1 tab (2mg) OD (4 weeks)",duration:"4 weeks acute + 12 mo maintenance",supply:"30 days",note:"TIER 1 SSRI + atypical antipsychotic combination"},
+       {salt:"1B · Escitalopram 10mg + Risperidone 2mg",dose:"Escitalopram: D1–6: 1 tab (5mg) OD → D7+: 2 tabs (10mg) OD (3 weeks)<br>Risperidone: D1–6: ½ tab (1mg) OD → D7+: 1 tab (2mg) OD (4 weeks)",duration:"4 weeks acute + 12 mo maintenance",supply:"30 days",note:"TIER 1 alt + Risperidone · if sleep issues prominent"},
+       {salt:"2A · Desvenlafaxine 100mg + Risperidone 2mg",dose:"Desvenlafaxine: Wk 1: 1 tab (50mg) OD → Wk 2+: 2 tabs (100mg) OD (3 weeks)<br>Risperidone: D1–6: ½ tab (1mg) OD → D7+: 1 tab (2mg) OD (4 weeks)",duration:"4 weeks acute + 12 mo maintenance",supply:"30 days",note:"⏭ TIER 2 SNRI + Risperidone. Avoid in hypertension/obesity"},
+       {salt:"2B · Paroxetine 25mg + Risperidone 2mg",dose:"Paroxetine: D1–7: 1 tab (12.5mg) OD (1 wk) → Wk 2–4: 2 tabs (25mg) OD (≥6–12 mo)<br>Risperidone: D1–6: ½ tab (1mg) OD → D7+: 1 tab (2mg) OD (4 weeks)",duration:"4 weeks acute + 12 mo maintenance",supply:"30 days",note:"⏭ TIER 2 alt + Risperidone. Avoid in hypertension/obesity"},
+       {salt:"ADJUNCT · Bupropion XL 150mg",dose:"150mg/day as an add-on",duration:"With SSRI · 4 weeks",supply:"30 days",note:"💜 If sexual concerns. Caution: lowers seizure threshold — extra care with antipsychotic combo"},
+       {salt:"ADJUNCT · Clonazepam 0.25mg (nocte)",dose:"1 tab at night daily",duration:"4 weeks max — strict taper",supply:"28 days",note:"😨 For moderate anxiety / agitation"},
+       {salt:"ADJUNCT · Mirtazapine 7.5mg",dose:"1 tab at night daily",duration:"4 weeks",supply:"30 days",note:"😴 If major sleep issues alongside Risperidone sedation"},
+     ],
+     assessments:["PHQ-9 ≥20 (Severe) — confirm severity*","C-SSRS — mandatory","MSE for psychotic features (delusions, hallucinations, thought disorder)","TSH/T3/T4 + LFT + B12/D + CBC + HbA1c + KFT + Prolactin (Risperidone baseline)","ECG before Risperidone if cardiac risk"],
+     therapy:"Specialist co-management · CBT for psychosis once stabilised · Family psycho-education",
+     followup:"Day 3–7 (safety + EPS), Week 2 (tolerability), Week 4 (PHQ-9 + MSE), Week 8, Month 3",
+     escalation:"Active SI / command hallucinations → IPD · No response at 4 weeks → switch tier · Refractory → Psychiatrist + ECT consideration"},
+    {l2:"Adjustment Disorder",col:"#0891b2",bg:"#ecfeff",bc:"#a5f3fc",
+     meds:[{salt:"Escitalopram 10mg",dose:"10mg OD",duration:"3 months only if symptoms persist >4 weeks",supply:"30 days",note:"Pharmacotherapy not routine — therapy-first"}],
      assessments:["PHQ-9 at baseline"],therapy:"Supportive Therapy or CBT — primary treatment",
      followup:"Week 4 reassessment",escalation:"SI or stressor escalation → immediate review"},
-    {l2:"Grief Disorder w/ Depressive Features",col:"#7c3aed",bg:"#f5f3ff",bc:"#ddd6fe",
-     meds:[{salt:"Escitalopram 10mg",dose:"10mg OD",duration:"6 months",supply:"30 days",note:"Only if grief extends beyond 12 weeks with functional impairment"}],
-     assessments:["PHQ-9","Bereavement timeline assessment"],therapy:"Grief-focused therapy — 16 sessions",
+    {l2:"Grief Disorder",col:"#7c3aed",bg:"#f5f3ff",bc:"#ddd6fe",
+     meds:[{salt:"Escitalopram 10mg",dose:"10mg OD",duration:"6 months",supply:"30 days",note:"Only if grief >12 weeks with functional impairment"}],
+     assessments:["PHQ-9","Bereavement timeline"],therapy:"Grief-focused therapy — 16 sessions",
      followup:"Week 4, Week 8",escalation:"SI → immediate escalation"},
     {l2:"Mixed Anxiety-Depression",col:"#be185d",bg:"#fdf2f8",bc:"#fbcfe8",
      meds:[
-       {salt:"Sertraline 50mg",dose:"50mg OD → 100mg",duration:"9 months",supply:"30 days",note:"Dual efficacy for anxiety + depression"},
-       {salt:"Clonazepam 0.25mg",dose:"0.25mg BD",duration:"2–4 weeks",supply:"14 days",note:"Bridge for acute anxiety component"},
+       {salt:"Sertraline 50mg",dose:"50mg OD → 100mg",duration:"9 months",supply:"30 days",note:"Dual efficacy"},
+       {salt:"Clonazepam 0.25mg",dose:"0.25mg BD",duration:"2–4 weeks",supply:"14 days",note:"Bridge"},
      ],
-     assessments:["PHQ-9 + GAD-7 both","AUDIT-C"],therapy:"CBT for mixed presentations — 16 sessions",
-     followup:"Week 2, Week 4 (both scores), Week 8",escalation:"Worsening of either score → Specialist"},
+     assessments:["PHQ-9 + GAD-7","AUDIT-C"],therapy:"CBT — 16 sessions",
+     followup:"Week 2, Week 4, Week 8",escalation:"Worsening either score → Specialist"},
   ],
   "Anxiety":[
     {l2:"GAD — Severe",col:"#dc2626",bg:"#fef2f2",bc:"#fecaca",
@@ -1583,11 +1990,14 @@ const ALLO_DSS={
 
 function buildFullDSS(diag){
   const entries=ALLO_DSS[diag]||[];
+  const statusLabel = (diag==='Depression')
+    ? '<span style="color:var(--green);font-weight:700">✓ Meds finalised · Allo Health DSS</span>'
+    : 'Pending Dr. Sandip approval';
   return entries.map(p=>`
     <div class="card" style="border-color:${p.bc};margin-bottom:12px">
       <div style="background:${p.bg};border-bottom:1.5px solid ${p.bc};padding:9px 12px;border-radius:9px 9px 0 0;margin:-13px -13px 12px -13px;display:flex;align-items:center;justify-content:space-between">
         <div style="font-size:.8rem;font-weight:800;color:${p.col}">${p.l2}</div>
-        <div style="font-size:.62rem;color:var(--muted);font-weight:500">Pending Dr. Sandip approval</div>
+        <div style="font-size:.62rem;color:var(--muted);font-weight:500">${statusLabel}</div>
       </div>
       <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:14px">
         <div>
@@ -1723,6 +2133,96 @@ function buildOtherDSS(){
 }
 
 function renderAOVBlock(l1key,l2){
+  const isDep=(l1key==='Depression');
+  const isDepSeverity=isDep && (l2==='Mild*'||l2==='Moderate–Severe*'||l2==='Severe + Psychosis');
+
+  // For Depression severity buckets — apply Sandip v2 branch weights:
+  //   75% no-sleep → Sertraline (default 1A)
+  //   15% sleep    → Escitalopram (1B)
+  //   10% sexual   → Bupropion XL (sexual branch — replaces SSRI)
+  if(isDepSeverity){
+    const sleepRate=DSS_BRANCH_RATES.sleepIssueRate;
+    const sexRate=DSS_BRANCH_RATES.sexualConcernRate;
+    const noSleepRate=1-sleepRate-sexRate;
+
+    // Sandip v2 titration → tablets/30 days per severity
+    // Mild: ½ × 4d + 1 × 26d = 28 tabs (Sert/Esc); Bupropion 1 × 30 = 30
+    // Mod-Sev: ½ × 4 + 1 × 4 + 2 × 22 = 50 (Sert/Esc); Bupropion 1 × 10 + 2 × 20 = 50
+    // Severe+Psych: refer (use Mod-Sev for placeholder)
+    const tablets=(l2==='Mild*')
+      ? {sert:28, esc:28, bup:30, escHalf:'½', bupNote:'1 tab × 30d'}
+      : {sert:50, esc:50, bup:50, escHalf:'½', bupNote:'1 tab × 10d → 2 tabs × 20d'};
+
+    // Adjunct Clonazepam — symptom-driven, blended estimate
+    // Mild: PRN ~0.3/day × 14d ≈ 4 tabs ; Mod-Sev: 1 nocte × 28d = 28 tabs
+    const clonaTabs=(l2==='Mild*')?4:28;
+
+    // Med info lookups
+    const sert=getMedInfo('Sertraline 50mg');     // ₹11.50/tab
+    const esc =getMedInfo('Escitalopram 10mg');   // ₹3.23/tab (½ tab on D1-4 — but we use whole-tab pricing for simplicity, ½ tab × 4 days = 2 tabs)
+    const bup =getMedInfo('Bupropion 150mg');     // ₹17.00/tab
+    const clon=getMedInfo('Clonazepam 0.25mg');   // ₹2.00/tab
+
+    const sertCost=sert?sert.selling*tablets.sert:0;
+    const escCost =esc ?esc.selling*tablets.esc :0;
+    const bupCost =bup ?bup.selling*tablets.bup :0;
+    const clonCost=clon?clon.selling*clonaTabs  :0;
+
+    // Blended SSRI/Bupropion cost (weighted across the 3 branches)
+    const blendedPrimary=Math.round(noSleepRate*sertCost + sleepRate*escCost + sexRate*bupCost);
+    const totalMed=blendedPrimary+Math.round(clonCost);
+
+    // Tests + therapy
+    const diagTests=DSS_DIAG[l2]||[];
+    const diag=calcDiagAOV(diagTests);
+    const testRate=DSS_BRANCH_RATES.testPanelRate;
+    const expectedDiag=Math.round(diag.total*testRate);
+    const grandTotal=totalMed+expectedDiag+THERAPY_PRICE;
+
+    const branchRow=(label,rate,brand,price,tabs,cost,col)=>`<tr>
+      <td style="font-size:.6rem;color:var(--muted)">${label}</td>
+      <td style="font-size:.65rem;font-family:'JetBrains Mono',monospace;color:${col};font-weight:700">${brand}</td>
+      <td style="text-align:center;font-size:.62rem">&#8377;${price.toFixed(2)}/tab</td>
+      <td style="text-align:center;font-size:.62rem">${tabs} tabs</td>
+      <td style="text-align:center;font-size:.62rem">&#8377;${Math.round(cost)}</td>
+      <td style="text-align:center;font-size:.62rem;color:${col};font-weight:700">×${Math.round(rate*100)}% = &#8377;${Math.round(cost*rate)}</td>
+    </tr>`;
+
+    const diagRows=diagTests.length?diagTests.map(k=>{const d=DIAG_DB[k];if(!d)return'';return`<tr><td style="font-size:.62rem">${d.name}</td><td style="text-align:center;font-size:.62rem;font-weight:700">&#8377;${d.price}</td></tr>`;}).join(''):'';
+
+    return`<div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:7px;padding:10px 12px;margin-top:10px">
+      <div style="font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:8px">&#8377; AOV · First Prescription · Sandip v2 weighted</div>
+      <div style="display:grid;grid-template-columns:1.7fr 1fr 0.8fr;gap:10px">
+        <div>
+          <div style="font-size:.6rem;font-weight:700;color:var(--purple);margin-bottom:4px">&#128138; Meds — Branch-weighted</div>
+          <table style="font-size:.62rem;width:100%"><thead><tr style="background:var(--bl)"><th style="font-size:.55rem">Branch</th><th style="font-size:.55rem">Brand</th><th style="font-size:.55rem">Price</th><th style="font-size:.55rem">Qty</th><th style="font-size:.55rem">Cost</th><th style="font-size:.55rem">Weighted</th></tr></thead><tbody>
+            ${branchRow('No sleep · 75%',noSleepRate, sert?.brand||'—', sert?.selling||0, tablets.sert, sertCost, 'var(--blue)')}
+            ${branchRow('Sleep · 15%',sleepRate, esc?.brand||'—', esc?.selling||0, tablets.esc, escCost, 'var(--purple)')}
+            ${branchRow('Sexual · 10%',sexRate, bup?.brand||'—', bup?.selling||0, tablets.bup, bupCost, 'var(--orange)')}
+            <tr style="background:var(--gl)"><td colspan="5" style="text-align:right;font-size:.62rem">Blended primary</td><td style="text-align:center;font-weight:700;color:var(--green)">&#8377;${blendedPrimary}</td></tr>
+            <tr><td style="font-size:.6rem;color:var(--muted)">Adjunct</td><td style="font-size:.62rem;font-family:'JetBrains Mono',monospace">${clon?.brand||'Clonazepam'}</td><td style="text-align:center;font-size:.62rem">&#8377;${clon?.selling.toFixed(2)||0}/tab</td><td style="text-align:center;font-size:.62rem">${clonaTabs} tabs</td><td colspan="2" style="text-align:right;font-weight:700">&#8377;${Math.round(clonCost)}</td></tr>
+          </tbody></table>
+          <div style="font-size:.66rem;font-weight:700;text-align:right;margin-top:5px;color:var(--purple)">Total Meds: &#8377;${totalMed}</div>
+        </div>
+        <div>
+          <div style="font-size:.6rem;font-weight:700;color:var(--green);margin-bottom:4px">&#129514; Diagnostics (25%)</div>
+          ${diagRows?`<table style="font-size:.62rem;width:100%"><tbody>${diagRows}</tbody></table><div style="font-size:.6rem;color:var(--muted);text-align:right;margin-top:4px">Panel: &#8377;${diag.total}</div><div style="font-size:.66rem;font-weight:700;text-align:right;color:var(--green)">×25% = &#8377;${expectedDiag}</div>`:'<div style="font-size:.65rem;color:var(--muted)">—</div>'}
+        </div>
+        <div>
+          <div style="font-size:.6rem;font-weight:700;color:var(--orange);margin-bottom:4px">&#129504; Therapy</div>
+          <div style="font-size:.66rem;color:var(--muted)">1 session × 100%</div>
+          <div style="font-size:.85rem;font-weight:700;color:var(--orange)">&#8377;${THERAPY_PRICE}</div>
+          <div style="margin-top:10px;padding-top:8px;border-top:1.5px solid var(--border)">
+            <div style="font-size:.58rem;color:var(--muted)">AOV per case</div>
+            <div style="font-size:1.05rem;font-weight:800;color:var(--blue)">&#8377;${grandTotal}</div>
+            <div style="font-size:.55rem;color:var(--muted);line-height:1.5">Med &#8377;${totalMed} + Test &#8377;${expectedDiag} + Th &#8377;${THERAPY_PRICE}</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // Default path (non-Depression-severity L2s) — original render
   const medList=getDSSMeds(l2);
   const diagTests=DSS_DIAG[l2];
   if(!medList.length&&(!diagTests||!diagTests.length))return'';
@@ -1733,7 +2233,7 @@ function renderAOVBlock(l1key,l2){
     <td style="font-family:'JetBrains Mono',monospace;font-size:.65rem">${m.salt}</td>
     <td style="font-size:.61rem;color:var(--muted)">${m.brand}</td>
     <td style="text-align:center;font-size:.65rem">&#8377;${m.price.toFixed(2)}/tab</td>
-    <td style="text-align:center;font-size:.65rem">${m.freq}x/d x ${m.days}d</td>
+    <td style="text-align:center;font-size:.65rem">${m.freq}x/d × ${m.days}d = ${Math.round(m.freq*m.days)} tabs</td>
     <td style="text-align:center;font-weight:700">&#8377;${Math.round(m.total)}</td>
     <td style="text-align:center">${m.serv?'<span class="pill-ok" style="font-size:.58rem">&#10003; stock</span>':'<span class="pill-dev" style="font-size:.58rem">&#9888; procure</span>'}${!m.verified?' <span style="font-size:.57rem;color:var(--dim)">~</span>':''}</td>
   </tr>`).join('');
@@ -1772,9 +2272,12 @@ function getWk(d){
   if(dt>=new Date("2026-03-23")&&dt<=new Date("2026-03-29"))return"W2";
   if(dt>=new Date("2026-03-30")&&dt<=new Date("2026-04-05"))return"W3";
   if(dt>=new Date("2026-04-06")&&dt<=new Date("2026-04-12"))return"W4";
+  if(dt>=new Date("2026-04-13")&&dt<=new Date("2026-04-19"))return"W5";
+  if(dt>=new Date("2026-04-20")&&dt<=new Date("2026-04-26"))return"W6";
+  if(dt>=new Date("2026-04-27")&&dt<=new Date("2026-05-03"))return"W7";
   return null;
 }
-function getMon(d){if(d.startsWith("2026-03"))return"Mar";if(d.startsWith("2026-04"))return"Apr";return null;}
+function getMon(d){if(d.startsWith("2026-03"))return"Mar";if(d.startsWith("2026-04"))return"Apr";if(d.startsWith("2026-05"))return"May";return null;}
 function isM(g){return/male/i.test(g)&&!/female/i.test(g);}
 function isF(g){return/female/i.test(g);}
 function parseMeds(m){if(!m||m==="-"||m==="Not mentioned")return[];return m.split(/,|\|/).map(x=>x.trim()).filter(Boolean);}
@@ -1785,12 +2288,13 @@ function getFilteredPts(){
   const doc=document.getElementById('filterDoctor')?.value||'all';
   const city=document.getElementById('filterCity')?.value||'all';
   const from=new Date(document.getElementById('dateFrom')?.value||'2026-03-09');
-  const to=new Date(document.getElementById('dateTo')?.value||'2026-04-12');
+  const to=new Date(document.getElementById('dateTo')?.value||'2026-04-27');
   return patients.filter(p=>{
     const d=new Date(p.date);
     if(d<from||d>to)return false;
     if(doc!='all'&&p.doctor!==doc)return false;
-    if(city!='all'&&p.city!==city)return false;
+    if(city==='non_coimbatore'&&p.city==='Coimbatore')return false;
+    else if(city!='all'&&city!=='non_coimbatore'&&p.city!==city)return false;
     return true;
   });
 }
@@ -1834,33 +2338,63 @@ function renderSection1(){
   // Active weekly columns within range
   const activeWks=Object.entries(WEEKLY).filter(([k,v])=>new Date(v.start)>=from&&new Date(v.end)<=to);
 
-  const buildM=(k,b)=>{
-    const pMH=pts.filter(p=>getMon(p.date)===k&&p.primary==="MH").length;
-    const pSHMH=pts.filter(p=>getMon(p.date)===k&&p.primary==="SH"&&p.secondary==="MH").length;
-    const elig=b.total-b.ne;
-    return{...b,key:'M_'+k,isMonth:true,mh:pMH,shMh:pSHMH,sh:elig-b.sti-pMH,elig};
+  // ── Filter SC_APPTS by city + doctor + date range ──────────────────────
+  const fCity=document.getElementById('filterCity')?.value||'all';
+  const fDoc=document.getElementById('filterDoctor')?.value||'all';
+  const scFiltered=SC_APPTS.filter(a=>{
+    const dt=new Date(a.date);
+    if(dt<from||dt>to)return false;
+    if(fCity!=='all'&&a.city!==fCity)return false;
+    if(fDoc!=='all'&&a.doctor!==fDoc)return false;
+    return true;
+  });
+
+  // ── Build column data from filtered SC_APPTS ────────────────────────────
+  const scForPeriod=(pred)=>scFiltered.filter(pred);
+  const scStats=(appts)=>({
+    total:appts.length,
+    ne:appts.filter(a=>a.ne).length,
+    sti:appts.filter(a=>a.cat==='STI').length,
+    mh:appts.filter(a=>a.cat==='MH').length,
+    shMh:0, // SH→MH tracked via patients array; SC_APPTS doesn't distinguish
+  });
+
+  const buildM=(monKey)=>{
+    const mb=MONTHLY[monKey];
+    const apts=scForPeriod(a=>getMon(a.date)===monKey);
+    const s=scStats(apts);
+    const elig=s.total-s.ne;
+    const pSHMH=pts.filter(p=>getMon(p.date)===monKey&&p.primary==="SH"&&p.secondary==="MH"&&p.bucket!=="STI_OVERLAP_MH").length;
+    const pStiMh=pts.filter(p=>getMon(p.date)===monKey&&p.bucket==="STI_OVERLAP_MH").length;
+    const pMH=s.mh; // from SC_APPTS
+    return{...mb,key:'M_'+monKey,isMonth:true,lbl:mb.lbl,
+      total:s.total,ne:s.ne,sti:s.sti,elig,mh:pMH,shMh:pSHMH,stiMh:pStiMh,sh:Math.max(0,elig-s.sti-pMH)};
   };
   const buildW=(k,b)=>{
-    const pMH=pts.filter(p=>getWk(p.date)===k&&p.primary==="MH").length;
-    const pSHMH=pts.filter(p=>getWk(p.date)===k&&p.primary==="SH"&&p.secondary==="MH").length;
-    const elig=b.total-b.ne;
-    return{...b,key:k,isMonth:false,mh:pMH,shMh:pSHMH,sh:elig-b.sti-pMH,elig};
+    const apts=scForPeriod(a=>getWk(a.date)===k);
+    const s=scStats(apts);
+    const elig=s.total-s.ne;
+    const pSHMH=pts.filter(p=>getWk(p.date)===k&&p.primary==="SH"&&p.secondary==="MH"&&p.bucket!=="STI_OVERLAP_MH").length;
+    const pStiMh=pts.filter(p=>getWk(p.date)===k&&p.bucket==="STI_OVERLAP_MH").length;
+    const pMH=s.mh;
+    return{...b,key:k,isMonth:false,
+      total:s.total,ne:s.ne,sti:s.sti,elig,mh:pMH,shMh:pSHMH,stiMh:pStiMh,sh:Math.max(0,elig-s.sti-pMH)};
   };
 
-  const mCols=activeMons.map(m=>buildM(m,MONTHLY[m]));
-  const wCols=activeWks.map(([k,b])=>buildW(k,b));
+  const mCols=activeMons.map(m=>buildM(m)).reverse();  // newest month first
+  const wCols=activeWks.map(([k,b])=>buildW(k,b)).reverse();  // newest week first
   const allCols=[...mCols,...wCols];
-  // Cumulative sums ONLY the monthly columns (weekly cols are sub-breakdowns of the months, not additive)
-  const cuBase=mCols.length>0?mCols:wCols; // fall back to weeks if no months in range
-  const cu=cuBase.reduce((a,c)=>({total:a.total+c.total,ne:a.ne+(c.ne||0),sti:a.sti+c.sti,mh:a.mh+c.mh,shMh:a.shMh+c.shMh,sh:a.sh+c.sh,elig:a.elig+c.elig}),{total:0,ne:0,sti:0,mh:0,shMh:0,sh:0,elig:0});
-  const cols=[...allCols,{...cu,key:"CU",lbl:"Cumulative",isMonth:false}];
-  const firstWkIdx=mCols.length;
+  const cuBase=mCols.length>0?mCols:wCols;
+  const cu=cuBase.reduce((a,c)=>({total:a.total+c.total,ne:a.ne+(c.ne||0),sti:a.sti+c.sti,mh:a.mh+c.mh,shMh:a.shMh+c.shMh,stiMh:a.stiMh+(c.stiMh||0),sh:a.sh+c.sh,elig:a.elig+c.elig}),{total:0,ne:0,sti:0,mh:0,shMh:0,stiMh:0,sh:0,elig:0});
+  const cols=[{...cu,key:"CU",lbl:"Cumulative",isMonth:false},...allCols];  // Cumulative first
+  const firstWkIdx=1;  // weeks start after cumulative col
 
   document.getElementById("k-tot").textContent=cu.total;
   document.getElementById("k-mh").textContent=cu.mh;
   document.getElementById("k-sh").textContent=cu.shMh;
-  document.getElementById("k-sti").textContent=cu.sti+Math.max(0,cu.sh-cu.shMh);
-  document.getElementById("k-rate").textContent=cu.elig?Math.round((cu.mh+cu.shMh)/cu.elig*100)+"%":"—";
+  document.getElementById("k-sti-mh").textContent=cu.stiMh;
+  document.getElementById("k-sti").textContent=Math.max(0,cu.sti-cu.stiMh)+Math.max(0,cu.sh-cu.shMh);
+  document.getElementById("k-rate").textContent=cu.elig?Math.round((cu.mh+cu.shMh+cu.stiMh)/cu.elig*100)+"%":"—";
 
   // Header
   document.getElementById("scHead").innerHTML=`<th style="min-width:220px">Metric</th>`+cols.map((c,i)=>{
@@ -1891,18 +2425,28 @@ function renderSection1(){
     row(`<span style="padding-left:14px;color:var(--muted)">Not Eligible</span>`,c=>c.ne||'—'),
     row(`<strong>Eligible</strong>`,c=>`<strong class="c-n">${c.elig}</strong>`,'var(--bl)'),
     grp("STI CASES"),
-    row("STI Cases",c=>`<span class="c-sti">${c.sti}</span>`),
+    row(`<strong>Total STI cases</strong>`,c=>`<strong class="c-sti">${c.sti}</strong>`),
+    row(`<span style="padding-left:14px">Pure STI (no MH identified)</span>`,c=>`<span class="c-sti">${Math.max(0,c.sti-(c.stiMh||0))}</span>`),
+    row(`<span style="padding-left:14px;color:var(--orange)">STI→MH overlap (STI visit, MH co-flagged)</span>`,c=>`<span style="color:var(--orange);font-weight:700">${c.stiMh||0}</span>`),
+    row(`<span style="padding-left:14px;color:var(--orange);font-style:italic">% MH of STI cases</span>`,c=>c.sti?`<span style="color:var(--orange);font-weight:700" class="pct">${((c.stiMh||0)/c.sti*100).toFixed(1)}%</span>`:'—'),
     grp("SH CASES"),
-    row("Pure SH (no MH identified)",c=>`<span class="c-sh">${Math.max(0,c.sh-c.shMh)}</span>`),
+    row(`<strong>Total SH cases</strong>`,c=>`<strong class="c-sh">${c.sh}</strong>`),
+    row(`<span style="padding-left:14px">Pure SH (no MH identified)</span>`,c=>`<span class="c-sh">${Math.max(0,c.sh-c.shMh)}</span>`),
     row(`<span style="padding-left:14px">SH→MH (SH entry, MH found)</span>`,c=>`<span class="c-sh">${c.shMh}</span>`),
+    row(`<span style="padding-left:14px;color:var(--purple);font-style:italic">% MH of SH cases</span>`,c=>c.sh?`<span style="color:var(--purple);font-weight:700" class="pct">${(c.shMh/c.sh*100).toFixed(1)}%</span>`:'—'),
+    grp("SH + STI COMBINED"),
+    row(`<strong>Total SH + STI cases</strong>`,c=>`<strong class="c-n">${c.sh+c.sti}</strong>`),
+    row(`<span style="padding-left:14px">MH from SH + STI cases</span>`,c=>`<span style="color:var(--blue);font-weight:700">${c.shMh+(c.stiMh||0)}</span>`),
+    row(`<span style="padding-left:14px;font-style:italic">% MH from total SH + STI</span>`,c=>(c.sh+c.sti)?`<span style="color:var(--blue);font-weight:700" class="pct">${((c.shMh+(c.stiMh||0))/(c.sh+c.sti)*100).toFixed(1)}%</span>`:'—'),
     grp("MH CASES"),
-    row(`<strong>MH Only (Primary = MH)</strong>`,c=>`<strong class="c-mh">${c.mh}</strong>`,'var(--bl)'),
+    row(`<strong>Pure MH cases (Primary = MH only)</strong>`,c=>`<strong class="c-mh">${c.mh}</strong>`,'var(--bl)'),
     grp("EFFECTIVE MH"),
-    row(`<strong>Total MH + SH→MH</strong>`,c=>`<strong class="c-mh">${c.mh+c.shMh}</strong>`,'var(--bl)'),
-    row("Eff. MH% of Eligible",c=>c.elig?`<span class="pct">${((c.mh+c.shMh)/c.elig*100).toFixed(1)}%</span>`:'—'),
-    grp("✓ SUM CHECK: MH + SH→MH + Pure SH + STI should = Eligible"),
-    row("Sum (MH+SH→MH+PureSH+STI)",c=>{
-      const sum=c.mh+c.shMh+Math.max(0,c.sh-c.shMh)+c.sti;
+    row(`<strong>Total MH + SH→MH + STI→MH</strong>`,c=>`<strong class="c-mh">${c.mh+c.shMh+(c.stiMh||0)}</strong>`,'var(--bl)'),
+    row("Eff. MH% of Eligible",c=>c.elig?`<span class="pct">${((c.mh+c.shMh+(c.stiMh||0))/c.elig*100).toFixed(1)}%</span>`:'—'),
+    row("Eff. MH% of Total (incl NE)",c=>c.total?`<span class="pct">${((c.mh+c.shMh+(c.stiMh||0))/c.total*100).toFixed(1)}%</span>`:'—'),
+    grp("✓ SUM CHECK: MH + SH→MH + STI→MH + Pure SH + Pure STI should = Eligible"),
+    row("Sum",c=>{
+      const sum=c.mh+c.shMh+(c.stiMh||0)+Math.max(0,c.sh-c.shMh)+Math.max(0,c.sti-(c.stiMh||0));
       const ok=sum===c.elig;
       return`<span style="color:${ok?'var(--green)':'var(--red)'}; font-family:'JetBrains Mono',monospace">${sum} ${ok?'✓':'≠'+c.elig}</span>`;
     }),
@@ -2264,7 +2808,7 @@ function getDxPts(){
   const doc=document.getElementById('dxDoc')?.value||'all';
   const city=document.getElementById('dxCity')?.value||'all';
   const from=new Date(document.getElementById('dxFrom')?.value||'2026-03-09');
-  const to=new Date(document.getElementById('dxTo')?.value||'2026-04-12');
+  const to=new Date(document.getElementById('dxTo')?.value||'2026-04-27');
   return patients.filter(p=>{
     if(doc!=='all'&&(p.doctor||'Dr. Sandhiya')!==doc)return false;
     if(city!=='all'&&p.city!==city)return false;
@@ -2277,10 +2821,10 @@ function renderSection3(){
   const pts=getDxPts();
   const L1s=Object.keys(TAXONOMY);
   const ageBuckets=[["18–24",18,24],["25–30",25,30],["31–36",31,36],["37–42",37,42],["43–54",43,54],["55+",55,999]];
-  const wkKeys=["W0","W1","W2","W3","W4"];
-  const WKLBLS={W0:"Mar 9–15",W1:"Mar 16–22",W2:"Mar 23–29",W3:"Mar 30–Apr 5",W4:"Apr 6–12"};
+  const wkKeys=["W0","W1","W2","W3","W4","W5","W6","W7"];
+  const WKLBLS={W0:"Mar 9–15",W1:"Mar 16–22",W2:"Mar 23–29",W3:"Mar 30–Apr 5",W4:"Apr 6–12",W5:"Apr 13–19",W6:"Apr 20–26",W7:"Apr 27–28"};
   const from=new Date(document.getElementById('dxFrom')?.value||'2026-03-09');
-  const to=new Date(document.getElementById('dxTo')?.value||'2026-04-12');
+  const to=new Date(document.getElementById('dxTo')?.value||'2026-04-27');
 
   // Active months and weeks within range (mirrors Category Mix logic exactly)
   const activeMons=[];
@@ -2293,11 +2837,13 @@ function renderSection3(){
   });
   const firstWkIdx=activeMons.length;
 
-  // Combined column list: months (purple) → weeks (blue) → cumulative (blue bg)
+  // Descending order: Cumulative | newest week → oldest week | newest month → oldest month
+  const reversedMons=[...activeMons].reverse().map((m,i)=>({...m,isMon:true,isFirst:i===0}));
+  const reversedWks=[...activeWks].reverse().map((w,i)=>({key:w,lbl:`${w}: ${WKLBLS[w]}`,isWk:true,isFirst:i===0}));
   const cols=[
-    ...activeMons.map((m,i)=>({...m,isMon:true,isFirst:i===0})),
-    ...activeWks.map((w,i)=>({key:w,lbl:`${w}: ${WKLBLS[w]}`,isWk:true,isFirst:i===0})),
     {key:'CU',lbl:'Cumulative',isCU:true},
+    ...reversedMons,
+    ...reversedWks,
   ];
 
   // Cell style — mirrors Category Mix exactly
@@ -3028,9 +3574,10 @@ function renderDocDxMatrix(){
 function renderDxDocMatrix(){
   const docs=ALL_DOCTORS;
   const L1s=['Depression','Anxiety Disorders','OCD Spectrum','Addiction / Substance','Neurodevelopmental','Neurocognitive Disorders','Bipolar / Psychotic Spectrum'];
+  const _basePts=patients;
   let rows='';
   L1s.forEach(l1=>{
-    const l1pts=patients.filter(p=>p.l1===l1); if(!l1pts.length)return;
+    const l1pts=_basePts.filter(p=>p.l1===l1); if(!l1pts.length)return;
     const l1pct=Math.round(l1pts.reduce((s,p)=>s+scoreDeviation(p).score,0)/l1pts.length);
     const gid='dx_'+l1.replace(/[\s\/]/g,'_');
     rows+=`<tr style="background:var(--surface2);font-weight:700;cursor:pointer" onclick="toggleDxL2('${gid}')"><td><span class="l1toggle-${gid}">&#9658;</span> ${badge(l1)}</td><td style="text-align:center">${l1pts.length}</td>${docs.map(doc=>{const pct=doctorAdherencePct(doc,l1);return`<td style="text-align:center">${adhPill(pct)}</td>`;}).join('')}<td style="text-align:center;background:var(--bl)">${adhPill(l1pct)}</td></tr>`;
@@ -3170,28 +3717,72 @@ function renderSection5(){
 function renderDSSFul(){
   const el=document.getElementById('dssFulContent');if(!el)return;
   const L1s=Object.keys(TAXONOMY);
-  const totalPts=patients.length||1;
+  const _basePts=fulFilteredPts();
+  const totalPts=_basePts.length||1;
   const DSS_SUPPLY=14;
 
   // ── Per-L2 AOV calculator (DSS) ──────────────────────────────────────────
   function dssL2AOV(l1,l2,nPts){
-    const dssMeds=getDSSMeds(l2);
     const diagTests=DSS_DIAG[l2]||[];
     const thRate=dssTherapyRate(l1);
+    const isDepSev=l1==='Depression'&&(l2==='Mild*'||l2==='Moderate–Severe*'||l2==='Severe + Psychosis');
+
     let medServ=0,medNS=0;
-    const medLines=dssMeds.map(m=>{
-      const info=getMedInfo(m.salt);if(!info)return null;
-      const cost=info.selling*DSS_SUPPLY*m.freqPerDay;
-      if(info.serviceable)medServ+=cost;else medNS+=cost;
-      return{salt:m.salt,qty:m.freqPerDay,days:DSS_SUPPLY,rate:info.selling,total:Math.round(cost),serv:info.serviceable,brand:info.brand};
-    }).filter(Boolean);
+    let medLines=[];
+
+    if(isDepSev){
+      // Sandip v2 weighted branches: 75% Sertraline (no sleep) · 15% Escitalopram (sleep) · 10% Bupropion (sexual)
+      const noSleep=1-DSS_BRANCH_RATES.sleepIssueRate-DSS_BRANCH_RATES.sexualConcernRate;
+      const sleep=DSS_BRANCH_RATES.sleepIssueRate;
+      const sex=DSS_BRANCH_RATES.sexualConcernRate;
+      // Tabs/30d per severity
+      const tabs=(l2==='Mild*')?{ssri:28,bup:30,clon:4}:{ssri:50,bup:50,clon:28};
+      const sert=getMedInfo('Sertraline 50mg');
+      const esc =getMedInfo('Escitalopram 10mg');
+      const bup =getMedInfo('Bupropion 150mg');
+      const clon=getMedInfo('Clonazepam 0.25mg');
+      // Scale to DSS_SUPPLY (14d) — divide tabs by (30/14)=2.14
+      const sc=DSS_SUPPLY/30;
+      const sertCost=sert?sert.selling*tabs.ssri*sc:0;
+      const escCost =esc ?esc.selling*tabs.ssri*sc :0;
+      const bupCost =bup ?bup.selling*tabs.bup*sc :0;
+      const clonCost=clon?clon.selling*tabs.clon*sc:0;
+
+      // Weighted serv/non-serv split
+      const addToBucket=(cost,info,wt)=>{if(!info)return;const w=cost*wt;if(info.serviceable)medServ+=w;else medNS+=w;};
+      addToBucket(sertCost,sert,noSleep);
+      addToBucket(escCost,esc,sleep);
+      addToBucket(bupCost,bup,sex);
+      // Clonazepam adjunct — assume full 100% as it's adjunct, not branch-conditional
+      if(clon){if(clon.serviceable)medServ+=clonCost;else medNS+=clonCost;}
+
+      medLines=[
+        {salt:'Sertraline 50mg',qty:`${tabs.ssri}t × ${Math.round(noSleep*100)}%`,days:DSS_SUPPLY,rate:sert?.selling||0,total:Math.round(sertCost*noSleep),serv:sert?.serviceable,brand:sert?.brand||'—',branch:'No sleep'},
+        {salt:'Escitalopram 10mg',qty:`${tabs.ssri}t × ${Math.round(sleep*100)}%`,days:DSS_SUPPLY,rate:esc?.selling||0,total:Math.round(escCost*sleep),serv:esc?.serviceable,brand:esc?.brand||'—',branch:'Sleep'},
+        {salt:'Bupropion 150mg',qty:`${tabs.bup}t × ${Math.round(sex*100)}%`,days:DSS_SUPPLY,rate:bup?.selling||0,total:Math.round(bupCost*sex),serv:bup?.serviceable,brand:bup?.brand||'—',branch:'Sexual'},
+        {salt:'Clonazepam 0.25mg',qty:`${tabs.clon}t × 100%`,days:DSS_SUPPLY,rate:clon?.selling||0,total:Math.round(clonCost),serv:clon?.serviceable,brand:clon?.brand||'—',branch:'Adjunct'},
+      ];
+    } else {
+      const dssMeds=getDSSMeds(l2);
+      medLines=dssMeds.map(m=>{
+        const info=getMedInfo(m.salt);if(!info)return null;
+        const cost=info.selling*DSS_SUPPLY*m.freqPerDay;
+        if(info.serviceable)medServ+=cost;else medNS+=cost;
+        return{salt:m.salt,qty:m.freqPerDay,days:DSS_SUPPLY,rate:info.selling,total:Math.round(cost),serv:info.serviceable,brand:info.brand};
+      }).filter(Boolean);
+    }
+
     const diagLines=diagTests.map(k=>{const d=DIAG_DB[k];return d?{name:d.name,rate:d.price}:null}).filter(Boolean);
-    const diagAOV=diagLines.reduce((s,d)=>s+d.rate,0);
+    let diagAOV=diagLines.reduce((s,d)=>s+d.rate,0);
+    // Apply 25% test panel rate for Depression severity L2s (Sandip v2)
+    const testRate=(l1==='Depression'&&isDepSev)?DSS_BRANCH_RATES.testPanelRate:1.0;
+    const expectedDiag=Math.round(diagAOV*testRate);
     const thAOV=Math.round(THERAPY_PRICE*thRate);
     const thPct=Math.round(thRate*100);
     return{
       medServ:Math.round(medServ),medNS:Math.round(medNS),medTotal:Math.round(medServ+medNS),
-      diagAOV,thAOV,thPct,totalAOV:Math.round(medServ+medNS+diagAOV+thAOV),
+      diagAOV:expectedDiag,diagFull:diagAOV,testRate,
+      thAOV,thPct,totalAOV:Math.round(medServ+medNS+expectedDiag+thAOV),
       medLines,diagLines
     };
   }
@@ -3209,11 +3800,17 @@ function renderDSSFul(){
       </div>`;
     }).join(' ');
   }
-  function diagCalcHtml(lines){
+  function diagCalcHtml(lines,testRate){
     if(!lines.length)return'<span style="color:var(--dim);font-size:.62rem">—</span>';
-    return lines.map(d=>`<div style="margin:2px 0;font-size:.62rem;background:var(--tl);border:1px solid var(--tm);border-radius:6px;padding:2px 7px;display:inline-block;color:var(--teal)">
-      <strong>${d.name}</strong><span style="color:var(--muted);font-weight:400"> 1×₹${d.rate} = </span><strong>₹${d.rate}</strong>
+    const items=lines.map(d=>`<div style="margin:2px 0;font-size:.62rem;background:var(--tl);border:1px solid var(--tm);border-radius:6px;padding:2px 7px;display:inline-block;color:var(--teal)">
+      <strong>${d.name}</strong><span style="color:var(--muted);font-weight:400"> ₹${d.rate}</span>
     </div>`).join(' ');
+    if(testRate&&testRate<1){
+      const full=lines.reduce((s,d)=>s+d.rate,0);
+      const expected=Math.round(full*testRate);
+      return items+` <div style="margin-top:4px;font-size:.62rem;background:var(--ol);border:1px solid var(--om);border-radius:6px;padding:2px 7px;display:inline-block;color:var(--orange)"><strong>Panel ₹${full} × ${Math.round(testRate*100)}% = ₹${expected}</strong></div>`;
+    }
+    return items;
   }
   function thCalcHtml(thAOV,thPct){
     return`<div style="font-size:.62rem;background:var(--pl);border:1px solid var(--pm);border-radius:6px;padding:2px 7px;display:inline-block;color:var(--purple)">
@@ -3225,7 +3822,7 @@ function renderDSSFul(){
   let grandServSum=0,grandNSSum=0,grandDiagSum=0,grandThSum=0;
   const TOGGLE_GID=[];
   L1s.forEach(l1=>{
-    const l1pts=patients.filter(p=>p.l1===l1);if(!l1pts.length)return;
+    const l1pts=_basePts.filter(p=>p.l1===l1);if(!l1pts.length)return;
     const t=TAXONOMY[l1]||{};
     // Weighted average across L2s
     let l1ServSum=0,l1NSSum=0,l1DiagSum=0,l1ThSum=0;
@@ -3265,7 +3862,7 @@ function renderDSSFul(){
         <td style="padding-left:20px;font-size:.68rem">
           <div style="font-weight:600;color:var(--muted);margin-bottom:3px">↳ ${l2}</div>
           <div style="line-height:1.8">${medCalcHtml(aov.medLines)}</div>
-          <div style="margin-top:3px;line-height:1.8">${diagCalcHtml(aov.diagLines)}</div>
+          <div style="margin-top:3px;line-height:1.8">${diagCalcHtml(aov.diagLines,aov.testRate)}</div>
           <div style="margin-top:3px">${thCalcHtml(aov.thAOV,aov.thPct)}</div>
         </td>
         <td style="text-align:center">${l2p.length}</td>
@@ -3432,7 +4029,8 @@ function toggleDssL1(gid){
 }
 
 function renderFulActual(){
-  const rxPts=patients.filter(p=>parseMeds(p.meds||'').length>0);
+  const _basePts=fulFilteredPts();
+  const rxPts=_basePts.filter(p=>parseMeds(p.meds||'').length>0);
   const ACT_SUPPLY_DAYS=14; // defined first — used by patAOV below
 
   // ── KPIs ──────────────────────────────────────────────────────────────────
@@ -3457,14 +4055,14 @@ function renderFulActual(){
   const elAM=document.getElementById('actAovMeds');if(elAM)elAM.textContent='₹'+(avgServKPI+avgNSKPI);
   const elAS=document.getElementById('actAovServ');if(elAS)elAS.textContent='₹'+avgServKPI;
   const elAN=document.getElementById('actAovNS');if(elAN)elAN.textContent='₹'+avgNSKPI;
-  const gapsSet=new Set(patients.flatMap(p=>parseMeds(p.meds||'').map(m=>normMed(m)).filter(m=>m&&!inInv(m))));
+  const gapsSet=new Set(_basePts.flatMap(p=>parseMeds(p.meds||'').map(m=>normMed(m)).filter(m=>m&&!inInv(m))));
   const elAG=document.getElementById('actAovGaps');if(elAG)elAG.textContent=gapsSet.size;
 
   // ── Doctor filter pills ───────────────────────────────────────────────────
   const docSel=document.getElementById('fulDocFilter');
   if(docSel&&!docSel.innerHTML.trim()){
     const docs=[...new Set(patients.map(p=>p.doctor||'Dr. Sandhiya'))];
-    docSel.innerHTML=docs.map(d=>`<span onclick="toggleFulDoc('${d}',this)" style="cursor:pointer;padding:3px 10px;border-radius:20px;font-size:.68rem;font-weight:600;border:1.5px solid var(--blue);background:var(--blue);color:#fff">${d}</span>`).join('');
+    docSel.innerHTML=docs.map(d=>`<span onclick="toggleFulDoc('${d}',this)" style="cursor:pointer;padding:3px 10px;border-radius:20px;font-size:.68rem;font-weight:600;border:1.5px solid var(--blue);background:var(--surface);color:var(--muted)">${d}</span>`).join('');
   }
 
   // ── Helper: per-patient AOV from actual meds (14-day supply per med) ───────
@@ -3641,12 +4239,30 @@ function renderFulActual(){
 
 // fulInitDocFilter stub (noop — handled by renderFulActual)
 function fulInitDocFilter(){}
-function toggleFulDoc(doc,el){
-  el.style.background=el.style.background==='rgb(37, 99, 235)'||el.style.background===''?'var(--surface)':'var(--blue)';
-  el.style.color=el.style.color==='white'?'var(--muted)':'white';
+const FUL_DOC_FILTER=new Set();
+function fulFilteredPts(){
+  if(!FUL_DOC_FILTER.size)return patients;
+  return patients.filter(p=>FUL_DOC_FILTER.has(p.doctor||'Dr. Sandhiya'));
 }
-function fulSelectAllDocs(){document.querySelectorAll('#fulDocFilter span').forEach(el=>{el.style.background='var(--blue)';el.style.color='white';});}
-function fulClearDocs(){document.querySelectorAll('#fulDocFilter span').forEach(el=>{el.style.background='var(--surface)';el.style.color='var(--muted)';});}
+function toggleFulDoc(doc,el){
+  if(FUL_DOC_FILTER.has(doc)){FUL_DOC_FILTER.delete(doc);el.style.background='var(--surface)';el.style.color='var(--muted)';}
+  else{FUL_DOC_FILTER.add(doc);el.style.background='var(--blue)';el.style.color='#fff';}
+  const sum=document.getElementById('fulDocSummary');
+  if(sum)sum.textContent=FUL_DOC_FILTER.size?`Filtering: ${[...FUL_DOC_FILTER].join(', ')}`:'All doctors';
+  renderFulActual();renderDSSFul();
+}
+function fulSelectAllDocs(){
+  FUL_DOC_FILTER.clear();
+  document.querySelectorAll('#fulDocFilter span').forEach(el=>{el.style.background='var(--surface)';el.style.color='var(--muted)';});
+  const sum=document.getElementById('fulDocSummary');if(sum)sum.textContent='All doctors';
+  renderFulActual();renderDSSFul();
+}
+function fulClearDocs(){
+  FUL_DOC_FILTER.clear();
+  document.querySelectorAll('#fulDocFilter span').forEach(el=>{el.style.background='var(--surface)';el.style.color='var(--muted)';});
+  const sum=document.getElementById('fulDocSummary');if(sum)sum.textContent='All doctors';
+  renderFulActual();renderDSSFul();
+}
 
 function renderAOV(){
   const rxPts=patients.filter(p=>parseMeds(p.meds||'').length>0);

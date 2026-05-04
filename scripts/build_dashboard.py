@@ -41,25 +41,37 @@ STI_KW = ["STI", "GUI", "PEP", "Genito Urinary", "Post-Exposure", "Post Exposure
 
 
 def fetch_sheet_as_csv():
-    """Authenticate via service account and download RX_Data tab as CSV bytes."""
+    """Authenticate via service account and read RX_Data tab via Sheets API.
+    The default Drive export grabs the first tab only — we need the specific RX_Data tab."""
     sa_json = os.environ.get("GCP_SA_KEY")
     if not sa_json:
         sys.exit("ERROR: GCP_SA_KEY environment variable not set")
 
     creds = service_account.Credentials.from_service_account_info(
         json.loads(sa_json),
-        scopes=["https://www.googleapis.com/auth/drive.readonly"]
+        scopes=["https://www.googleapis.com/auth/spreadsheets.readonly"]
     )
-    drive = build("drive", "v3", credentials=creds)
+    sheets = build("sheets", "v4", credentials=creds)
 
-    # Export specific tab as CSV
-    request = drive.files().export_media(fileId=SHEET_ID, mimeType="text/csv")
-    buf = io.BytesIO()
-    downloader = MediaIoBaseDownload(buf, request)
-    done = False
-    while not done:
-        _, done = downloader.next_chunk()
-    return buf.getvalue().decode("utf-8")
+    # Read the entire RX_Data tab as a 2D array
+    result = sheets.spreadsheets().values().get(
+        spreadsheetId=SHEET_ID,
+        range="RX_Data",  # tab name; Google fetches all populated cells
+        valueRenderOption="FORMATTED_VALUE",
+    ).execute()
+
+    rows = result.get("values", [])
+    if not rows:
+        sys.exit("ERROR: RX_Data tab is empty or not found")
+
+    # Pad short rows so every row has the same column count as the header
+    ncols = len(rows[0])
+    padded = [r + [""] * (ncols - len(r)) for r in rows]
+
+    # Convert to CSV string for the rest of the script's pipeline
+    buf = io.StringIO()
+    csv.writer(buf).writerows(padded)
+    return buf.getvalue()
 
 
 def is_sti(dx):

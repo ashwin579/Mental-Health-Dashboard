@@ -137,7 +137,7 @@ tr:hover td{background:var(--bg);}
   </div>
   <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
     <div style="font-size:.66rem;color:var(--muted)">Mar 14 – May 3 2026 · Multi-City</div>
-    <div style="font-size:.6rem;color:var(--green);font-weight:600">↻ Last updated: <!-- LAST_UPDATED_START -->05 May 2026, 10:55 AM IST<!-- LAST_UPDATED_END --></div>
+    <div style="font-size:.6rem;color:var(--green);font-weight:600">↻ Last updated: <!-- LAST_UPDATED_START -->Manual build<!-- LAST_UPDATED_END --></div>
   </div>
 </div>
 
@@ -155,20 +155,16 @@ tr:hover td{background:var(--bg);}
       <input type="date" id="dateTo">
     </div>
     <button class="btn-sm btn-blue" onclick="renderSection1()">Apply</button>
+    <button class="btn-sm btn-gray" onclick="setCurrentMonth();renderSection1()" style="background:#dbeafe;color:#1e40af;font-weight:700">📅 Current Month</button>
     <button class="btn-sm btn-gray" onclick="setRange('2026-03-09','2026-03-31');renderSection1()">Mar only</button>
     <button class="btn-sm btn-gray" onclick="setRange('2026-04-01','2026-04-30');renderSection1()">Apr only</button>
     <button class="btn-sm btn-gray" onclick="setRange('2026-05-01',YESTERDAY);renderSection1()">May only</button>
     <button class="btn-sm btn-gray" onclick="setRange('2026-03-09',YESTERDAY);renderSection1()">Full period</button>
     <span class="filter-lbl" style="margin-left:6px">City:</span>
     <select class="filter-sel" id="filterCity" onchange="renderSection1()">
-            <option value="all">All Cities</option>
+      <option value="all">All Cities</option>
       <option value="Coimbatore">Coimbatore</option>
-      <option value="Chennai">Chennai</option>
-      <option value="Bengaluru">Bengaluru</option>
-      <option value="Mumbai">Mumbai</option>
-      <option value="Chennai">Chennai</option>
       <option value="Bangalore">Bangalore</option>
-      <option value="Mumbai">Mumbai</option>
     </select>
     <span class="filter-lbl">Doctor:</span>
     <select class="filter-sel" id="filterDoctor" onchange="renderSection1()">
@@ -177,6 +173,13 @@ tr:hover td{background:var(--bg);}
       <option value="Dr. Shraddha">Dr. Shraddha (Bangalore)</option>
       <option value="Dr. Adithya">Dr. Adithya (Bangalore)</option>
       <option value="Dr. Basava Chetan">Dr. Basava Chetan (Bangalore)</option>
+    </select>
+    <span class="filter-lbl">Clinic:</span>
+    <select class="filter-sel" id="filterClinic" onchange="renderSection1()">
+      <option value="all">All Clinics</option>
+      <option value="Bharathi Nagar">Bharathi Nagar</option>
+      <option value="Indiranagar">Indiranagar</option>
+      <option value="Kr Puram">KR Puram</option>
     </select>
   </div>
   <div class="kpi-row">
@@ -189,10 +192,16 @@ tr:hover td{background:var(--bg);}
   </div>
 
   <div class="card">
-    <div class="ctitle">SC Calls Category Mix · Month-on-Month then Week-on-Week</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap">
+      <div class="ctitle" style="margin:0;border:none;padding:0">SC Calls Category Mix · Month → Week → Day</div>
+      <div style="display:flex;gap:6px">
+        <button id="weekToggleBtn" onclick="toggleCollapsibleWeeks()" style="font-size:.66rem;padding:4px 10px;border-radius:5px;border:1.5px solid var(--blue);background:var(--bl);color:var(--blue);font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">▸ Show all weeks</button>
+        <button id="dayToggleBtn" onclick="toggleCollapsibleDays()" style="font-size:.66rem;padding:4px 10px;border-radius:5px;border:1.5px solid var(--orange);background:#fffbeb;color:var(--orange);font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">▸ Show all 8 days</button>
+      </div>
+    </div>
     <div style="overflow-x:auto"><table><thead><tr id="scHead"></tr></thead><tbody id="scBody"></tbody></table></div>
     <div style="margin-top:8px;font-size:.61rem;color:var(--muted)">
-      ✱ <strong>MH + SH→MH + STI→MH + Pure SH + Pure STI = Total Eligible</strong> · Month columns show complete month totals from offline tracker · Week totals are within-month sub-splits · W3 straddles March/April (Mar 30–Apr 5) and is counted in April total per tracker · ✓ sum-check row confirms alignment
+      ✱ <strong>MH + SH→MH + STI→MH + Pure SH + Pure STI = Total Eligible</strong> · 📍 Current week appears first (in progress, marked) · Newest 5 weeks visible; older ones collapsible · Daily columns show last 8 days (newest 5 visible by default; older 3 collapsible) · ✓ sum-check row confirms alignment
     </div>
   </div>
 
@@ -225,17 +234,9 @@ tr:hover td{background:var(--bg);}
     <button class="btn-sm btn-gray" onclick="setDxRange('2026-05-01','2026-05-31')">May only</button>
     <button class="btn-sm btn-gray" onclick="setDxRange('2026-03-09','2026-05-03')">Full period</button>
     <select class="filter-sel" id="dxCity" onchange="renderSection3()">
-            <option value="all">All Cities</option>
+      <option value="all">All Cities</option>
       <option value="Coimbatore">Coimbatore</option>
-      <option value="Chennai">Chennai</option>
-      <option value="Bengaluru">Bengaluru</option>
-      <option value="Mumbai">Mumbai</option>
-      <option value="Chennai">Chennai</option>
       <option value="Bangalore">Bangalore</option>
-      <option value="Mumbai">Mumbai</option>
-      <option value="Chennai">Chennai</option>
-      <option value="Bangalore">Bangalore</option>
-      <option value="Mumbai">Mumbai</option>
     </select>
     <select class="filter-sel" id="dxDoc" onchange="renderSection3()">
       <option value="all">All Doctors</option>
@@ -243,6 +244,12 @@ tr:hover td{background:var(--bg);}
       <option value="Dr. Shraddha">Dr. Shraddha (Bangalore)</option>
       <option value="Dr. Adithya">Dr. Adithya (Bangalore)</option>
       <option value="Dr. Basava Chetan">Dr. Basava Chetan (Bangalore)</option>
+    </select>
+    <select class="filter-sel" id="dxClinic" onchange="renderSection3()">
+      <option value="all">All Clinics</option>
+      <option value="Bharathi Nagar">Bharathi Nagar</option>
+      <option value="Indiranagar">Indiranagar</option>
+      <option value="Kr Puram">KR Puram</option>
     </select>
   </div>
   <div class="itabs">
@@ -483,9 +490,9 @@ tr:hover td{background:var(--bg);}
       <select id="dpDocFilter" onchange="renderDiscussionPointers()" style="font-size:.71rem;padding:3px 8px;border-radius:6px;border:1.5px solid var(--border);font-family:'Plus Jakarta Sans',sans-serif">
               <option value="all">All Doctors</option>
       <option value="Dr. Sandhiya">Dr. Sandhiya (Coimbatore)</option>
-      <option value="Dr. Adithya">Dr. Adithya (Bengaluru)</option>
-      <option value="Dr. Shraddha">Dr. Shraddha (Bengaluru)</option>
-      <option value="Dr. Basava Chetan">Dr. Basava Chetan (Bengaluru)</option>
+      <option value="Dr. Adithya">Dr. Adithya (Bangalore)</option>
+      <option value="Dr. Shraddha">Dr. Shraddha (Bangalore)</option>
+      <option value="Dr. Basava Chetan">Dr. Basava Chetan (Bangalore)</option>
       </select>
       <select id="dpL1Filter" onchange="renderDiscussionPointers()" style="font-size:.71rem;padding:3px 8px;border-radius:6px;border:1.5px solid var(--border);font-family:'Plus Jakarta Sans',sans-serif">
         <option value="all">All Diagnoses</option>
@@ -663,17 +670,24 @@ tr:hover td{background:var(--bg);}
   <!-- Filters same as Category Mix -->
   <div class="filter-bar">
     <span class="filter-lbl">City:</span>
-    <select class="filter-sel" id="potFilterCity">      <option value="all">All Cities</option>
+    <select class="filter-sel" id="potFilterCity">
+      <option value="all">All Cities</option>
       <option value="Coimbatore">Coimbatore</option>
-      <option value="Chennai">Chennai</option>
-      <option value="Bengaluru">Bengaluru</option>
-      <option value="Mumbai">Mumbai</option><option value="Chennai">Chennai</option><option value="Bangalore">Bangalore</option><option value="Mumbai">Mumbai</option></select>
+      <option value="Bangalore">Bangalore</option>
+    </select>
     <span class="filter-lbl">Doctor:</span>
     <select class="filter-sel" id="potFilterDoctor">      <option value="all">All Doctors</option>
       <option value="Dr. Sandhiya">Dr. Sandhiya (Coimbatore)</option>
-      <option value="Dr. Adithya">Dr. Adithya (Bengaluru)</option>
-      <option value="Dr. Shraddha">Dr. Shraddha (Bengaluru)</option>
-      <option value="Dr. Basava Chetan">Dr. Basava Chetan (Bengaluru)</option></select>
+      <option value="Dr. Adithya">Dr. Adithya (Bangalore)</option>
+      <option value="Dr. Shraddha">Dr. Shraddha (Bangalore)</option>
+      <option value="Dr. Basava Chetan">Dr. Basava Chetan (Bangalore)</option></select>
+    <span class="filter-lbl">Clinic:</span>
+    <select class="filter-sel" id="potFilterClinic">
+      <option value="all">All Clinics</option>
+      <option value="Bharathi Nagar">Bharathi Nagar</option>
+      <option value="Indiranagar">Indiranagar</option>
+      <option value="Kr Puram">KR Puram</option>
+    </select>
     <span class="filter-lbl" style="margin-left:6px">📅</span>
     <div class="date-ctrl">
       <input type="date" id="potFrom" value="2026-03-09">
@@ -769,17 +783,24 @@ tr:hover td{background:var(--bg);}
 
     <div class="filter-bar">
       <span class="filter-lbl">City:</span>
-      <select class="filter-sel" id="adjCity">      <option value="all">All Cities</option>
+      <select class="filter-sel" id="adjCity">
+      <option value="all">All Cities</option>
       <option value="Coimbatore">Coimbatore</option>
-      <option value="Chennai">Chennai</option>
-      <option value="Bengaluru">Bengaluru</option>
-      <option value="Mumbai">Mumbai</option><option value="Chennai">Chennai</option><option value="Bangalore">Bangalore</option><option value="Mumbai">Mumbai</option></select>
+      <option value="Bangalore">Bangalore</option>
+    </select>
       <span class="filter-lbl">Doctor:</span>
       <select class="filter-sel" id="adjDoctor">      <option value="all">All Doctors</option>
       <option value="Dr. Sandhiya">Dr. Sandhiya (Coimbatore)</option>
-      <option value="Dr. Adithya">Dr. Adithya (Bengaluru)</option>
-      <option value="Dr. Shraddha">Dr. Shraddha (Bengaluru)</option>
-      <option value="Dr. Basava Chetan">Dr. Basava Chetan (Bengaluru)</option></select>
+      <option value="Dr. Adithya">Dr. Adithya (Bangalore)</option>
+      <option value="Dr. Shraddha">Dr. Shraddha (Bangalore)</option>
+      <option value="Dr. Basava Chetan">Dr. Basava Chetan (Bangalore)</option></select>
+      <span class="filter-lbl">Clinic:</span>
+      <select class="filter-sel" id="adjClinic">
+        <option value="all">All Clinics</option>
+        <option value="Bharathi Nagar">Bharathi Nagar</option>
+        <option value="Indiranagar">Indiranagar</option>
+        <option value="Kr Puram">KR Puram</option>
+      </select>
       <span class="filter-lbl" style="margin-left:6px">📅</span>
       <div class="date-ctrl">
         <input type="date" id="adjFrom" value="2026-03-09">
@@ -945,6 +966,28 @@ tr:hover td{background:var(--bg);}
 
 <script>
 const YESTERDAY=(()=>{const d=new Date();d.setDate(d.getDate()-1);return d.toISOString().slice(0,10);})();
+function setCurrentMonth(){
+  const mons=Object.values(MONTHLY).filter(m=>m.isCurrent);
+  if(mons.length){setRange(mons[0].start,mons[0].end);}
+}
+
+function toggleCollapsibleDays(){
+  const els=document.querySelectorAll('.col-day-collapsible');
+  if(!els.length)return;
+  const btn=document.getElementById('dayToggleBtn');
+  const hidden=els[0].style.display==='none';
+  els.forEach(el=>{el.style.display=hidden?'table-cell':'none';});
+  if(btn)btn.innerHTML=hidden?'◂ Hide oldest days':'▸ Show all 8 days';
+}
+function toggleCollapsibleWeeks(){
+  const els=document.querySelectorAll('.col-week-collapsible');
+  if(!els.length)return;
+  const btn=document.getElementById('weekToggleBtn');
+  const hidden=els[0].style.display==='none';
+  els.forEach(el=>{el.style.display=hidden?'table-cell':'none';});
+  if(btn)btn.innerHTML=hidden?'◂ Hide older weeks':'▸ Show all weeks';
+}
+
 function initDateDefaults(){
   ['dateTo','potTo','adjTo','dxTo'].forEach(id=>{const el=document.getElementById(id);if(el&&!el.value)el.value=YESTERDAY;});
 }
@@ -964,73 +1007,73 @@ const TAXONOMY={
 
 // 35 MH patients with id linking to ASSESSMENT_MAP (appointment ID from screening form)
 const patients=[
-  {id:"2af897ba-dab6-487d-91ea-e2439a0b44ee",date:"2026-03-14",src:"Practo",primary:"MH",secondary:"-",gender:"Female",age:23,l1:"Depression",l2:"Moderate–Severe*",meds:"Fluoxetine Tab 20mg, Propranolol 20mg, Clonazepam Tab 0.25mg",therapy:"Therapy",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
-  {id:"60e9cf2d-9981-464e-a379-f62a9e2387e9",date:"2026-03-15",src:"Fb",primary:"SH",secondary:"MH",gender:"Female",age:25,l1:"Adjustment / Grief Spectrum",l2:"Mixed Anxiety-Depression",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"Mixed anxiety-depression presenting as SH",severity:"Moderately ill"},
-  {id:"3324b578-9a9c-42c2-89a0-7800347f52b1",date:"2026-03-16",src:"GMB",primary:"SH",secondary:"MH",gender:"Female",age:26,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",meds:"Bupropion Tab 150mg",therapy:"Couples counselling",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"Relationship / PE complaint",severity:"Mildly ill"},
-  {id:"5c171bfd-1c56-4346-a77f-b4685ed5c3f7",date:"2026-03-16",src:"Practo",primary:"SH",secondary:"MH",gender:"Male",age:22,l1:"Depression",l2:"Moderate–Severe*",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"Therapy",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"CM / Porn addiction entry",severity:"Markedly ill"},
-  {id:"da023419-4fd1-4f4f-9a13-729d84a82820",date:"2026-03-16",src:"Google",primary:"SH",secondary:"MH",gender:"Female",age:30,l1:"Depression",l2:"Moderate–Severe*",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"Couples counselling",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"NSSD / Low desire",severity:"Moderately ill"},
-  {id:"b5526997-248e-4936-9d1a-9f918a813535",date:"2026-03-18",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:27,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"Couples counselling",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Borderline ill"},
-  {id:"a0da6832-7a2e-43a7-b0ab-c3e55e01dcad",date:"2026-03-20",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:20,l1:"Neurodevelopmental",l2:"ADHD — Combined",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"Therapy",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
-  {id:"84347127-dd96-49c0-86f0-c2069a63d409",date:"2026-03-21",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:37,l1:"Depression",l2:"Moderate–Severe*",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Mildly ill"},
-  {id:"32e65e7b-dc82-43dd-a4f0-f6758d106711",date:"2026-03-22",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:35,l1:"Anxiety Disorders",l2:"GAD — Severe",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"ED + work stress",severity:"Mildly ill"},
-  {id:"a64162c5-f3d1-441b-8dcd-6a8db037882e",date:"2026-03-22",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:48,l1:"Depression",l2:"Mild*",meds:"",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"PE + Low desire",severity:"Borderline ill"},
-  {id:"8cee8c6a-8402-431b-b3a1-197c6c678cde",date:"2026-03-22",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:38,l1:"Anxiety Disorders",l2:"GAD — Moderate",meds:"Sertraline Tab 25mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"GUI as SH",severity:"Moderately ill"},
-  {id:"c8822153-477b-4896-84e9-f4878265dac3",date:"2026-03-27",src:"Practo",primary:"MH",secondary:"-",gender:"Male",age:36,l1:"Anxiety Disorders",l2:"GAD — Moderate",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Mildly ill"},
-  {id:"53e924b5-936f-434c-a3f3-153e49d841e1",date:"2026-03-27",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:27,l1:"OCD Spectrum",l2:"Porn Addiction / CM",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"CM as SH",severity:"Moderately ill"},
-  {id:"c4c44885-8821-4977-8510-73a5548aaffa",date:"2026-03-28",src:"Practo",primary:"SH",secondary:"MH",gender:"Male",age:27,l1:"Anxiety Disorders",l2:"GAD — Moderate",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"Low desire",severity:"Mildly ill"},
-  {id:"37b12fb4-8055-40c9-89d4-deeb9625acd8",date:"2026-03-29",src:"Practo",primary:"MH",secondary:"-",gender:"Male",age:33,l1:"Anxiety Disorders",l2:"GAD — Moderate",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"Therapy",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Moderately ill"},
-  {id:"02057af8-ee1c-45f9-9795-49b3d74e5ad3",date:"2026-03-29",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:44,l1:"Anxiety Disorders",l2:"Panic Disorder",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"ED",severity:"Moderately ill"},
-  {id:"627ade9a-922a-4fc1-826a-2d34d1b22b5c",date:"2026-03-30",src:"GMB",primary:"MH",secondary:"-",gender:"Male",age:49,l1:"Anxiety Disorders",l2:"GAD — Severe",meds:"Etizolam 0.5mg, Venlafaxine 75mg, Risperidone 2mg, Mirtazapine 7.5mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Severely ill"},
-  {id:"70af95bc-4828-4bca-8d02-adda9ac0f288",date:"2026-03-30",src:"Direct walk-in",primary:"MH",secondary:"-",gender:"Male",age:39,l1:"Depression",l2:"Moderate–Severe*",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"Couples counselling",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
-  {id:"5dbf424a-c173-4a96-b7f5-1d30ba2840ae",date:"2026-03-31",src:"GMB",primary:"MH",secondary:"-",gender:"Female",age:54,l1:"Depression",l2:"Moderate–Severe*",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
-  {id:"31fde950-8141-4ac2-8ec3-78650248fe16",date:"2026-04-01",src:"GMB",primary:"MH",secondary:"-",gender:"Male",age:21,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"Supportive Psychotherapy",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Mildly ill"},
-  {id:"9de30bdb-012e-40d8-a2aa-49d05219087a",date:"2026-04-02",src:"Practo",primary:"MH",secondary:"-",gender:"Male",age:33,l1:"Anxiety Disorders",l2:"GAD — Moderate",meds:"",therapy:"Individual therapy",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Mildly ill"},
-  {id:"fc3b8d56-c700-4ad9-b18c-b0190db7e00a",date:"2026-04-03",src:"GMB",primary:"MH",secondary:"-",gender:"Female",age:24,l1:"Depression",l2:"Moderate–Severe*",meds:"Sertraline Tab 25mg, Clonazepam Tab 0.25mg",therapy:"Supportive Psychotherapy",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
-  {id:"f9792c72-741b-4c38-8b67-6f5b748ff111",date:"2026-04-03",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:36,l1:"Anxiety Disorders",l2:"GAD — Severe",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"Couples counselling",doctor:"Dr. Sandhiya",city:"Coimbatore",shPresenting:"ED + GUI",severity:"Moderately ill"},
-  {id:"d10591c7-e4ce-4dae-af65-4e2e90a45ca3",date:"2026-04-04",src:"GMB",primary:"MH",secondary:"-",gender:"Female",age:27,l1:"Neurodevelopmental",l2:"ADHD — Inattentive",meds:"Atomoxetine 40mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Moderately ill"},
-  {id:"dee0559c-b5a3-4a21-be72-aa2d2e4d7363",date:"2026-04-05",src:"GMB",primary:"MH",secondary:"-",gender:"Female",age:32,l1:"Depression",l2:"Moderate–Severe*",meds:"Fluoxetine Tab 20mg, Etizolam 0.5mg",therapy:"Couples counselling",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
-  {id:"38ac05e1-ae56-4279-a9c7-c70aa5d38e9d",date:"2026-04-05",src:"Practo",primary:"MH",secondary:"-",gender:"Male",age:32,l1:"Addiction / Substance",l2:"Alcohol Dependence",meds:"Clonazepam Tab 0.25mg, Thiamine 100mg, Naltrexone 50mg, Sertraline Tab 50mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Severely ill"},
-  {id:"fb149909-d6d2-408b-b50d-c1f75b2f0a71",date:"2026-04-06",src:"Organic",primary:"MH",secondary:"-",gender:"Male",age:22,l1:"OCD Spectrum",l2:"OCD — Severe",meds:"Fluoxetine Tab 20mg, Etizolam 0.5mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Severely ill"},
-  {id:"7b5f6f43-9435-4f81-b1ef-142fdfe7b254",date:"2026-04-09",src:"Walk-in",primary:"MH",secondary:"-",gender:"Female",age:48,l1:"Depression",l2:"Moderate–Severe*",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
-  {id:"8c57b4c6-a6cf-4b28-b6e3-0a0bc702157b",date:"2026-04-10",src:"GMB",primary:"MH",secondary:"SH",gender:"Female",age:42,l1:"Bipolar / Psychotic Spectrum",l2:"Schizoaffective Disorder",meds:"Bupropion Tab 150mg, Zolpidem 5mg, Escitalopram 10mg, Lamotrigine 25mg, Quetiapine 25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Severely ill"},
-  {id:"e60090af-9b44-4bb6-a84b-2c76638ca7f8",date:"2026-04-10",src:"Direct walk-in",primary:"MH",secondary:"-",gender:"Male",age:26,l1:"Depression",l2:"Moderate–Severe*",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
-  {id:"1f452f1a-adf7-404c-891b-016367ef727b",date:"2026-04-12",src:"GMB",primary:"MH",secondary:"-",gender:"Male",age:25,l1:"OCD Spectrum",l2:"OCD — Severe",meds:"Escitalopram 10mg, Etizolam 0.25mg, Risperidone 1mg",therapy:"ERP Therapy",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Severely ill"},
-  {id:"082cf291-427a-4241-9665-981c2147a7bc",date:"2026-04-12",src:"Practo",primary:"MH",secondary:"-",gender:"Female",age:27,l1:"Adjustment / Grief Spectrum",l2:"Grief Disorder",meds:"Sertraline Tab 25mg, Clonazepam Tab 0.25mg",therapy:"Therapy",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Moderately ill"},
-  {id:"f301aff1-fcd9-4b56-b096-887ad491f153",date:"2026-04-12",src:"Google",primary:"MH",secondary:"-",gender:"Male",age:27,l1:"Depression",l2:"Moderate–Severe*",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill"},
+  {id:"2af897ba-dab6-487d-91ea-e2439a0b44ee",date:"2026-03-14",src:"Practo",primary:"MH",secondary:"-",gender:"Female",age:23,l1:"Depression",l2:"Moderate–Severe*",meds:"Fluoxetine Tab 20mg, Propranolol 20mg, Clonazepam Tab 0.25mg",therapy:"Therapy",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Markedly ill"},
+  {id:"60e9cf2d-9981-464e-a379-f62a9e2387e9",date:"2026-03-15",src:"Fb",primary:"SH",secondary:"MH",gender:"Female",age:25,l1:"Adjustment / Grief Spectrum",l2:"Mixed Anxiety-Depression",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",shPresenting:"Mixed anxiety-depression presenting as SH",severity:"Moderately ill"},
+  {id:"3324b578-9a9c-42c2-89a0-7800347f52b1",date:"2026-03-16",src:"GMB",primary:"SH",secondary:"MH",gender:"Female",age:26,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",meds:"Bupropion Tab 150mg",therapy:"Couples counselling",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",shPresenting:"Relationship / PE complaint",severity:"Mildly ill"},
+  {id:"5c171bfd-1c56-4346-a77f-b4685ed5c3f7",date:"2026-03-16",src:"Practo",primary:"SH",secondary:"MH",gender:"Male",age:22,l1:"Depression",l2:"Moderate–Severe*",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"Therapy",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",shPresenting:"CM / Porn addiction entry",severity:"Markedly ill"},
+  {id:"da023419-4fd1-4f4f-9a13-729d84a82820",date:"2026-03-16",src:"Google",primary:"SH",secondary:"MH",gender:"Female",age:30,l1:"Depression",l2:"Moderate–Severe*",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"Couples counselling",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",shPresenting:"NSSD / Low desire",severity:"Moderately ill"},
+  {id:"b5526997-248e-4936-9d1a-9f918a813535",date:"2026-03-18",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:27,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"Couples counselling",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill"},
+  {id:"a0da6832-7a2e-43a7-b0ab-c3e55e01dcad",date:"2026-03-20",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:20,l1:"Neurodevelopmental",l2:"ADHD — Combined",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"Therapy",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Markedly ill"},
+  {id:"84347127-dd96-49c0-86f0-c2069a63d409",date:"2026-03-21",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:37,l1:"Depression",l2:"Moderate–Severe*",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Mildly ill"},
+  {id:"32e65e7b-dc82-43dd-a4f0-f6758d106711",date:"2026-03-22",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:35,l1:"Anxiety Disorders",l2:"GAD — Severe",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",shPresenting:"ED + work stress",severity:"Mildly ill"},
+  {id:"a64162c5-f3d1-441b-8dcd-6a8db037882e",date:"2026-03-22",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:48,l1:"Depression",l2:"Mild*",meds:"",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",shPresenting:"PE + Low desire",severity:"Borderline ill"},
+  {id:"8cee8c6a-8402-431b-b3a1-197c6c678cde",date:"2026-03-22",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:38,l1:"Anxiety Disorders",l2:"GAD — Moderate",meds:"Sertraline Tab 25mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",shPresenting:"GUI as SH",severity:"Moderately ill"},
+  {id:"c8822153-477b-4896-84e9-f4878265dac3",date:"2026-03-27",src:"Practo",primary:"MH",secondary:"-",gender:"Male",age:36,l1:"Anxiety Disorders",l2:"GAD — Moderate",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Mildly ill"},
+  {id:"53e924b5-936f-434c-a3f3-153e49d841e1",date:"2026-03-27",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:27,l1:"OCD Spectrum",l2:"Porn Addiction / CM",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",shPresenting:"CM as SH",severity:"Moderately ill"},
+  {id:"c4c44885-8821-4977-8510-73a5548aaffa",date:"2026-03-28",src:"Practo",primary:"SH",secondary:"MH",gender:"Male",age:27,l1:"Anxiety Disorders",l2:"GAD — Moderate",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",shPresenting:"Low desire",severity:"Mildly ill"},
+  {id:"37b12fb4-8055-40c9-89d4-deeb9625acd8",date:"2026-03-29",src:"Practo",primary:"MH",secondary:"-",gender:"Male",age:33,l1:"Anxiety Disorders",l2:"GAD — Moderate",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"Therapy",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Moderately ill"},
+  {id:"02057af8-ee1c-45f9-9795-49b3d74e5ad3",date:"2026-03-29",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:44,l1:"Anxiety Disorders",l2:"Panic Disorder",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",shPresenting:"ED",severity:"Moderately ill"},
+  {id:"627ade9a-922a-4fc1-826a-2d34d1b22b5c",date:"2026-03-30",src:"GMB",primary:"MH",secondary:"-",gender:"Male",age:49,l1:"Anxiety Disorders",l2:"GAD — Severe",meds:"Etizolam 0.5mg, Venlafaxine 75mg, Risperidone 2mg, Mirtazapine 7.5mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Severely ill"},
+  {id:"70af95bc-4828-4bca-8d02-adda9ac0f288",date:"2026-03-30",src:"Direct walk-in",primary:"MH",secondary:"-",gender:"Male",age:39,l1:"Depression",l2:"Moderate–Severe*",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"Couples counselling",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Markedly ill"},
+  {id:"5dbf424a-c173-4a96-b7f5-1d30ba2840ae",date:"2026-03-31",src:"GMB",primary:"MH",secondary:"-",gender:"Female",age:54,l1:"Depression",l2:"Moderate–Severe*",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Markedly ill"},
+  {id:"31fde950-8141-4ac2-8ec3-78650248fe16",date:"2026-04-01",src:"GMB",primary:"MH",secondary:"-",gender:"Male",age:21,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"Supportive Psychotherapy",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Mildly ill"},
+  {id:"9de30bdb-012e-40d8-a2aa-49d05219087a",date:"2026-04-02",src:"Practo",primary:"MH",secondary:"-",gender:"Male",age:33,l1:"Anxiety Disorders",l2:"GAD — Moderate",meds:"",therapy:"Individual therapy",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Mildly ill"},
+  {id:"fc3b8d56-c700-4ad9-b18c-b0190db7e00a",date:"2026-04-03",src:"GMB",primary:"MH",secondary:"-",gender:"Female",age:24,l1:"Depression",l2:"Moderate–Severe*",meds:"Sertraline Tab 25mg, Clonazepam Tab 0.25mg",therapy:"Supportive Psychotherapy",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Markedly ill"},
+  {id:"f9792c72-741b-4c38-8b67-6f5b748ff111",date:"2026-04-03",src:"GMB",primary:"SH",secondary:"MH",gender:"Male",age:36,l1:"Anxiety Disorders",l2:"GAD — Severe",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"Couples counselling",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",shPresenting:"ED + GUI",severity:"Moderately ill"},
+  {id:"d10591c7-e4ce-4dae-af65-4e2e90a45ca3",date:"2026-04-04",src:"GMB",primary:"MH",secondary:"-",gender:"Female",age:27,l1:"Neurodevelopmental",l2:"ADHD — Inattentive",meds:"Atomoxetine 40mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Moderately ill"},
+  {id:"dee0559c-b5a3-4a21-be72-aa2d2e4d7363",date:"2026-04-05",src:"GMB",primary:"MH",secondary:"-",gender:"Female",age:32,l1:"Depression",l2:"Moderate–Severe*",meds:"Fluoxetine Tab 20mg, Etizolam 0.5mg",therapy:"Couples counselling",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Markedly ill"},
+  {id:"38ac05e1-ae56-4279-a9c7-c70aa5d38e9d",date:"2026-04-05",src:"Practo",primary:"MH",secondary:"-",gender:"Male",age:32,l1:"Addiction / Substance",l2:"Alcohol Dependence",meds:"Clonazepam Tab 0.25mg, Thiamine 100mg, Naltrexone 50mg, Sertraline Tab 50mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Severely ill"},
+  {id:"fb149909-d6d2-408b-b50d-c1f75b2f0a71",date:"2026-04-06",src:"Organic",primary:"MH",secondary:"-",gender:"Male",age:22,l1:"OCD Spectrum",l2:"OCD — Severe",meds:"Fluoxetine Tab 20mg, Etizolam 0.5mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Severely ill"},
+  {id:"7b5f6f43-9435-4f81-b1ef-142fdfe7b254",date:"2026-04-09",src:"Walk-in",primary:"MH",secondary:"-",gender:"Female",age:48,l1:"Depression",l2:"Moderate–Severe*",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Markedly ill"},
+  {id:"8c57b4c6-a6cf-4b28-b6e3-0a0bc702157b",date:"2026-04-10",src:"GMB",primary:"MH",secondary:"SH",gender:"Female",age:42,l1:"Bipolar / Psychotic Spectrum",l2:"Schizoaffective Disorder",meds:"Bupropion Tab 150mg, Zolpidem 5mg, Escitalopram 10mg, Lamotrigine 25mg, Quetiapine 25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Severely ill"},
+  {id:"e60090af-9b44-4bb6-a84b-2c76638ca7f8",date:"2026-04-10",src:"Direct walk-in",primary:"MH",secondary:"-",gender:"Male",age:26,l1:"Depression",l2:"Moderate–Severe*",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Markedly ill"},
+  {id:"1f452f1a-adf7-404c-891b-016367ef727b",date:"2026-04-12",src:"GMB",primary:"MH",secondary:"-",gender:"Male",age:25,l1:"OCD Spectrum",l2:"OCD — Severe",meds:"Escitalopram 10mg, Etizolam 0.25mg, Risperidone 1mg",therapy:"ERP Therapy",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Severely ill"},
+  {id:"082cf291-427a-4241-9665-981c2147a7bc",date:"2026-04-12",src:"Practo",primary:"MH",secondary:"-",gender:"Female",age:27,l1:"Adjustment / Grief Spectrum",l2:"Grief Disorder",meds:"Sertraline Tab 25mg, Clonazepam Tab 0.25mg",therapy:"Therapy",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Moderately ill"},
+  {id:"f301aff1-fcd9-4b56-b096-887ad491f153",date:"2026-04-12",src:"Google",primary:"MH",secondary:"-",gender:"Male",age:27,l1:"Depression",l2:"Moderate–Severe*",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Markedly ill"},
   // ===== APR 13+ MH-IDENTIFIED · CSV-DERIVED · revised logic · NE excluded · 4 allowed doctors only =====
-  {id:"25c6eb37-5b2e-4aa6-b7cb-8e9004675374",patientId:"e00b4389-c7d9-4d83-8240-5147bad25275",date:"2026-04-25",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:21,l1:"Depression",l2:"Mild*",diag:"Moderate Depression",meds:"Melatonin 3 mg",therapy:"-",doctor:"Dr. Adithya",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
-  {id:"ca048203-1d00-4f78-812a-89826ac332ab",patientId:"34b93d30-93c3-46e6-8bc6-7dfd5e2409b3",date:"2026-04-25",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:41,l1:"Depression",l2:"Mild*",diag:"Alcohol Harmful use ; Adjustment Disorder- Depressive type",meds:"Lorazepam 2 mg, Inj. Optinueronron, Thiamine 100 mg, PAN 40, NEXITO 10 mg",therapy:"-",doctor:"Dr. Adithya",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
-  {id:"0613c5e2-a2cb-497c-b8aa-14a72cf44ba6",patientId:"2e82a8e2-32c3-4065-b9bc-586f10fbecc7",date:"2026-04-25",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:33,l1:"Depression",l2:"Moderate–Severe*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill",bucket:"MH_ONLY"},
-  {id:"72a38714-6307-4b50-8f36-23563cc84c3a",patientId:"a2b8757a-5892-4adf-bc75-7a9d34837ded",date:"2026-04-25",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:40,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",diag:"Adjustment Disorder (6B43)",meds:"Paroxetine Tab 12.5mg",therapy:"-",doctor:"Dr. Shraddha",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
-  {id:"d770ca3c-5f60-4629-8a52-515acb45c945",patientId:"ec976b0b-d82f-4628-b24c-00b7767cdc82",date:"2026-04-26",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:30,l1:"OCD Spectrum",l2:"OCD — Moderate",diag:"?OCD",meds:"Fluoxetine Tab 20mg",therapy:"-",doctor:"Dr. Adithya",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
-  {id:"f1e3c7c3-4737-4461-bd8d-8e0f5858ae29",patientId:"c894d35b-a58b-42b6-85b2-5eded3aa8890",date:"2026-04-26",src:"Inbound",primary:"SH",secondary:"MH",gender:"Male",age:39,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",diag:"Adjustment Disorder (6B43)",meds:"Sertraline Tab 25mg, Clonazepam Tab 0.25mg, Water Based Lubricant 82gms",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Borderline ill",bucket:"STI_OVERLAP_MH",shPresenting:"Genito Urinary Infection (GUI) ; phimosis ; Mental Health Concerns"},
-  {id:"1db550ad-234e-42d2-824c-6ad211f2e706",patientId:"baf2df44-8306-4e3c-b83f-e729a36a3a28",date:"2026-04-26",src:"Inbound",primary:"SH",secondary:"MH",gender:"Male",age:26,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Tadalafil Tab 5mg, L-Arginine 2.5g + Zinc Sulphate 12mg + Vitamin B6 1.2mg, Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Borderline ill",bucket:"SH_TO_MH",shPresenting:"Mental Health Concerns ; Erectile Dysfunction"},
-  {id:"1f646b63-6385-4bbf-bb04-aecf95b3ab8e",patientId:"2346c209-4dfc-4e84-9521-ceb24a7e5b1e",date:"2026-04-27",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:37,l1:"Anxiety Disorders",l2:"Panic Disorder",diag:"Panic Disorder (6B01)",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg, Vitamin D Capsule",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Markedly ill",bucket:"MH_ONLY"},
-  {id:"b93b385d-87ef-4301-91d2-21ee8ea388c2",patientId:"1aa7cd2e-01ab-499f-97dd-3eb3c82933b9",date:"2026-04-27",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:25,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Escitalopram 10 mg, Etizolam 0.5 mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
-  {id:"e9d88087-c790-4ce1-89df-5c129828f043",patientId:"ae668508-6f77-48b7-a9c8-170d49b98829",date:"2026-04-27",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:27,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Fluoxetine Tab 20mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Mildly ill",bucket:"MH_ONLY"},
-  {id:"6fcf4042-e95c-4900-ac06-c3b5a8fc23ac",patientId:"fb125d27-0896-4bab-aa64-0f08be84a1d0",date:"2026-04-28",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:24,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
-  {id:"3b336d7e-abc5-4926-9ac8-869e4dc65ae9",patientId:"e765f9fa-1a1f-48e4-81db-50c16caf6774",date:"2026-04-28",src:"Inbound",primary:"SH",secondary:"MH",gender:"Male",age:33,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70) ; ADHD (6A05)",meds:"tab atomoxetine 18mg, Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Borderline ill",bucket:"SH_TO_MH",shPresenting:"Premature Ejaculation ; Porn Addiction ; Compulsive Masturbation ; Mental Health Concerns"},
-  {id:"a043430f-8a63-4f50-9569-d6a0dfef4346",patientId:"7776f4b2-7278-4171-a2ad-74f0afe63009",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:23,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
-  {id:"ea1e7770-1fe7-46e6-9cbe-9457ac71e1e2",patientId:"e587cf5c-518f-4573-98a6-25d7029e9c1e",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:29,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Sertraline Tab 25mg, Clonazepam Tab 0.25mg, Vitamin D Capsule",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
-  {id:"17f00082-4120-4179-a9b1-d6a9129353e5",patientId:"992a6c09-6c1c-4184-a93d-ee52f0caa201",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:19,l1:"Bipolar / Psychotic Spectrum",l2:"Bipolar I/II",diag:"bipolar disorder",meds:"tab lithium 600mg, tab quetiapine 25mg, tab zolcalm 10mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Normal, not at all ill",bucket:"MH_ONLY"},
-  {id:"4975830a-0804-41de-913d-1afaa5810dee",patientId:"bc1d3a82-4816-4f6f-9120-b619def058d0",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:50,l1:"Anxiety Disorders",l2:"GAD — Moderate",diag:"Generalized Anxiety Disorder (6B00) ; Alcohol Use Disorder (6C40)",meds:"Escitalopram 10 mg, Clonazepam 0.5 mg, Zolpidem 5 mg, tab nexpro rd 40mg, tab thiabion 100mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Pollachi",severity:"Moderately ill",bucket:"MH_ONLY"},
-  {id:"234396ac-ffd7-49e3-895b-a55fb5618232",patientId:"e7aadb51-3072-40d0-af73-acfb7ed1c830",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:21,l1:"OCD Spectrum",l2:"OCD — Moderate",diag:"Obsessive-Compulsive Disorder (6B20)",meds:"Fluvoxamine Tab 50mg, T. Risnia 2mg, T. Pacitane",therapy:"-",doctor:"Dr. Shraddha",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
-  {id:"74294fd5-5403-461f-af8d-c0d29e2d1bfb",patientId:"613c8556-86c0-4e00-ace5-6a58fd1d8ebf",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:26,l1:"Anxiety Disorders",l2:"GAD — Moderate",diag:"Generalized Anxiety Disorder (6B00)",meds:"Sertraline Tab 50mg, Clonazepam 0.5 mg",therapy:"-",doctor:"Dr. Shraddha",city:"Bangalore",severity:"Moderately ill",bucket:"MH_ONLY"},
-  {id:"2562f042-cf03-490b-bf63-e61e44ccec56",patientId:"9f45680d-7a28-41f2-a1e8-a674bb242632",date:"2026-05-01",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:43,l1:"Depression",l2:"Moderate–Severe*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Moderately ill",bucket:"MH_ONLY"},
-  {id:"6f7bff12-66bf-4601-b261-11531e3cf6e4",patientId:"2cd6189c-27bb-448d-bac5-6a0ea8cc03e8",date:"2026-05-01",src:"Inbound",primary:"SH",secondary:"MH",gender:"Female",age:34,l1:"Depression",l2:"Moderate–Severe*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Bupropion Tab 150mg, Clonazepam 0.5 mg",therapy:"-",doctor:"Dr. Shraddha",city:"Bangalore",severity:"Moderately ill",bucket:"SH_TO_MH",shPresenting:"Vaginismus ; Mental Health Concerns ; Low Sexual Desire"},
-  {id:"fb5bfab9-4015-4292-990d-1e7ac036f080",patientId:"e1470e08-c064-4e12-8040-07117839deac",date:"2026-05-02",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:24,l1:"Trauma & Stress-Related",l2:"Complex PTSD",diag:"Complex PTSD (6B41)",meds:"Fluoxetine Tab 20mg, Lithosum 300mg",therapy:"-",doctor:"Dr. Adithya",city:"Mangaluru",severity:"Borderline ill",bucket:"MH_ONLY"},
-  {id:"358e3d20-c2cc-4cd4-849c-f4c1aedef5e9",patientId:"79953455-828d-4a9d-8247-776b32a07aec",date:"2026-05-02",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:25,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Escitalopram 10 mg",therapy:"-",doctor:"Dr. Shraddha",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
-  {id:"38f54bcb-7e8c-4888-8a7c-9e676d68bbc4",patientId:"cc75b4e0-7ac5-4006-a757-429ddec7970e",date:"2026-05-03",src:"Inbound",primary:"SH",secondary:"MH",gender:"Male",age:26,l1:"Addiction / Substance",l2:"Cannabis Use Disorder",diag:"Cannabis Use Disorder (6C41) ; Nicotine Use Disorder (6C4A)",meds:"Tadalafil Tab 10mg, L-Arginine 2.5g + Zinc Sulphate 12mg + Vitamin B6 1.2mg",therapy:"-",doctor:"Dr. Adithya",city:"Bangalore",severity:"Mildly ill",bucket:"SH_TO_MH",shPresenting:"Atypical Erectile Dysfunction ; Mental Health Concerns"},
-  {id:"83315ce3-bb91-497b-8d1b-250b7192debc",patientId:"ec6b0f85-55f6-45e9-8851-cdb56b4285ed",date:"2026-05-03",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:28,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00) ; ?OC- need further evaluation",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Adithya",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
-  {id:"e84b5026-0ff3-45ff-91c4-030e8489ddf4",patientId:"a7f25e71-580a-40d2-89ee-c4b09b70def7",date:"2026-05-03",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:45,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Ooty",severity:"Borderline ill",bucket:"MH_ONLY"},
-  {id:"56276d7f-80bc-410e-bdb8-bc14338c6357",patientId:"456b20ee-3eb0-433f-b7ab-ba86fa12aa8c",date:"2026-05-03",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:29,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Escitalopram 10 mg, Zolpidem 10 mg, Clonazepam 0.5 mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
-  {id:"14b77464-c4e7-44c1-88c9-01402c8ddee5",patientId:"caf08838-a774-4710-8f3e-d64d81d97034",date:"2026-05-03",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:19,l1:"Trauma & Stress-Related",l2:"PTSD",diag:"PTSD (6B40)",meds:"Fluoxetine Tab 20mg, tab inderal LA 20mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",severity:"Moderately ill",bucket:"MH_ONLY"},
-  {id:"9c443250-e0e8-4444-bc14-e44a955c4319",patientId:"86646862-d972-4814-af5c-7e6b0212d1b2",date:"2026-05-04",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:30,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg, Zolpidem 5 mg",therapy:"-",doctor:"Dr. Sandhiya",city:"Kalapatti",severity:"Borderline ill",bucket:"MH_ONLY"},
-  {id:"7c64bb39-7984-4851-b834-f9ffea59faed",patientId:"695581f1-7359-40e4-9676-c230b0b5826a",date:"2026-05-04",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:45,l1:"Anxiety Disorders",l2:"Panic Disorder",diag:"Generalized Anxiety Disorder (6B00) ; Panic Disorder (6B01)",meds:"Escitalopram 10 mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Shraddha",city:"Pune",severity:"Mildly ill",bucket:"MH_ONLY"},
-  {id:"6a3101d8-3571-4c72-a67b-08f124b6fe80",patientId:"b008bbbf-57ae-4aca-9013-36238faa42ec",date:"2026-05-04",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:35,l1:"Depression",l2:"Mild*",diag:"Recurrent Depressive Disorder (6A71)",meds:"Escitalopram 10 mg",therapy:"-",doctor:"Dr. Shraddha",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"25c6eb37-5b2e-4aa6-b7cb-8e9004675374",patientId:"e00b4389-c7d9-4d83-8240-5147bad25275",date:"2026-04-25",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:21,l1:"Depression",l2:"Mild*",diag:"Moderate Depression",meds:"Melatonin 3 mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"ca048203-1d00-4f78-812a-89826ac332ab",patientId:"34b93d30-93c3-46e6-8bc6-7dfd5e2409b3",date:"2026-04-25",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:41,l1:"Depression",l2:"Mild*",diag:"Alcohol Harmful use ; Adjustment Disorder- Depressive type",meds:"Lorazepam 2 mg, Inj. Optinueronron, Thiamine 100 mg, PAN 40, NEXITO 10 mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"0613c5e2-a2cb-497c-b8aa-14a72cf44ba6",patientId:"2e82a8e2-32c3-4065-b9bc-586f10fbecc7",date:"2026-04-25",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:33,l1:"Depression",l2:"Moderate–Severe*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Markedly ill",bucket:"MH_ONLY"},
+  {id:"72a38714-6307-4b50-8f36-23563cc84c3a",patientId:"a2b8757a-5892-4adf-bc75-7a9d34837ded",date:"2026-04-25",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:40,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",diag:"Adjustment Disorder (6B43)",meds:"Paroxetine Tab 12.5mg",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"d770ca3c-5f60-4629-8a52-515acb45c945",patientId:"ec976b0b-d82f-4628-b24c-00b7767cdc82",date:"2026-04-26",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:30,l1:"OCD Spectrum",l2:"OCD — Moderate",diag:"?OCD",meds:"Fluoxetine Tab 20mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"f1e3c7c3-4737-4461-bd8d-8e0f5858ae29",patientId:"c894d35b-a58b-42b6-85b2-5eded3aa8890",date:"2026-04-26",src:"Inbound",primary:"SH",secondary:"MH",gender:"Male",age:39,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",diag:"Adjustment Disorder (6B43)",meds:"Sertraline Tab 25mg, Clonazepam Tab 0.25mg, Water Based Lubricant 82gms",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"STI_OVERLAP_MH",shPresenting:"Genito Urinary Infection (GUI) ; phimosis ; Mental Health Concerns"},
+  {id:"1db550ad-234e-42d2-824c-6ad211f2e706",patientId:"baf2df44-8306-4e3c-b83f-e729a36a3a28",date:"2026-04-26",src:"Inbound",primary:"SH",secondary:"MH",gender:"Male",age:26,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Tadalafil Tab 5mg, L-Arginine 2.5g + Zinc Sulphate 12mg + Vitamin B6 1.2mg, Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"SH_TO_MH",shPresenting:"Mental Health Concerns ; Erectile Dysfunction"},
+  {id:"1f646b63-6385-4bbf-bb04-aecf95b3ab8e",patientId:"2346c209-4dfc-4e84-9521-ceb24a7e5b1e",date:"2026-04-27",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:37,l1:"Anxiety Disorders",l2:"Panic Disorder",diag:"Panic Disorder (6B01)",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg, Vitamin D Capsule",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Markedly ill",bucket:"MH_ONLY"},
+  {id:"b93b385d-87ef-4301-91d2-21ee8ea388c2",patientId:"1aa7cd2e-01ab-499f-97dd-3eb3c82933b9",date:"2026-04-27",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:25,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Escitalopram 10 mg, Etizolam 0.5 mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
+  {id:"e9d88087-c790-4ce1-89df-5c129828f043",patientId:"ae668508-6f77-48b7-a9c8-170d49b98829",date:"2026-04-27",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:27,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Fluoxetine Tab 20mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"6fcf4042-e95c-4900-ac06-c3b5a8fc23ac",patientId:"fb125d27-0896-4bab-aa64-0f08be84a1d0",date:"2026-04-28",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:24,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
+  {id:"3b336d7e-abc5-4926-9ac8-869e4dc65ae9",patientId:"e765f9fa-1a1f-48e4-81db-50c16caf6774",date:"2026-04-28",src:"Inbound",primary:"SH",secondary:"MH",gender:"Male",age:33,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70) ; ADHD (6A05)",meds:"tab atomoxetine 18mg, Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"SH_TO_MH",shPresenting:"Premature Ejaculation ; Porn Addiction ; Compulsive Masturbation ; Mental Health Concerns"},
+  {id:"a043430f-8a63-4f50-9569-d6a0dfef4346",patientId:"7776f4b2-7278-4171-a2ad-74f0afe63009",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:23,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
+  {id:"ea1e7770-1fe7-46e6-9cbe-9457ac71e1e2",patientId:"e587cf5c-518f-4573-98a6-25d7029e9c1e",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:29,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Sertraline Tab 25mg, Clonazepam Tab 0.25mg, Vitamin D Capsule",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
+  {id:"17f00082-4120-4179-a9b1-d6a9129353e5",patientId:"992a6c09-6c1c-4184-a93d-ee52f0caa201",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:19,l1:"Bipolar / Psychotic Spectrum",l2:"Bipolar I/II",diag:"bipolar disorder",meds:"tab lithium 600mg, tab quetiapine 25mg, tab zolcalm 10mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Normal, not at all ill",bucket:"MH_ONLY"},
+  {id:"4975830a-0804-41de-913d-1afaa5810dee",patientId:"bc1d3a82-4816-4f6f-9120-b619def058d0",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:50,l1:"Anxiety Disorders",l2:"GAD — Moderate",diag:"Generalized Anxiety Disorder (6B00) ; Alcohol Use Disorder (6C40)",meds:"Escitalopram 10 mg, Clonazepam 0.5 mg, Zolpidem 5 mg, tab nexpro rd 40mg, tab thiabion 100mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Moderately ill",bucket:"MH_ONLY"},
+  {id:"234396ac-ffd7-49e3-895b-a55fb5618232",patientId:"e7aadb51-3072-40d0-af73-acfb7ed1c830",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:21,l1:"OCD Spectrum",l2:"OCD — Moderate",diag:"Obsessive-Compulsive Disorder (6B20)",meds:"Fluvoxamine Tab 50mg, T. Risnia 2mg, T. Pacitane",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"74294fd5-5403-461f-af8d-c0d29e2d1bfb",patientId:"613c8556-86c0-4e00-ace5-6a58fd1d8ebf",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:26,l1:"Anxiety Disorders",l2:"GAD — Moderate",diag:"Generalized Anxiety Disorder (6B00)",meds:"Sertraline Tab 50mg, Clonazepam 0.5 mg",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Moderately ill",bucket:"MH_ONLY"},
+  {id:"2562f042-cf03-490b-bf63-e61e44ccec56",patientId:"9f45680d-7a28-41f2-a1e8-a674bb242632",date:"2026-05-01",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:43,l1:"Depression",l2:"Moderate–Severe*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Moderately ill",bucket:"MH_ONLY"},
+  {id:"6f7bff12-66bf-4601-b261-11531e3cf6e4",patientId:"2cd6189c-27bb-448d-bac5-6a0ea8cc03e8",date:"2026-05-01",src:"Inbound",primary:"SH",secondary:"MH",gender:"Female",age:34,l1:"Depression",l2:"Moderate–Severe*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Bupropion Tab 150mg, Clonazepam 0.5 mg",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Moderately ill",bucket:"SH_TO_MH",shPresenting:"Vaginismus ; Mental Health Concerns ; Low Sexual Desire"},
+  {id:"fb5bfab9-4015-4292-990d-1e7ac036f080",patientId:"e1470e08-c064-4e12-8040-07117839deac",date:"2026-05-02",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:24,l1:"Trauma & Stress-Related",l2:"Complex PTSD",diag:"Complex PTSD (6B41)",meds:"Fluoxetine Tab 20mg, Lithosum 300mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Borderline ill",bucket:"MH_ONLY"},
+  {id:"358e3d20-c2cc-4cd4-849c-f4c1aedef5e9",patientId:"79953455-828d-4a9d-8247-776b32a07aec",date:"2026-05-02",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:25,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Escitalopram 10 mg",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"38f54bcb-7e8c-4888-8a7c-9e676d68bbc4",patientId:"cc75b4e0-7ac5-4006-a757-429ddec7970e",date:"2026-05-03",src:"Inbound",primary:"SH",secondary:"MH",gender:"Male",age:26,l1:"Addiction / Substance",l2:"Cannabis Use Disorder",diag:"Cannabis Use Disorder (6C41) ; Nicotine Use Disorder (6C4A)",meds:"Tadalafil Tab 10mg, L-Arginine 2.5g + Zinc Sulphate 12mg + Vitamin B6 1.2mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"SH_TO_MH",shPresenting:"Atypical Erectile Dysfunction ; Mental Health Concerns"},
+  {id:"83315ce3-bb91-497b-8d1b-250b7192debc",patientId:"ec6b0f85-55f6-45e9-8851-cdb56b4285ed",date:"2026-05-03",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:28,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00) ; ?OC- need further evaluation",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"e84b5026-0ff3-45ff-91c4-030e8489ddf4",patientId:"a7f25e71-580a-40d2-89ee-c4b09b70def7",date:"2026-05-03",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:45,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
+  {id:"56276d7f-80bc-410e-bdb8-bc14338c6357",patientId:"456b20ee-3eb0-433f-b7ab-ba86fa12aa8c",date:"2026-05-03",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:29,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Escitalopram 10 mg, Zolpidem 10 mg, Clonazepam 0.5 mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
+  {id:"14b77464-c4e7-44c1-88c9-01402c8ddee5",patientId:"caf08838-a774-4710-8f3e-d64d81d97034",date:"2026-05-03",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:19,l1:"Trauma & Stress-Related",l2:"PTSD",diag:"PTSD (6B40)",meds:"Fluoxetine Tab 20mg, tab inderal LA 20mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Moderately ill",bucket:"MH_ONLY"},
+  {id:"9c443250-e0e8-4444-bc14-e44a955c4319",patientId:"86646862-d972-4814-af5c-7e6b0212d1b2",date:"2026-05-04",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:30,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg, Zolpidem 5 mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
+  {id:"7c64bb39-7984-4851-b834-f9ffea59faed",patientId:"695581f1-7359-40e4-9676-c230b0b5826a",date:"2026-05-04",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:45,l1:"Anxiety Disorders",l2:"Panic Disorder",diag:"Generalized Anxiety Disorder (6B00) ; Panic Disorder (6B01)",meds:"Escitalopram 10 mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"6a3101d8-3571-4c72-a67b-08f124b6fe80",patientId:"b008bbbf-57ae-4aca-9013-36238faa42ec",date:"2026-05-04",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:35,l1:"Depression",l2:"Mild*",diag:"Recurrent Depressive Disorder (6A71)",meds:"Escitalopram 10 mg",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
   // ===== NE patients counted in MH-identified per business rule =====
-  {id:"4ea7e8a6-ne-apr01-dep",date:"2026-04-01",src:"Google",primary:"MH",secondary:"-",gender:"Female",age:20,l1:"Depression",l2:"Mild*",diag:"Depression (NE in RX_Data)",meds:"-",therapy:"Individual + Couple",doctor:"Dr. Sandhiya",city:"Coimbatore",isNE:true},
-  {id:"61e926b2-ne-apr08-dem",date:"2026-04-08",src:"Walk-in",primary:"MH",secondary:"-",gender:"Female",age:67,l1:"Neurocognitive Disorders",l2:"Dementia — Mixed",diag:"Dementia (NE in RX_Data)",meds:"Quetiapine, Memantine, Donepezil",therapy:"-",doctor:"Dr. Sandhiya",city:"Coimbatore",isNE:true},
+  {id:"4ea7e8a6-ne-apr01-dep",date:"2026-04-01",src:"Google",primary:"MH",secondary:"-",gender:"Female",age:20,l1:"Depression",l2:"Mild*",diag:"Depression (NE in RX_Data)",meds:"-",therapy:"Individual + Couple",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",isNE:true},
+  {id:"61e926b2-ne-apr08-dem",date:"2026-04-08",src:"Walk-in",primary:"MH",secondary:"-",gender:"Female",age:67,l1:"Neurocognitive Disorders",l2:"Dementia — Mixed",diag:"Dementia (NE in RX_Data)",meds:"Quetiapine, Memantine, Donepezil",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",isNE:true},
 ];
 
 // ===== TEST PRESCRIPTION DATA (from RX_data gen_tests col + package resolution) =====
@@ -1066,293 +1109,328 @@ const DSS_TEST_NAME = {
 // Monthly totals: Mar = W0+W1+W2 = 80 (weeks fully in March) + 2 days of W3 = 86
 // Tracker-declared: Mar total = 92 (W0+W1+W2 + Mar 30-31 from W3), Apr total = 58 (Apr 1-12)
 // Total = 150 ✓
-const MONTHLY={
-  Mar:{total:92,ne:0,sti:23,lbl:"March 2026",start:"2026-03-01",end:"2026-03-31"},
-  Apr:{total:61,ne:2,sti:11,lbl:"April 2026",start:"2026-04-01",end:"2026-04-30"},
-  May:{total:0,ne:0,sti:0,lbl:"May 2026 (multi-city only)",start:"2026-05-01",end:"2026-05-03"},
-  // Apr: W4(29 calls, Apr6-12) + W5(0, leave) + W6(25, Apr20-26) + W7 Coimbatore portion(7, Apr27-28) = 61 actual
-  // May: Coimbatore offline tracker not updated for May; multi-city raw counts present in SC_APPTS only
-  // NE: 2 (W4) | STI: W4(5)+W6(5)+W7(1) = 11
+// Manual offline tracker totals for pre-CSV months
+const _MONTHLY_MANUAL={
+  Mar:{total:92,ne:0,sti:23},
+  Apr:{total:61,ne:2,sti:11},
 };
+// Build MONTHLY dynamically — adds current month and any future months touched
+const MONTHLY=(()=>{
+  const monNames=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const today=new Date();
+  const out={};
+  // Cover Mar 2026 onwards through current month
+  let cursor=new Date(2026,2,1);  // Mar 2026
+  while(cursor<=today){
+    const idx=cursor.getMonth();const yr=cursor.getFullYear();
+    const k=monNames[idx];
+    const isCurrent=(today.getFullYear()===yr&&today.getMonth()===idx);
+    const m=_MONTHLY_MANUAL[k]||{total:0,ne:0,sti:0};
+    const start=new Date(yr,idx,1);const end=new Date(yr,idx+1,0);
+    out[k]={...m,lbl:k+" "+yr+(isCurrent?" (current)":""),start:start.toISOString().slice(0,10),end:end.toISOString().slice(0,10),isCurrent};
+    cursor=new Date(yr,idx+1,1);
+  }
+  return out;
+})();
 // W5: Apr 13–19 (Dr. Sandhiya on leave — Coimbatore only, minimal activity)
 // W6: Apr 20–26 (Apr 22 Dr. Sandhiya back; Apr 23 multi-city launch)
 // W7: Apr 27–May 3 — Coimbatore tracker captured only Apr 27–28 (7 calls). Multi-city activity Apr 28–May 3 visible in SC_APPTS / patients but NOT yet in offline weekly tracker totals below.
-const WEEKLY={
-  W0:{total:24,ne:0,sti:5,lbl:"W0: Mar 9–15",start:"2026-03-09",end:"2026-03-15"},
-  W1:{total:32,ne:0,sti:6,lbl:"W1: Mar 16–22",start:"2026-03-16",end:"2026-03-22"},
-  W2:{total:24,ne:0,sti:8,lbl:"W2: Mar 23–29",start:"2026-03-23",end:"2026-03-29"},
-  W3:{total:41,ne:3,sti:7,lbl:"W3: Mar 30–Apr 5",start:"2026-03-30",end:"2026-04-05"},
-  W4:{total:29,ne:2,sti:5,lbl:"W4: Apr 6–12",start:"2026-04-06",end:"2026-04-12"},
-  W5:{total:0,ne:0,sti:0,lbl:"W5: Apr 13–19",start:"2026-04-13",end:"2026-04-19"},
-  W6:{total:25,ne:0,sti:0,lbl:"W6: Apr 20–26",start:"2026-04-20",end:"2026-04-26"},
-  W7:{total:7,ne:0,sti:0,lbl:"W7: Apr 27–May 3",start:"2026-04-27",end:"2026-05-03"},
+// Manual offline tracker totals for pre-CSV weeks (Coimbatore-only baseline)
+// _W0_START declared here so WEEKLY builder below has access during init
+const _W0_START = new Date("2026-03-09");
+const _WEEKLY_MANUAL={
+  W0:{total:24,ne:0,sti:5},W1:{total:32,ne:0,sti:6},W2:{total:24,ne:0,sti:8},
+  W3:{total:41,ne:3,sti:7},W4:{total:29,ne:2,sti:5},W5:{total:0,ne:0,sti:0},
+  W6:{total:25,ne:0,sti:0},W7:{total:7,ne:0,sti:0},
 };
+// Build WEEKLY dict dynamically up through current week — auto-extends each day
+const WEEKLY=(()=>{
+  const fmt=(d)=>{const m=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][d.getMonth()];return m+" "+d.getDate();};
+  const today=new Date();today.setHours(0,0,0,0);
+  const out={};
+  let i=0;
+  while(true){
+    const start=new Date(_W0_START);start.setDate(start.getDate()+i*7);
+    const end=new Date(start);end.setDate(end.getDate()+6);
+    if(start>today)break;
+    const k="W"+i;
+    const m=_WEEKLY_MANUAL[k]||{total:0,ne:0,sti:0};
+    const isCurrent=(today>=start&&today<=end);
+    const lbl="W"+i+": "+fmt(start)+"–"+fmt(end)+(isCurrent?" (current)":"");
+    out[k]={...m,lbl,start:start.toISOString().slice(0,10),end:end.toISOString().slice(0,10),isCurrent};
+    i++;
+    if(i>200)break;  // safety
+  }
+  return out;
+})();
 
 const SC_APPTS=[
-  {id:'e56fc797',date:'2026-03-09',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'9141b09d',date:'2026-03-09',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'81727268',date:'2026-03-09',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'36121c7b',date:'2026-03-10',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:true},
-  {id:'d16776bd',date:'2026-03-10',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'b71e6eea',date:'2026-03-10',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'093b65cd',date:'2026-03-10',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'958d4821',date:'2026-03-10',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'d6e089f2',date:'2026-03-11',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'1e9a5d65',date:'2026-03-11',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'f4409323',date:'2026-03-11',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'445647e4',date:'2026-03-11',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'8f2caa03',date:'2026-03-13',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'e98138d6',date:'2026-03-13',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'4bb5335a',date:'2026-03-14',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'75985ad8',date:'2026-03-13',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'d896690f',date:'2026-03-14',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'60e9cf2d',date:'2026-03-15',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'eefe4582',date:'2026-03-14',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'2af897ba',date:'2026-03-14',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'MH',ne:false},
-  {id:'e1556675',date:'2026-03-15',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'e66ceaab',date:'2026-03-14',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'34279170',date:'2026-03-15',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'da023419',date:'2026-03-16',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Google',cat:'SH',ne:false},
-  {id:'894525ee',date:'2026-03-15',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'3324b578',date:'2026-03-16',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
-  {id:'52c43848',date:'2026-03-16',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'5c171bfd',date:'2026-03-16',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'SH',ne:false},
-  {id:'47e0b0a8',date:'2026-03-16',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'2495b4c3',date:'2026-03-16',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'5012793e',date:'2026-03-17',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:true},
-  {id:'be986d54',date:'2026-03-17',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'b5526997',date:'2026-03-18',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'446b53ea',date:'2026-03-18',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'f9ffd0d6',date:'2026-03-21',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'32e65e7b',date:'2026-03-22',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
-  {id:'ab92a253',date:'2026-03-20',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'38d2a514',date:'2026-03-20',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'452c465d',date:'2026-03-20',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'c1abfcc6',date:'2026-03-20',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'d0cecff1',date:'2026-03-20',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'a64162c5',date:'2026-03-22',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
-  {id:'20094c8e',date:'2026-03-20',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:true},
-  {id:'e9cc1711',date:'2026-03-20',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'a0da6832',date:'2026-03-20',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'b975c178',date:'2026-03-21',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'84347127',date:'2026-03-21',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'ff4dba4c',date:'2026-03-21',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'5b00def0',date:'2026-03-21',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'55902527',date:'2026-03-22',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'99025bee',date:'2026-03-22',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'ce175589',date:'2026-03-22',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'39ef9123',date:'2026-03-22',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'22d35953',date:'2026-03-22',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'416199df',date:'2026-03-22',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'8cee8c6a',date:'2026-03-22',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'STI',ne:false},
-  {id:'3a8ad38b',date:'2026-03-22',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'74924fdb',date:'2026-03-23',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'7f27d9d6',date:'2026-03-23',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'3ef12893',date:'2026-03-23',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'1129465b',date:'2026-03-23',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'9a0344ec',date:'2026-03-26',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'68550e4b',date:'2026-03-26',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'c8822153',date:'2026-03-27',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'MH',ne:false},
-  {id:'7d78607f',date:'2026-03-26',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'8516fa40',date:'2026-03-26',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'c247ce63',date:'2026-03-26',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'53e924b5',date:'2026-03-27',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
-  {id:'f90fc88b',date:'2026-03-27',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'e13114f3',date:'2026-03-27',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'0f9be3c1',date:'2026-03-29',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'c4c44885',date:'2026-03-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'SH',ne:false},
-  {id:'0007895e',date:'2026-03-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'87c6a80e',date:'2026-03-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'37b12fb4',date:'2026-03-29',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'MH',ne:false},
-  {id:'ff264716',date:'2026-03-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'3a8b8e6c',date:'2026-03-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'d68dba01',date:'2026-03-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'57276454',date:'2026-03-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'68b56c1f',date:'2026-03-31',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'e49f6f4e',date:'2026-03-29',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'02057af8',date:'2026-03-29',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
-  {id:'6145c4d5',date:'2026-03-30',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'7ef53f63',date:'2026-03-31',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'97339298',date:'2026-03-30',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'8ae7d23c',date:'2026-03-31',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'a3224bc6',date:'2026-03-30',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'831375a1',date:'2026-03-30',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'70af95bc',date:'2026-03-30',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'3107844c',date:'2026-03-30',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'627ade9a',date:'2026-03-31',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
-  {id:'5dbf424a',date:'2026-03-31',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
-  {id:'d52f667d',date:'2026-03-31',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'8c3c950e',date:'2026-04-01',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'a1db7053',date:'2026-04-01',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'31fde950',date:'2026-04-01',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
-  {id:'4ea7e8a6',date:'2026-04-01',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Google',cat:'MH',ne:true},
-  {id:'45214cfc',date:'2026-04-01',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'9de30bdb',date:'2026-04-02',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'MH',ne:false},
-  {id:'372a3727',date:'2026-04-02',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'4a291905',date:'2026-04-02',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'51b3a562',date:'2026-04-02',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'29e70212',date:'2026-04-02',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'923baae1',date:'2026-04-02',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'f9792c72',date:'2026-04-03',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
-  {id:'9379184a',date:'2026-04-03',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'c8dcac20',date:'2026-04-03',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'fc3b8d56',date:'2026-04-03',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
-  {id:'e0e86aa2',date:'2026-04-04',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'d2235576',date:'2026-04-05',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'60cd5e96',date:'2026-04-05',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'d10591c7',date:'2026-04-04',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
-  {id:'44f09329',date:'2026-04-04',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'dee0559c',date:'2026-04-05',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
-  {id:'d3cc10f7',date:'2026-04-04',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'59c0e322',date:'2026-04-04',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'158db978',date:'2026-04-06',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'d2ff1122',date:'2026-04-05',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'fe64305f',date:'2026-04-04',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'38ac05e1',date:'2026-04-05',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'MH',ne:false},
-  {id:'fb149909',date:'2026-04-06',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Organic',cat:'MH',ne:false},
-  {id:'8a050b71',date:'2026-04-05',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'6349aefc',date:'2026-04-05',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'080178b7',date:'2026-04-05',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'88457d97',date:'2026-04-05',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'4c61659e',date:'2026-04-06',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'9283be9e',date:'2026-04-06',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'4d5c0675',date:'2026-04-06',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'523761fb',date:'2026-04-07',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Google',cat:'STI',ne:false},
-  {id:'cea64626',date:'2026-04-07',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'SH',ne:false},
-  {id:'1e38918c',date:'2026-04-07',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Organic',cat:'SH',ne:false},
-  {id:'b9a7092a',date:'2026-04-08',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'STI',ne:false},
-  {id:'15e3b97b',date:'2026-04-08',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Organic',cat:'SH',ne:false},
-  {id:'61e926b2',date:'2026-04-08',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:true},
-  {id:'4bdc2c57',date:'2026-04-09',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Google',cat:'STI',ne:false},
-  {id:'e4da6700',date:'2026-04-08',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'SH',ne:false},
-  {id:'fb5db2b8',date:'2026-04-09',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'SH',ne:false},
-  {id:'56a0a650',date:'2026-04-09',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Organic',cat:'SH',ne:false},
-  {id:'1f452f1a',date:'2026-04-09',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'12059f69',date:'2026-04-09',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Organic',cat:'SH',ne:false},
-  {id:'ac6f5016',date:'2026-04-09',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'STI',ne:false},
-  {id:'d07366e7',date:'2026-04-09',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
-  {id:'8c57b4c6',date:'2026-04-10',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
-  {id:'47ebff1f',date:'2026-04-10',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
-  {id:'246f765d',date:'2026-04-10',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Google',cat:'SH',ne:false},
-  {id:'e60090af',date:'2026-04-10',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'8716add9',date:'2026-04-11',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'e9623171',date:'2026-04-11',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'STI',ne:false},
-  {id:'f301aff1',date:'2026-04-12',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
-  {id:'082cf291',date:'2026-04-12',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'MH',ne:false},
-  {id:'7b5f6f43',date:'2026-04-12',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Google',cat:'MH',ne:false},
-  {id:'92c870c3',date:'2026-04-12',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'SH',ne:false},
+  {id:'e56fc797',date:'2026-03-09',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'9141b09d',date:'2026-03-09',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'81727268',date:'2026-03-09',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'36121c7b',date:'2026-03-10',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:true},
+  {id:'d16776bd',date:'2026-03-10',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'b71e6eea',date:'2026-03-10',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'093b65cd',date:'2026-03-10',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'958d4821',date:'2026-03-10',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'d6e089f2',date:'2026-03-11',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'1e9a5d65',date:'2026-03-11',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'f4409323',date:'2026-03-11',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'445647e4',date:'2026-03-11',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'8f2caa03',date:'2026-03-13',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'e98138d6',date:'2026-03-13',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'4bb5335a',date:'2026-03-14',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'75985ad8',date:'2026-03-13',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'d896690f',date:'2026-03-14',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'60e9cf2d',date:'2026-03-15',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'eefe4582',date:'2026-03-14',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'2af897ba',date:'2026-03-14',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'MH',ne:false},
+  {id:'e1556675',date:'2026-03-15',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'e66ceaab',date:'2026-03-14',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'34279170',date:'2026-03-15',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'da023419',date:'2026-03-16',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Google',cat:'SH',ne:false},
+  {id:'894525ee',date:'2026-03-15',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'3324b578',date:'2026-03-16',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
+  {id:'52c43848',date:'2026-03-16',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'5c171bfd',date:'2026-03-16',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'SH',ne:false},
+  {id:'47e0b0a8',date:'2026-03-16',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'2495b4c3',date:'2026-03-16',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'5012793e',date:'2026-03-17',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:true},
+  {id:'be986d54',date:'2026-03-17',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'b5526997',date:'2026-03-18',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'446b53ea',date:'2026-03-18',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'f9ffd0d6',date:'2026-03-21',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'32e65e7b',date:'2026-03-22',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
+  {id:'ab92a253',date:'2026-03-20',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'38d2a514',date:'2026-03-20',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'452c465d',date:'2026-03-20',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'c1abfcc6',date:'2026-03-20',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'d0cecff1',date:'2026-03-20',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'a64162c5',date:'2026-03-22',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
+  {id:'20094c8e',date:'2026-03-20',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:true},
+  {id:'e9cc1711',date:'2026-03-20',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'a0da6832',date:'2026-03-20',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'b975c178',date:'2026-03-21',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'84347127',date:'2026-03-21',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'ff4dba4c',date:'2026-03-21',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'5b00def0',date:'2026-03-21',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'55902527',date:'2026-03-22',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'99025bee',date:'2026-03-22',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'ce175589',date:'2026-03-22',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'39ef9123',date:'2026-03-22',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'22d35953',date:'2026-03-22',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'416199df',date:'2026-03-22',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'8cee8c6a',date:'2026-03-22',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'STI',ne:false},
+  {id:'3a8ad38b',date:'2026-03-22',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'74924fdb',date:'2026-03-23',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'7f27d9d6',date:'2026-03-23',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'3ef12893',date:'2026-03-23',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'1129465b',date:'2026-03-23',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'9a0344ec',date:'2026-03-26',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'68550e4b',date:'2026-03-26',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'c8822153',date:'2026-03-27',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'MH',ne:false},
+  {id:'7d78607f',date:'2026-03-26',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'8516fa40',date:'2026-03-26',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'c247ce63',date:'2026-03-26',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'53e924b5',date:'2026-03-27',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
+  {id:'f90fc88b',date:'2026-03-27',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'e13114f3',date:'2026-03-27',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'0f9be3c1',date:'2026-03-29',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'c4c44885',date:'2026-03-28',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'SH',ne:false},
+  {id:'0007895e',date:'2026-03-28',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'87c6a80e',date:'2026-03-28',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'37b12fb4',date:'2026-03-29',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'MH',ne:false},
+  {id:'ff264716',date:'2026-03-28',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'3a8b8e6c',date:'2026-03-28',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'d68dba01',date:'2026-03-28',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'57276454',date:'2026-03-28',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'68b56c1f',date:'2026-03-31',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'e49f6f4e',date:'2026-03-29',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'02057af8',date:'2026-03-29',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
+  {id:'6145c4d5',date:'2026-03-30',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'7ef53f63',date:'2026-03-31',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'97339298',date:'2026-03-30',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'8ae7d23c',date:'2026-03-31',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'a3224bc6',date:'2026-03-30',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'831375a1',date:'2026-03-30',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'70af95bc',date:'2026-03-30',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'3107844c',date:'2026-03-30',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'627ade9a',date:'2026-03-31',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
+  {id:'5dbf424a',date:'2026-03-31',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
+  {id:'d52f667d',date:'2026-03-31',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'8c3c950e',date:'2026-04-01',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'a1db7053',date:'2026-04-01',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'31fde950',date:'2026-04-01',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
+  {id:'4ea7e8a6',date:'2026-04-01',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Google',cat:'MH',ne:true},
+  {id:'45214cfc',date:'2026-04-01',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'9de30bdb',date:'2026-04-02',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'MH',ne:false},
+  {id:'372a3727',date:'2026-04-02',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'4a291905',date:'2026-04-02',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'51b3a562',date:'2026-04-02',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'29e70212',date:'2026-04-02',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'923baae1',date:'2026-04-02',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'f9792c72',date:'2026-04-03',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
+  {id:'9379184a',date:'2026-04-03',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'c8dcac20',date:'2026-04-03',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'fc3b8d56',date:'2026-04-03',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
+  {id:'e0e86aa2',date:'2026-04-04',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'d2235576',date:'2026-04-05',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'60cd5e96',date:'2026-04-05',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'d10591c7',date:'2026-04-04',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
+  {id:'44f09329',date:'2026-04-04',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'dee0559c',date:'2026-04-05',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
+  {id:'d3cc10f7',date:'2026-04-04',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'59c0e322',date:'2026-04-04',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'158db978',date:'2026-04-06',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'d2ff1122',date:'2026-04-05',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'fe64305f',date:'2026-04-04',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'38ac05e1',date:'2026-04-05',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'MH',ne:false},
+  {id:'fb149909',date:'2026-04-06',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Organic',cat:'MH',ne:false},
+  {id:'8a050b71',date:'2026-04-05',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'6349aefc',date:'2026-04-05',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'080178b7',date:'2026-04-05',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'88457d97',date:'2026-04-05',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'4c61659e',date:'2026-04-06',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'9283be9e',date:'2026-04-06',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'4d5c0675',date:'2026-04-06',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'523761fb',date:'2026-04-07',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Google',cat:'STI',ne:false},
+  {id:'cea64626',date:'2026-04-07',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'SH',ne:false},
+  {id:'1e38918c',date:'2026-04-07',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Organic',cat:'SH',ne:false},
+  {id:'b9a7092a',date:'2026-04-08',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'STI',ne:false},
+  {id:'15e3b97b',date:'2026-04-08',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Organic',cat:'SH',ne:false},
+  {id:'61e926b2',date:'2026-04-08',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:true},
+  {id:'4bdc2c57',date:'2026-04-09',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Google',cat:'STI',ne:false},
+  {id:'e4da6700',date:'2026-04-08',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'SH',ne:false},
+  {id:'fb5db2b8',date:'2026-04-09',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'SH',ne:false},
+  {id:'56a0a650',date:'2026-04-09',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Organic',cat:'SH',ne:false},
+  {id:'1f452f1a',date:'2026-04-09',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'12059f69',date:'2026-04-09',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Organic',cat:'SH',ne:false},
+  {id:'ac6f5016',date:'2026-04-09',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'STI',ne:false},
+  {id:'d07366e7',date:'2026-04-09',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
+  {id:'8c57b4c6',date:'2026-04-10',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
+  {id:'47ebff1f',date:'2026-04-10',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'SH',ne:false},
+  {id:'246f765d',date:'2026-04-10',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Google',cat:'SH',ne:false},
+  {id:'e60090af',date:'2026-04-10',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'8716add9',date:'2026-04-11',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'e9623171',date:'2026-04-11',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'STI',ne:false},
+  {id:'f301aff1',date:'2026-04-12',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'GMB',cat:'MH',ne:false},
+  {id:'082cf291',date:'2026-04-12',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'MH',ne:false},
+  {id:'7b5f6f43',date:'2026-04-12',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Google',cat:'MH',ne:false},
+  {id:'92c870c3',date:'2026-04-12',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Practo',cat:'SH',ne:false},
   // ===== APR 13+ SC_APPTS · CSV-DERIVED · revised logic (NE first → STI overlap → ismhorsh+moqlq → STI keyword) · 4 allowed doctors only =====
-  {id:'d531ac6e',date:'2026-04-17',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:true},
-  {id:'39d46561',date:'2026-04-18',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:true},
-  {id:'607d3343',date:'2026-04-22',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:true},
-  {id:'35fa78a3',date:'2026-04-23',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:true},
-  {id:'6600a778',date:'2026-04-23',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'fea6639a',date:'2026-04-23',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
-  {id:'8392f5a0',date:'2026-04-23',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
-  {id:'f9b3dbae',date:'2026-04-23',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:true},
-  {id:'5a8f6ac0',date:'2026-04-24',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'7cd108da',date:'2026-04-24',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'STI',ne:false},
-  {id:'bd3c1e0d',date:'2026-04-24',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'67279afe',date:'2026-04-24',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'5573bcbd',date:'2026-04-24',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'120ad162',date:'2026-04-25',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'25c6eb37',date:'2026-04-25',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
-  {id:'2b23ea3e',date:'2026-04-25',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'ca048203',date:'2026-04-25',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
-  {id:'3ba72318',date:'2026-04-25',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
-  {id:'55431bd8',date:'2026-04-25',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'93594e75',date:'2026-04-25',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'a91caefb',date:'2026-04-25',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'32f2eed2',date:'2026-04-25',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'42533279',date:'2026-04-25',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'3f010cff',date:'2026-04-25',city:'Chennai',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'637869d5',date:'2026-04-25',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'0613c5e2',date:'2026-04-25',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'17ff63c9',date:'2026-04-25',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'43dc9b1d',date:'2026-04-25',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
-  {id:'72a38714',date:'2026-04-25',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
-  {id:'03a7ac3a',date:'2026-04-25',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'1d79a706',date:'2026-04-25',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'0ae669c0',date:'2026-04-25',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'e6d8a002',date:'2026-04-26',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'d770ca3c',date:'2026-04-26',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
-  {id:'5202dad1',date:'2026-04-26',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:true},
-  {id:'5181bb45',date:'2026-04-26',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'7561fd10',date:'2026-04-26',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'f1e3c7c3',date:'2026-04-26',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'0bddd663',date:'2026-04-26',city:'Jharkand',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'1db550ad',date:'2026-04-26',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'6114bd9e',date:'2026-04-27',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
-  {id:'0bfce69b',date:'2026-04-27',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'1f646b63',date:'2026-04-27',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'b93b385d',date:'2026-04-27',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'e9d88087',date:'2026-04-27',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'19de0519',date:'2026-04-27',city:'Tiruppur',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'ed924597',date:'2026-04-27',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
-  {id:'b42171fd',date:'2026-04-27',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
-  {id:'d061eb74',date:'2026-04-27',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'f7aa48e3',date:'2026-04-27',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
-  {id:'3779c23b',date:'2026-04-28',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
-  {id:'51b74407',date:'2026-04-28',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
-  {id:'6ef6a50e',date:'2026-04-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'6fcf4042',date:'2026-04-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'603c8592',date:'2026-04-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'7d675126',date:'2026-04-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'b0885ea2',date:'2026-04-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'3b336d7e',date:'2026-04-28',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'214f009b',date:'2026-04-28',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'71cab10d',date:'2026-04-28',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'3f12652d',date:'2026-04-29',city:'Tiruvannamalai',doctor:'Dr. Adithya',src:'Inbound',cat:'STI',ne:false},
-  {id:'faa95c50',date:'2026-04-29',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'STI',ne:false},
-  {id:'76c79bfd',date:'2026-04-29',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'be6f16f4',date:'2026-04-29',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'1ade63ae',date:'2026-04-29',city:'Chennai',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'e476fb3d',date:'2026-04-30',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'a043430f',date:'2026-04-30',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'ea1e7770',date:'2026-04-30',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'17f00082',date:'2026-04-30',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'90bdcd61',date:'2026-04-30',city:'Pollachi',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'9e800499',date:'2026-04-30',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'4975830a',date:'2026-04-30',city:'Pollachi',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'234396ac',date:'2026-04-30',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
-  {id:'74294fd5',date:'2026-04-30',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
-  {id:'8551fcde',date:'2026-05-01',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
-  {id:'b705ad1d',date:'2026-05-01',city:'Kerala',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'d81cdb50',date:'2026-05-01',city:'Palakkad',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'44c50af7',date:'2026-05-01',city:'Erode',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'2562f042',date:'2026-05-01',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'b8548094',date:'2026-05-01',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'a1b48a8e',date:'2026-05-01',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'c04a9857',date:'2026-05-01',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'48c4813c',date:'2026-05-01',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'6f7bff12',date:'2026-05-01',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'eedf9200',date:'2026-05-01',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'fb5bfab9',date:'2026-05-02',city:'Mangaluru',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
-  {id:'9cde6bfb',date:'2026-05-02',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'STI',ne:false},
-  {id:'4457bf5b',date:'2026-05-02',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:true},
-  {id:'65ebf35d',date:'2026-05-02',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'2f7f4c81',date:'2026-05-02',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'a6235d58',date:'2026-05-02',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'d858b9e3',date:'2026-05-02',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:true},
-  {id:'358e3d20',date:'2026-05-02',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
-  {id:'7bb39479',date:'2026-05-02',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'9bdb65fe',date:'2026-05-03',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'38f54bcb',date:'2026-05-03',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'83315ce3',date:'2026-05-03',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
-  {id:'93b6ee2e',date:'2026-05-03',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'e84b5026',date:'2026-05-03',city:'Ooty',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'56276d7f',date:'2026-05-03',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'77d42bd9',date:'2026-05-03',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'36435e36',date:'2026-05-03',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'441119bc',date:'2026-05-03',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'58d5bdbc',date:'2026-05-03',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'14b77464',date:'2026-05-03',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'ca521db6',date:'2026-05-04',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
-  {id:'feb7d256',date:'2026-05-04',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
-  {id:'9c443250',date:'2026-05-04',city:'Kalapatti',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'b4341002',date:'2026-05-04',city:'Tenkasi',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'7c64bb39',date:'2026-05-04',city:'Pune',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
-  {id:'6a3101d8',date:'2026-05-04',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false}
+  {id:'c8344859',date:'2026-04-22',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'a11c0193',date:'2026-04-22',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'f28ff32b',date:'2026-04-22',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'5db29958',date:'2026-04-22',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'3d44811a',date:'2026-04-22',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'35fa78a3',date:'2026-04-23',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:true},
+  {id:'6600a778',date:'2026-04-23',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'fea6639a',date:'2026-04-23',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
+  {id:'8392f5a0',date:'2026-04-23',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
+  {id:'f9b3dbae',date:'2026-04-23',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:true},
+  {id:'5a8f6ac0',date:'2026-04-24',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'7cd108da',date:'2026-04-24',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'STI',ne:false},
+  {id:'bd3c1e0d',date:'2026-04-24',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'67279afe',date:'2026-04-24',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'5573bcbd',date:'2026-04-24',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'120ad162',date:'2026-04-25',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'25c6eb37',date:'2026-04-25',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
+  {id:'2b23ea3e',date:'2026-04-25',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'ca048203',date:'2026-04-25',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
+  {id:'3ba72318',date:'2026-04-25',clinic:'Kr Puram',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
+  {id:'55431bd8',date:'2026-04-25',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'93594e75',date:'2026-04-25',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'a91caefb',date:'2026-04-25',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'32f2eed2',date:'2026-04-25',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'42533279',date:'2026-04-25',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'3f010cff',date:'2026-04-25',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'637869d5',date:'2026-04-25',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'0613c5e2',date:'2026-04-25',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'17ff63c9',date:'2026-04-25',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'43dc9b1d',date:'2026-04-25',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
+  {id:'72a38714',date:'2026-04-25',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
+  {id:'03a7ac3a',date:'2026-04-25',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'1d79a706',date:'2026-04-25',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'0ae669c0',date:'2026-04-25',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'e6d8a002',date:'2026-04-26',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'d770ca3c',date:'2026-04-26',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
+  {id:'5202dad1',date:'2026-04-26',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:true},
+  {id:'5181bb45',date:'2026-04-26',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'7561fd10',date:'2026-04-26',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'f1e3c7c3',date:'2026-04-26',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'0bddd663',date:'2026-04-26',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'1db550ad',date:'2026-04-26',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'6114bd9e',date:'2026-04-27',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
+  {id:'0bfce69b',date:'2026-04-27',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'1f646b63',date:'2026-04-27',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'b93b385d',date:'2026-04-27',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'e9d88087',date:'2026-04-27',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'19de0519',date:'2026-04-27',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'ed924597',date:'2026-04-27',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
+  {id:'b42171fd',date:'2026-04-27',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
+  {id:'d061eb74',date:'2026-04-27',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'f7aa48e3',date:'2026-04-27',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
+  {id:'3779c23b',date:'2026-04-28',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
+  {id:'51b74407',date:'2026-04-28',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
+  {id:'6ef6a50e',date:'2026-04-28',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'6fcf4042',date:'2026-04-28',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'603c8592',date:'2026-04-28',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'7d675126',date:'2026-04-28',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'b0885ea2',date:'2026-04-28',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'3b336d7e',date:'2026-04-28',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'214f009b',date:'2026-04-28',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'71cab10d',date:'2026-04-28',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'3f12652d',date:'2026-04-29',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'STI',ne:false},
+  {id:'faa95c50',date:'2026-04-29',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'STI',ne:false},
+  {id:'76c79bfd',date:'2026-04-29',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'be6f16f4',date:'2026-04-29',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'1ade63ae',date:'2026-04-29',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'e476fb3d',date:'2026-04-30',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'a043430f',date:'2026-04-30',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'ea1e7770',date:'2026-04-30',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'17f00082',date:'2026-04-30',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'90bdcd61',date:'2026-04-30',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'9e800499',date:'2026-04-30',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'4975830a',date:'2026-04-30',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'234396ac',date:'2026-04-30',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
+  {id:'74294fd5',date:'2026-04-30',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
+  {id:'8551fcde',date:'2026-05-01',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
+  {id:'b705ad1d',date:'2026-05-01',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'d81cdb50',date:'2026-05-01',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'44c50af7',date:'2026-05-01',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'2562f042',date:'2026-05-01',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'b8548094',date:'2026-05-01',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'a1b48a8e',date:'2026-05-01',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'c04a9857',date:'2026-05-01',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'48c4813c',date:'2026-05-01',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'6f7bff12',date:'2026-05-01',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'eedf9200',date:'2026-05-01',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'fb5bfab9',date:'2026-05-02',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
+  {id:'9cde6bfb',date:'2026-05-02',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'STI',ne:false},
+  {id:'4457bf5b',date:'2026-05-02',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:true},
+  {id:'65ebf35d',date:'2026-05-02',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'2f7f4c81',date:'2026-05-02',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'a6235d58',date:'2026-05-02',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'d858b9e3',date:'2026-05-02',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:true},
+  {id:'358e3d20',date:'2026-05-02',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
+  {id:'7bb39479',date:'2026-05-02',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'9bdb65fe',date:'2026-05-03',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'38f54bcb',date:'2026-05-03',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'83315ce3',date:'2026-05-03',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
+  {id:'93b6ee2e',date:'2026-05-03',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'e84b5026',date:'2026-05-03',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'56276d7f',date:'2026-05-03',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'77d42bd9',date:'2026-05-03',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'36435e36',date:'2026-05-03',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'441119bc',date:'2026-05-03',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'58d5bdbc',date:'2026-05-03',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'14b77464',date:'2026-05-03',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'ca521db6',date:'2026-05-04',clinic:'Kr Puram',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
+  {id:'feb7d256',date:'2026-05-04',clinic:'Kr Puram',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
+  {id:'9c443250',date:'2026-05-04',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'b4341002',date:'2026-05-04',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'7c64bb39',date:'2026-05-04',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
+  {id:'6a3101d8',date:'2026-05-04',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false}
 ];
 
 // ===== HYPOTHESES =====
@@ -1712,7 +1790,7 @@ function inInv(salt){
     return sName===iName;
   });
 }
-function getDxPts(){const doc=document.getElementById('dxDoc')?.value||'all';const city=document.getElementById('dxCity')?.value||'all';return patients.filter(p=>(doc==='all'||(p.doctor||'Dr. Sandhiya')===doc)&&(city==='all'||p.city===city));}
+function getDxPts(){const doc=document.getElementById('dxDoc')?.value||'all';const city=document.getElementById('dxCity')?.value||'all';const clinic=document.getElementById('dxClinic')?.value||'all';return patients.filter(p=>(doc==='all'||(p.doctor||'Dr. Sandhiya')===doc)&&(city==='all'||p.city===city)&&(clinic==='all'||(p.clinic||'')===clinic));}
 
 // ── DIAG_DB (from export_.csv selling prices) ─────────────────────────────
 const DIAG_DB={
@@ -2265,19 +2343,18 @@ function renderAOVBlock(l1key,l2){
 
 
 // ==================== HELPERS ====================
+// W0 anchored Monday Mar 9 2026; each week = 7 days starting Mon (declared earlier alongside WEEKLY)
 function getWk(d){
-  const dt=new Date(d);
-  if(dt>=new Date("2026-03-09")&&dt<=new Date("2026-03-15"))return"W0";
-  if(dt>=new Date("2026-03-16")&&dt<=new Date("2026-03-22"))return"W1";
-  if(dt>=new Date("2026-03-23")&&dt<=new Date("2026-03-29"))return"W2";
-  if(dt>=new Date("2026-03-30")&&dt<=new Date("2026-04-05"))return"W3";
-  if(dt>=new Date("2026-04-06")&&dt<=new Date("2026-04-12"))return"W4";
-  if(dt>=new Date("2026-04-13")&&dt<=new Date("2026-04-19"))return"W5";
-  if(dt>=new Date("2026-04-20")&&dt<=new Date("2026-04-26"))return"W6";
-  if(dt>=new Date("2026-04-27")&&dt<=new Date("2026-05-03"))return"W7";
-  return null;
+  const dt = new Date(d);
+  if(isNaN(dt) || dt < _W0_START) return null;
+  const days = Math.floor((dt - _W0_START) / 86400000);
+  return "W" + Math.floor(days / 7);
 }
-function getMon(d){if(d.startsWith("2026-03"))return"Mar";if(d.startsWith("2026-04"))return"Apr";if(d.startsWith("2026-05"))return"May";return null;}
+function getMon(d){
+  if(!d||d.length<7)return null;
+  const m=parseInt(d.slice(5,7));
+  return ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][m-1]||null;
+}
 function isM(g){return/male/i.test(g)&&!/female/i.test(g);}
 function isF(g){return/female/i.test(g);}
 function parseMeds(m){if(!m||m==="-"||m==="Not mentioned")return[];return m.split(/,|\|/).map(x=>x.trim()).filter(Boolean);}
@@ -2287,6 +2364,7 @@ function setRange(a,b){document.getElementById('dateFrom').value=a;document.getE
 function getFilteredPts(){
   const doc=document.getElementById('filterDoctor')?.value||'all';
   const city=document.getElementById('filterCity')?.value||'all';
+  const clinic=document.getElementById('filterClinic')?.value||'all';
   const from=new Date(document.getElementById('dateFrom')?.value||'2026-03-09');
   const to=new Date(document.getElementById('dateTo')?.value||'2026-04-27');
   return patients.filter(p=>{
@@ -2295,13 +2373,15 @@ function getFilteredPts(){
     if(doc!='all'&&p.doctor!==doc)return false;
     if(city==='non_coimbatore'&&p.city==='Coimbatore')return false;
     else if(city!='all'&&city!=='non_coimbatore'&&p.city!==city)return false;
+    if(clinic!=='all'&&(p.clinic||'')!==clinic)return false;
     return true;
   });
 }
 function getDxPts(){
   const doc=document.getElementById('dxDoc')?.value||'all';
   const city=document.getElementById('dxCity')?.value||'all';
-  return patients.filter(p=>(doc==='all'||p.doctor===doc)&&(city==='all'||p.city===city));
+  const clinic=document.getElementById('dxClinic')?.value||'all';
+  return patients.filter(p=>(doc==='all'||p.doctor===doc)&&(city==='all'||p.city===city)&&(clinic==='all'||(p.clinic||'')===clinic));
 }
 
 function switchTab(n){document.querySelectorAll(".sec").forEach((s,i)=>s.classList.toggle("active",i===n));document.querySelectorAll(".ntab").forEach((t,i)=>t.classList.toggle("active",i===n));}
@@ -2336,16 +2416,18 @@ function renderSection1(){
   if(from<=new Date("2026-04-30")&&to>=new Date("2026-04-01"))activeMons.push('Apr');
 
   // Active weekly columns within range
-  const activeWks=Object.entries(WEEKLY).filter(([k,v])=>new Date(v.start)>=from&&new Date(v.end)<=to);
+  let activeWks=Object.entries(WEEKLY).filter(([k,v])=>new Date(v.start)>=from&&new Date(v.end)<=to);
 
   // ── Filter SC_APPTS by city + doctor + date range ──────────────────────
   const fCity=document.getElementById('filterCity')?.value||'all';
   const fDoc=document.getElementById('filterDoctor')?.value||'all';
+  const fClinic=document.getElementById('filterClinic')?.value||'all';
   const scFiltered=SC_APPTS.filter(a=>{
     const dt=new Date(a.date);
     if(dt<from||dt>to)return false;
     if(fCity!=='all'&&a.city!==fCity)return false;
     if(fDoc!=='all'&&a.doctor!==fDoc)return false;
+    if(fClinic!=='all'&&(a.clinic||'')!==fClinic)return false;
     return true;
   });
 
@@ -2382,8 +2464,48 @@ function renderSection1(){
   };
 
   const mCols=activeMons.map(m=>buildM(m)).reverse();  // newest month first
-  const wCols=activeWks.map(([k,b])=>buildW(k,b)).reverse();  // newest week first
-  const allCols=[...mCols,...wCols];
+
+  // Weeks: newest first, mark anything beyond first 5 as collapsible
+  // Always include the current week (even if incomplete) at the leftmost position with a marker
+  const todayDt=new Date();todayDt.setHours(0,0,0,0);
+  const currentWkKey=getWk(todayDt.toISOString().slice(0,10));
+  // Re-collect activeWks but ensure the current week is included even if it falls outside the date filter
+  const wkEntriesAll=Object.entries(WEEKLY);
+  const includedKeys=new Set(activeWks.map(([k])=>k));
+  if(currentWkKey&&WEEKLY[currentWkKey]&&!includedKeys.has(currentWkKey)){
+    activeWks=[...activeWks,[currentWkKey,WEEKLY[currentWkKey]]];
+  }
+  const wColsRaw=activeWks.map(([k,b])=>{const c=buildW(k,b);c.isCurrent=(k===currentWkKey);return c;}).sort((a,b)=>{
+    // Current week first, then newest → oldest
+    if(a.isCurrent)return -1;
+    if(b.isCurrent)return 1;
+    return new Date(WEEKLY[b.key].start)-new Date(WEEKLY[a.key].start);
+  });
+  // First 5 visible, rest collapsible
+  wColsRaw.forEach((c,i)=>{c.isWeekCollapsible=(i>=5);});
+  const wCols=wColsRaw;
+
+  // Build 8 daily columns: yesterday → yesterday-7 (descending). First 5 visible, last 3 collapsible.
+  const buildD=(dateStr,isCollapsible)=>{
+    const apts=scForPeriod(a=>a.date===dateStr);
+    const s=scStats(apts);
+    const elig=s.total-s.ne;
+    const pSHMH=pts.filter(p=>p.date===dateStr&&p.primary==="SH"&&p.secondary==="MH"&&p.bucket!=="STI_OVERLAP_MH").length;
+    const pStiMh=pts.filter(p=>p.date===dateStr&&p.bucket==="STI_OVERLAP_MH").length;
+    const pMH=s.mh;
+    const dt=new Date(dateStr);
+    const lbl=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][dt.getDay()]+" "+dt.getDate()+" "+["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][dt.getMonth()];
+    return{key:"D_"+dateStr,lbl,isMonth:false,isDay:true,isCollapsible,date:dateStr,
+      total:s.total,ne:s.ne,sti:s.sti,elig,mh:pMH,shMh:pSHMH,stiMh:pStiMh,sh:Math.max(0,elig-s.sti-pMH)};
+  };
+  // Generate dates (yesterday to yesterday-7)
+  const _td=new Date();_td.setHours(0,0,0,0);_td.setDate(_td.getDate()-1);  // yesterday anchor
+  const dailyDates=[];
+  for(let i=0;i<8;i++){const d=new Date(_td);d.setDate(d.getDate()-i);dailyDates.push(d.toISOString().slice(0,10));}
+  // Filter days that fall within the active date filter range
+  const dCols=dailyDates.filter(d=>(new Date(d)>=from)&&(new Date(d)<=to)).map((d,i)=>buildD(d,i>=5));
+
+  const allCols=[...mCols,...wCols,...dCols];
   const cuBase=mCols.length>0?mCols:wCols;
   const cu=cuBase.reduce((a,c)=>({total:a.total+c.total,ne:a.ne+(c.ne||0),sti:a.sti+c.sti,mh:a.mh+c.mh,shMh:a.shMh+c.shMh,stiMh:a.stiMh+(c.stiMh||0),sh:a.sh+c.sh,elig:a.elig+c.elig}),{total:0,ne:0,sti:0,mh:0,shMh:0,stiMh:0,sh:0,elig:0});
   const cols=[{...cu,key:"CU",lbl:"Cumulative",isMonth:false},...allCols];  // Cumulative first
@@ -2400,21 +2522,50 @@ function renderSection1(){
   document.getElementById("scHead").innerHTML=`<th style="min-width:220px">Metric</th>`+cols.map((c,i)=>{
     const isCU=c.key==="CU";
     let s=`text-align:center;min-width:85px;`;
+    let cls='';
+    let lbl=c.lbl;
     if(isCU)s+=`background:var(--bl);color:var(--blue);border-left:2.5px solid var(--border2);`;
     else if(c.isMonth)s+=`background:#faf5ff;border-left:2.5px solid var(--pm);`;
+    else if(c.isDay){
+      const prevCol=cols[i-1];
+      const isFirstDay=!prevCol||!prevCol.isDay;
+      s+=`background:#fffbeb;font-size:.62rem;min-width:62px;border-left:${isFirstDay?'2.5px solid var(--orange)':'1px solid #fde68a'};`;
+      if(c.isCollapsible){cls+='col-day-collapsible';s+=`display:none;`;}
+    }
+    else if(c.isCurrent){
+      // Current week — special marker, always visible
+      s+=`background:#fef3c7;color:#92400e;border-left:2.5px solid #f59e0b;font-weight:700;`;
+      lbl=`📍 ${c.lbl}<div style="font-size:.55rem;font-weight:600;color:#b45309;margin-top:1px">in progress</div>`;
+    }
+    else if(c.isWeekCollapsible){
+      cls+='col-week-collapsible';s+=`display:none;border-left:1px solid var(--border);`;
+    }
     else if(i===firstWkIdx)s+=`border-left:2.5px solid var(--blue);`;
     else s+=`border-left:1px solid var(--border);`;
-    return`<th style="${s}">${c.lbl}</th>`;
+    return`<th class="${cls}" style="${s}">${lbl}</th>`;
   }).join('');
 
   const cell=(v,c,i)=>{
     const isCU=c.key==="CU";
     let s=`text-align:center;`;
+    let cls='';
     if(isCU)s+=`background:var(--bl);border-left:2.5px solid var(--border2);`;
     else if(c.isMonth)s+=`background:#faf5ff;border-left:2.5px solid var(--pm);`;
+    else if(c.isDay){
+      const prevCol=cols[i-1];
+      const isFirstDay=!prevCol||!prevCol.isDay;
+      s+=`background:#fffbeb;font-size:.7rem;border-left:${isFirstDay?'2.5px solid var(--orange)':'1px solid #fde68a'};`;
+      if(c.isCollapsible){cls='col-day-collapsible';s+=`display:none;`;}
+    }
+    else if(c.isCurrent){
+      s+=`background:#fef3c7;border-left:2.5px solid #f59e0b;font-weight:700;color:#92400e;`;
+    }
+    else if(c.isWeekCollapsible){
+      cls='col-week-collapsible';s+=`display:none;border-left:1px solid var(--border);`;
+    }
     else if(i===firstWkIdx)s+=`border-left:2.5px solid var(--blue);`;
     else s+=`border-left:1px solid var(--border);`;
-    return`<td style="${s}">${v??'—'}</td>`;
+    return`<td class="${cls}" style="${s}">${v??'—'}</td>`;
   };
   const row=(lbl,fn,bg='')=>`<tr${bg?` style="background:${bg}"`:''}><td>${lbl}</td>${cols.map((c,i)=>cell(fn(c),c,i)).join('')}</tr>`;
   const grp=t=>`<tr style="background:var(--surface2)"><td colspan="${cols.length+1}" style="font-weight:700;font-size:.6rem;letter-spacing:.05em;color:var(--muted);padding:4px 9px;border-top:2px solid var(--border)">${t}</td></tr>`;
@@ -2807,11 +2958,13 @@ function setDxRange(a,b){
 function getDxPts(){
   const doc=document.getElementById('dxDoc')?.value||'all';
   const city=document.getElementById('dxCity')?.value||'all';
+  const clinic=document.getElementById('dxClinic')?.value||'all';
   const from=new Date(document.getElementById('dxFrom')?.value||'2026-03-09');
   const to=new Date(document.getElementById('dxTo')?.value||'2026-04-27');
   return patients.filter(p=>{
     if(doc!=='all'&&(p.doctor||'Dr. Sandhiya')!==doc)return false;
     if(city!=='all'&&p.city!==city)return false;
+    if(clinic!=='all'&&(p.clinic||'')!==clinic)return false;
     const dt=new Date(p.date);
     return dt>=from&&dt<=to;
   });
@@ -2821,8 +2974,8 @@ function renderSection3(){
   const pts=getDxPts();
   const L1s=Object.keys(TAXONOMY);
   const ageBuckets=[["18–24",18,24],["25–30",25,30],["31–36",31,36],["37–42",37,42],["43–54",43,54],["55+",55,999]];
-  const wkKeys=["W0","W1","W2","W3","W4","W5","W6","W7"];
-  const WKLBLS={W0:"Mar 9–15",W1:"Mar 16–22",W2:"Mar 23–29",W3:"Mar 30–Apr 5",W4:"Apr 6–12",W5:"Apr 13–19",W6:"Apr 20–26",W7:"Apr 27–28"};
+  const wkKeys=Object.keys(WEEKLY);
+  const WKLBLS=Object.fromEntries(wkKeys.map(k=>[k,WEEKLY[k].lbl.replace(/^W\d+:\s*/,'')]));
   const from=new Date(document.getElementById('dxFrom')?.value||'2026-03-09');
   const to=new Date(document.getElementById('dxTo')?.value||'2026-04-27');
 

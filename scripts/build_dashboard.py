@@ -27,9 +27,19 @@ DASHBOARD_PATH = "index.html"
 ALLOWED_DOCTORS = {"Dr. Sandhiya", "Dr. Shraddha", "Dr. Adithya", "Dr. Basava Chetan"}
 DATE_CUTOFF = "2026-04-13"  # CSV-derived data starts here; pre-cutoff is manual
 
+# Doctor-specific cutoffs: doctors who joined the pilot later only count from their start date.
+# Sandhiya was in the pilot from day 1 (Mar 14). The Bangalore doctors went live Apr 23.
+DOCTOR_START_DATE = {
+    "Dr. Sandhiya": "2026-03-14",       # full history
+    "Dr. Shraddha": "2026-04-23",       # Bangalore launch
+    "Dr. Adithya": "2026-04-23",
+    "Dr. Basava Chetan": "2026-04-23",
+}
+
 # === COLUMN MAP (new CSV format, 192 cols) ===
 COL = {
     "patient_id": 0, "appointment_id": 1, "app_date": 2,
+    "clinic": 3,  # source of truth for city — doctor can sit at multiple clinics
     "provider_name": 6, "city_type": 10, "patient_gender": 11, "patient_age": 12,
     "encounter_diagnoses": 30, "treamentplan_eligiblity": 44,
     "diagnosis_severity": 76, "ismhorsh": 148, "moqlq": 149, "mh_diagnosis": 162,
@@ -90,20 +100,40 @@ def map_doctor(p):
     return p
 
 
-def map_city(c):
-    if not c: return "Unknown"
-    cl = c.lower()
-    if "beng" in cl or "bang" in cl: return "Bangalore"
-    if "coimba" in cl: return "Coimbatore"
-    if "pollach" in cl: return "Pollachi"
-    if "ooty" in cl: return "Ooty"
-    if "tenkasi" in cl: return "Tenkasi"
-    if "mysore" in cl or "mysuru" in cl: return "Mysore"
-    if "kgf" in cl: return "KGF"
-    if "kottayam" in cl: return "Kottayam"
-    if "guwahati" in cl: return "Guwahati"
-    if "vasco" in cl: return "Vasco"
-    return c.title()
+# Clinic → City mapping (clinic column is source of truth, doctor can sit at multiple clinics)
+CLINIC_TO_CITY = {
+    "bharathi nagar": "Coimbatore",
+    "indiranagar": "Bangalore",
+    "kr puram": "Bangalore",
+    # Add new clinics here as they come online
+}
+
+# Canonical city aliases — handles spelling variants (Bengaluru → Bangalore, etc.)
+CITY_ALIASES = {
+    "bengaluru": "Bangalore",
+    "bangalore": "Bangalore",
+    "bangaluru": "Bangalore",
+    "chennai": "Chennai",
+    "madras": "Chennai",
+    "coimbatore": "Coimbatore",
+    "kovai": "Coimbatore",
+    "mumbai": "Mumbai",
+    "bombay": "Mumbai",
+}
+
+
+def map_city(clinic):
+    """Map clinic name to city. Falls back to clinic name if mapping unknown.
+    Also normalizes spelling variants (Bengaluru → Bangalore, etc.)."""
+    if not clinic: return "Unknown"
+    key = clinic.strip().lower()
+    # First try clinic mapping
+    if key in CLINIC_TO_CITY:
+        return CLINIC_TO_CITY[key]
+    # Then try city alias normalization
+    if key in CITY_ALIASES:
+        return CITY_ALIASES[key]
+    return clinic.strip().title()
 
 
 def map_l1(mhdx):
@@ -167,12 +197,19 @@ def js_esc(s):
     return s.replace("\\", "\\\\").replace('"', '\\"').replace("\n", " ").replace("|", ";").strip()
 
 
+# Form rolled out 2026-04-23. Before that, ismhorsh was blank for all rows but the data
+# was reconciled manually elsewhere — those rows were already in the manual Sandhiya block.
+# So from Apr 23 onwards, blank ismhorsh = doctor not in MH pilot → exclude.
+ISMHORSH_FORM_START = "2026-04-23"
+
+
 def classify(r):
     """Returns (sc_cat, ne, primary, secondary, bucket, mh_identified)"""
     elig = r[COL["treamentplan_eligiblity"]].strip()
     ism = r[COL["ismhorsh"]].strip().lower()
     mql = r[COL["moqlq"]].strip().lower()
     dx = r[COL["encounter_diagnoses"]]
+    app_date = r[COL["app_date"]]
 
     if elig == "Not Eligible":
         if "mh only" in ism: under = "MH"
@@ -182,6 +219,11 @@ def classify(r):
         return (under, True, None, None, None, False)
 
     if not ism:
+        # Form rolled out Apr 23. Before that, blank ismhorsh is normal — count as Pure SH
+        # (manually reconciled data already in manual Sandhiya block, so RX_Data blanks pre-Apr-23
+        # represent uncategorized non-MH appointments). After Apr 23, blank = excluded.
+        if app_date < ISMHORSH_FORM_START:
+            return ("SH", False, None, None, None, False)
         return (None, False, None, None, None, False)
 
     if "mh and sh" in ism and is_sti(dx):
@@ -225,12 +267,39 @@ def build_blocks(csv_text):
             seen.add(aid)
             unique.append(r)
 
+    # === DIAGNOSTICS ===
+    from collections import Counter
+    print(f"DIAG: rows total={len(rows)}, valid date={len(data)}, post-Apr-13={len(post)}, unique aid={len(unique)}")
+    if unique:
+        print(f"DIAG: sample first row: aid={unique[0][COL['appointment_id']][:8]}, date={unique[0][COL['app_date']]}, provider={unique[0][COL['provider_name']]!r}")
+        providers = Counter(r[COL['provider_name']] for r in unique)
+        print(f"DIAG: provider distribution (top 10): {dict(providers.most_common(10))}")
+        # Check doctor mapping
+        mapped = Counter(map_doctor(r[COL['provider_name']]) for r in unique)
+        print(f"DIAG: after map_doctor: {dict(mapped.most_common(10))}")
+        in_allowed = sum(1 for r in unique if map_doctor(r[COL['provider_name']]) in ALLOWED_DOCTORS)
+        print(f"DIAG: rows passing ALLOWED_DOCTORS filter: {in_allowed}/{len(unique)}")
+    else:
+        print("DIAG: unique list is EMPTY — date filter or appointment_id is dropping everything")
+        # Show a few sample dates and aids from raw data
+        if data:
+            print(f"DIAG: data sample dates: {[r[COL['app_date']] for r in data[:5]]}")
+            print(f"DIAG: data sample aids: {[r[COL['appointment_id']][:12] if r[COL['appointment_id']] else '<EMPTY>' for r in data[:5]]}")
+            # Latest dates in data
+            latest = sorted(set(r[COL['app_date']] for r in data))[-10:]
+            print(f"DIAG: latest 10 unique dates in data: {latest}")
+    # === END DIAGNOSTICS ===
+
     sc_entries = []
     patient_entries = []
 
     for r in unique:
         doc = map_doctor(r[COL["provider_name"]])
         if doc not in ALLOWED_DOCTORS:
+            continue
+        # Doctor-specific date cutoff: skip rows before doctor's pilot start date
+        doc_start = DOCTOR_START_DATE.get(doc)
+        if doc_start and r[COL["app_date"]] < doc_start:
             continue
 
         sc_cat, ne, primary, secondary, bucket, mh_id = classify(r)
@@ -240,7 +309,8 @@ def build_blocks(csv_text):
         sc_entries.append({
             "id": r[COL["appointment_id"]][:8],
             "date": r[COL["app_date"]],
-            "city": map_city(r[COL["city_type"]]),
+            "clinic": r[COL["clinic"]].strip().title() if r[COL["clinic"]] else "Unknown",
+            "city": map_city(r[COL["clinic"]]),
             "doctor": doc, "src": "Inbound", "cat": sc_cat, "ne": ne
         })
 
@@ -265,7 +335,8 @@ def build_blocks(csv_text):
                 "diag": js_esc(diag),
                 "meds": js_esc(meds) if meds else "-",
                 "therapy": "-", "doctor": doc,
-                "city": map_city(r[COL["city_type"]]),
+                "clinic": r[COL["clinic"]].strip().title() if r[COL["clinic"]] else "Unknown",
+                "city": map_city(r[COL["clinic"]]),
                 "severity": r[COL["diagnosis_severity"]] or "Mildly ill",
                 "bucket": bucket,
             }
@@ -277,9 +348,9 @@ def build_blocks(csv_text):
 
 
 def to_sc_js(e):
-    return (f"  {{id:'{e['id']}',date:'{e['date']}',city:'{e['city']}',"
-            f"doctor:'{e['doctor']}',src:'{e['src']}',cat:'{e['cat']}',"
-            f"ne:{str(e['ne']).lower()}}},")
+    return (f"  {{id:'{e['id']}',date:'{e['date']}',clinic:'{e['clinic']}',"
+            f"city:'{e['city']}',doctor:'{e['doctor']}',src:'{e['src']}',"
+            f"cat:'{e['cat']}',ne:{str(e['ne']).lower()}}},")
 
 
 def to_pt_js(e):

@@ -267,6 +267,29 @@ def build_blocks(csv_text):
             seen.add(aid)
             unique.append(r)
 
+    # === DIAGNOSTICS ===
+    from collections import Counter
+    print(f"DIAG: rows total={len(rows)}, valid date={len(data)}, post-Apr-13={len(post)}, unique aid={len(unique)}")
+    if unique:
+        print(f"DIAG: sample first row: aid={unique[0][COL['appointment_id']][:8]}, date={unique[0][COL['app_date']]}, provider={unique[0][COL['provider_name']]!r}")
+        providers = Counter(r[COL['provider_name']] for r in unique)
+        print(f"DIAG: provider distribution (top 10): {dict(providers.most_common(10))}")
+        # Check doctor mapping
+        mapped = Counter(map_doctor(r[COL['provider_name']]) for r in unique)
+        print(f"DIAG: after map_doctor: {dict(mapped.most_common(10))}")
+        in_allowed = sum(1 for r in unique if map_doctor(r[COL['provider_name']]) in ALLOWED_DOCTORS)
+        print(f"DIAG: rows passing ALLOWED_DOCTORS filter: {in_allowed}/{len(unique)}")
+    else:
+        print("DIAG: unique list is EMPTY — date filter or appointment_id is dropping everything")
+        # Show a few sample dates and aids from raw data
+        if data:
+            print(f"DIAG: data sample dates: {[r[COL['app_date']] for r in data[:5]]}")
+            print(f"DIAG: data sample aids: {[r[COL['appointment_id']][:12] if r[COL['appointment_id']] else '<EMPTY>' for r in data[:5]]}")
+            # Latest dates in data
+            latest = sorted(set(r[COL['app_date']] for r in data))[-10:]
+            print(f"DIAG: latest 10 unique dates in data: {latest}")
+    # === END DIAGNOSTICS ===
+
     sc_entries = []
     patient_entries = []
 
@@ -356,10 +379,11 @@ def update_html(sc_entries, patient_entries):
     sorted_pt = sorted(patient_entries, key=lambda x: (x["date"], x["doctor"]))
     new_pt = "\n".join([PT_MARKER] + [to_pt_js(e) for e in sorted_pt])
 
+    PT_END = "  // ===== END CSV MH-IDENTIFIED ====="
     start = content.find(PT_MARKER)
-    end = content.find(NE_MARKER)
-    if start == -1 or end == -1 or end < start:
-        sys.exit("ERROR: Could not find patients[] markers in HTML")
+    end = content.find(PT_END, start)
+    if start == -1 or end == -1:
+        sys.exit(f"ERROR: PT markers missing — start={start}, end={end}. HTML must contain PT_MARKER and PT_END markers.")
     content = content[:start] + new_pt + "\n" + content[end:]
 
     # === Replace SC_APPTS block ===
@@ -369,11 +393,13 @@ def update_html(sc_entries, patient_entries):
         sc_lines[-1] = sc_lines[-1][:-1]
     new_sc = "\n".join(sc_lines)
 
+    SC_END = "  // ===== END CSV SC_APPTS ====="
     start = content.find(SC_MARKER)
-    end = content.find("\n];", start)
+    end = content.find(SC_END, start)
     if start == -1 or end == -1:
-        sys.exit("ERROR: Could not find SC_APPTS markers in HTML")
-    content = content[:start] + new_sc + content[end:]
+        sys.exit(f"ERROR: SC markers missing — start={start}, end={end}. HTML must contain SC_MARKER and SC_END markers.")
+    # Replace from SC_MARKER through (but not including) the END marker line
+    content = content[:start] + new_sc + "\n" + content[end:]
 
     # === Inject timestamp (IST) ===
     ist = timezone(timedelta(hours=5, minutes=30))

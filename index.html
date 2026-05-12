@@ -137,7 +137,7 @@ tr:hover td{background:var(--bg);}
   </div>
   <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
     <div style="font-size:.66rem;color:var(--muted)">Mar 14 – May 3 2026 · Multi-City</div>
-    <div style="font-size:.6rem;color:var(--green);font-weight:600">↻ Last updated: <!-- LAST_UPDATED_START -->11 May 2026, 11:02 PM IST<!-- LAST_UPDATED_END --></div>
+    <div style="font-size:.6rem;color:var(--green);font-weight:600">↻ Last updated: <!-- LAST_UPDATED_START -->12 May 2026, 01:16 PM IST<!-- LAST_UPDATED_END --></div>
   </div>
 </div>
 
@@ -1084,6 +1084,8 @@ const patients=[
   {id:"aff0db8d-fada-422d-96ac-a0eb8805810c",patientId:"76f4e3d7-435b-48e7-939f-e8efebe5ac1c",date:"2026-05-09",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:45,l1:"Depression",l2:"Mild*",diag:"depression with psychotic symptoms",meds:"Sertraline Tab 50mg, Risperidone Tablet 0.5 mg, Risperidone Tablet 2 mg, Clonazepam 0.5 mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
   {id:"9273fefd-61e1-4a93-b4a6-45a42ce017c7",patientId:"c2ffc4f4-6267-44de-9d8c-a762335b8a7e",date:"2026-05-09",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:32,l1:"Depression",l2:"Moderate–Severe*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Sertraline Tab 25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Normal, not at all ill",bucket:"MH_ONLY"},
   {id:"3d72f791-aad4-4cc3-a40d-898e75aca9a3",patientId:"7c078e2b-5974-4bf3-a302-134f05e30d6c",date:"2026-05-10",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:21,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Sertraline Tab 25mg, Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
+  {id:"9b1df9b7-355f-4d49-93c3-d94eacfe9732",patientId:"c8200ce3-35db-42a2-91f0-d3fe4f79fc1c",date:"2026-05-12",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:34,l1:"Bipolar / Psychotic Spectrum",l2:"Psychosis",diag:"Obsessive-Compulsive Disorder (6B20) ; ?psychosis to be subtyped",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"ea731ab5-ee57-49f3-8eed-5682c924ae76",patientId:"e692416b-09e2-44ff-81b8-8ad0541e3241",date:"2026-05-12",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:24,l1:"Anxiety Disorders",l2:"Health Anxiety",diag:"Hypochondriasis / Health Anxiety (6B23)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
   // ===== NE patients counted in MH-identified per business rule =====
   {id:"4ea7e8a6-ne-apr01-dep",date:"2026-04-01",src:"Google",primary:"MH",secondary:"-",gender:"Female",age:20,l1:"Depression",l2:"Mild*",diag:"Depression (NE in RX_Data)",meds:"-",therapy:"Individual + Couple",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",isNE:true},
   {id:"61e926b2-ne-apr08-dem",date:"2026-04-08",src:"Walk-in",primary:"MH",secondary:"-",gender:"Female",age:67,l1:"Neurocognitive Disorders",l2:"Dementia — Mixed",diag:"Dementia (NE in RX_Data)",meds:"Quetiapine, Memantine, Donepezil",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",isNE:true},
@@ -1511,7 +1513,18 @@ const SC_APPTS=[
   {id:'6033a070',date:'2026-05-10',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
   {id:'78dbc6d0',date:'2026-05-10',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
   {id:'3d72f791',date:'2026-05-10',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'8c629dda',date:'2026-05-10',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false}
+  {id:'8c629dda',date:'2026-05-10',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'74a57d41',date:'2026-05-11',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:true},
+  {id:'94684515',date:'2026-05-11',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
+  {id:'678bc72c',date:'2026-05-11',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'STI',ne:false},
+  {id:'dab4bf0a',date:'2026-05-11',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:true},
+  {id:'b9bc7135',date:'2026-05-11',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'STI',ne:false},
+  {id:'b9cd8795',date:'2026-05-11',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'ec35c446',date:'2026-05-12',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'9b1df9b7',date:'2026-05-12',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
+  {id:'ea731ab5',date:'2026-05-12',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
+  {id:'35d0b20a',date:'2026-05-12',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'da94c592',date:'2026-05-12',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false}
 ];
 
 // ===== HYPOTHESES =====

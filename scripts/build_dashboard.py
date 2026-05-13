@@ -36,15 +36,54 @@ DOCTOR_START_DATE = {
     "Dr. Basava Chetan": "2026-04-23",
 }
 
-# === COLUMN MAP (new CSV format, 192 cols) ===
-COL = {
-    "patient_id": 0, "appointment_id": 1, "app_date": 2,
-    "clinic": 3,  # source of truth for city — doctor can sit at multiple clinics
-    "provider_name": 6, "city_type": 10, "patient_gender": 11, "patient_age": 12,
-    "encounter_diagnoses": 30, "treamentplan_eligiblity": 44,
-    "diagnosis_severity": 76, "ismhorsh": 148, "moqlq": 149, "mh_diagnosis": 162,
-    "drug_cols": [46, 53, 82, 108, 124, 131, 139, 178],
+# === COLUMN MAP (resolved DYNAMICALLY from header row) ===
+# Internal field name -> list of acceptable header names (priority order, first match wins)
+# This makes the script resilient to column insertions/reorderings in the sheet.
+HEADER_ALIASES = {
+    "patient_id":              ["patient_id"],
+    "appointment_id":          ["appointment_id"],
+    "app_date":                ["app_date"],
+    "clinic":                  ["clinic"],
+    "provider_name":           ["provider_name"],
+    "city_type":               ["city_name", "city_type"],
+    "patient_gender":          ["gender", "patient_gender"],
+    "patient_age":             ["age", "patient_age"],
+    "encounter_diagnoses":     ["diagnosis", "encounter_diagnoses"],
+    "treamentplan_eligiblity": [
+        "is_the_patient_eligible_for_allo_s_treatment_plan",
+        "treamentplan_eligiblity"
+    ],
+    "diagnosis_severity": [
+        "considering_your_total_experience_with_this_particular_disorder_how_ill_is_the_patient_at_this_time",
+        "diagnosis_severity"
+    ],
+    "ismhorsh":     ["is_mh_or_sh", "ismhorsh"],
+    "moqlq":        ["what_was_the_patient_s_primary_reason_for_the_consultation_today", "moqlq"],
+    "mh_diagnosis": ["working_diagnosis_based_on_icd_11", "mh_diagnosis"],
 }
+
+def resolve_columns(header_row):
+    """Build COL dict by finding header names in the first row."""
+    col = {}
+    missing = []
+    for field, aliases in HEADER_ALIASES.items():
+        idx = None
+        for a in aliases:
+            if a in header_row:
+                idx = header_row.index(a)
+                break
+        if idx is None:
+            missing.append(field)
+        else:
+            col[field] = idx
+    # Drug columns — any header matching drug_N_name
+    col["drug_cols"] = [i for i, h in enumerate(header_row) if "drug" in h and h.endswith("_name")]
+    if missing:
+        sys.exit(f"ERROR: missing required columns in CSV header: {missing}\nHeader was: {header_row[:20]}...")
+    return col
+
+# COL is populated at runtime once header is read (see build_blocks)
+COL = {}
 
 STI_KW = ["STI", "GUI", "PEP", "Genito Urinary", "Post-Exposure", "Post Exposure",
           "HIV", "Genital", "Anogenital"]
@@ -250,10 +289,16 @@ def build_blocks(csv_text):
     if len(rows) < 2:
         sys.exit("ERROR: CSV is empty or has only header")
 
+    # Resolve column positions DYNAMICALLY from header row.
+    # This survives column insertions/deletions/reorderings in the sheet.
+    global COL
+    COL = resolve_columns(rows[0])
+    print(f"Resolved {len(COL)-1} columns from header (drug_cols={len(COL['drug_cols'])})")
+    print(f"  Key columns: app_date={COL['app_date']}, provider={COL['provider_name']}, "
+          f"ismhorsh={COL['ismhorsh']}, moqlq={COL['moqlq']}, mh_diagnosis={COL['mh_diagnosis']}")
+
     ncols = len(rows[0])
     print(f"CSV header has {ncols} columns")
-    if ncols < 192:
-        sys.exit(f"ERROR: Expected at least 192 cols, got {ncols} — CSV format may have changed")
 
     date_re = re.compile(r"^\d{4}-\d{2}-\d{2}$")
     data = [r for r in rows[1:] if len(r) == ncols and date_re.match(r[COL["app_date"]])]
@@ -379,10 +424,11 @@ def update_html(sc_entries, patient_entries):
     sorted_pt = sorted(patient_entries, key=lambda x: (x["date"], x["doctor"]))
     new_pt = "\n".join([PT_MARKER] + [to_pt_js(e) for e in sorted_pt])
 
+    PT_END = "  // ===== END CSV MH-IDENTIFIED ====="
     start = content.find(PT_MARKER)
-    end = content.find(NE_MARKER)
-    if start == -1 or end == -1 or end < start:
-        sys.exit("ERROR: Could not find patients[] markers in HTML")
+    end = content.find(PT_END, start)
+    if start == -1 or end == -1:
+        sys.exit(f"ERROR: PT markers missing — start={start}, end={end}. HTML must contain PT_MARKER and PT_END markers.")
     content = content[:start] + new_pt + "\n" + content[end:]
 
     # === Replace SC_APPTS block ===
@@ -392,11 +438,13 @@ def update_html(sc_entries, patient_entries):
         sc_lines[-1] = sc_lines[-1][:-1]
     new_sc = "\n".join(sc_lines)
 
+    SC_END = "  // ===== END CSV SC_APPTS ====="
     start = content.find(SC_MARKER)
-    end = content.find("\n];", start)
+    end = content.find(SC_END, start)
     if start == -1 or end == -1:
-        sys.exit("ERROR: Could not find SC_APPTS markers in HTML")
-    content = content[:start] + new_sc + content[end:]
+        sys.exit(f"ERROR: SC markers missing — start={start}, end={end}. HTML must contain SC_MARKER and SC_END markers.")
+    # Replace from SC_MARKER through (but not including) the END marker line
+    content = content[:start] + new_sc + "\n" + content[end:]
 
     # === Inject timestamp (IST) ===
     ist = timezone(timedelta(hours=5, minutes=30))
@@ -426,5 +474,20 @@ if __name__ == "__main__":
     print(f"Downloaded {len(csv_text)} chars")
 
     sc, pt = build_blocks(csv_text)
+
+    # ── SAFETY GUARD ────────────────────────────────────────────────────────
+    # Today (May 10) we expect ~180+ SC entries Apr 13+. If we ever see <100,
+    # something is wrong (CSV truncation, doctor name change, marker drift, etc.)
+    # Abort rather than silently overwriting good data with bad.
+    MIN_SC_THRESHOLD = 100
+    if len(sc) < MIN_SC_THRESHOLD:
+        sys.exit(
+            f"ABORTED: Only {len(sc)} SC entries built (threshold {MIN_SC_THRESHOLD}). "
+            f"This is suspiciously low — refusing to overwrite index.html. "
+            f"Check the DIAG output above for what filtered out the rows. "
+            f"Most common causes: (1) CSV column shift, (2) doctor name spelling change in sheet, "
+            f"(3) sheet temporarily empty, (4) ALLOWED_DOCTORS too restrictive."
+        )
+
     update_html(sc, pt)
     print("Done.")

@@ -150,7 +150,7 @@ tr:hover td{background:var(--bg);}
   </div>
   <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
     <div style="font-size:.66rem;color:var(--muted)">Mar 14 – May 3 2026 · Multi-City</div>
-    <div style="font-size:.6rem;color:var(--green);font-weight:600">↻ Last updated: <!-- LAST_UPDATED_START -->14 May 2026, 04:57 PM IST<!-- LAST_UPDATED_END --></div>
+    <div style="font-size:.6rem;color:var(--green);font-weight:600">↻ Last updated: <!-- LAST_UPDATED_START -->14 May 2026, 10:02 PM IST<!-- LAST_UPDATED_END --></div>
   </div>
 </div>
 
@@ -1101,7 +1101,7 @@ const patients=[
   {id:"3d72f791-aad4-4cc3-a40d-898e75aca9a3",patientId:"7c078e2b-5974-4bf3-a302-134f05e30d6c",date:"2026-05-10",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:21,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Sertraline Tab 25mg, Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
   {id:"9b1df9b7-355f-4d49-93c3-d94eacfe9732",patientId:"c8200ce3-35db-42a2-91f0-d3fe4f79fc1c",date:"2026-05-12",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:34,l1:"OCD Spectrum",l2:"OCD — Moderate",diag:"Obsessive-Compulsive Disorder (6B20)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
   {id:"ea731ab5-ee57-49f3-8eed-5682c924ae76",patientId:"e692416b-09e2-44ff-81b8-8ad0541e3241",date:"2026-05-12",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:24,l1:"Anxiety Disorders",l2:"Health Anxiety",diag:"Hypochondriasis / Health Anxiety (6B23)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
-  {id:"ef3c49e5-5dc5-4fc7-9419-3544415ec402",patientId:"1af03782-86f8-4e01-97fe-51b0aadd951e",date:"2026-05-12",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:22,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",diag:"Adjustment Disorder (6B43)",meds:"Clonazepam Tab 0.25mg, Melotonin 3mg, Sertraline Tab 25mg, Orofer Xt",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"ef3c49e5-5dc5-4fc7-9419-3544415ec402",patientId:"1af03782-86f8-4e01-97fe-51b0aadd951e",date:"2026-05-12",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:22,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",diag:"Adjustment Disorder (6B43)",meds:"Clonazepam Tab 0.25mg, Melotonin 3mg, Sertraline Tab 25mg, Orofer Xt, Sertraline Tab 50mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
   {id:"879b1d61-8303-421a-a274-60bf5ba4b520",patientId:"c6c9e521-275e-4d15-ba0d-a3ea1387796a",date:"2026-05-12",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:35,l1:"Depression",l2:"Moderate–Severe*",diag:"Single Episode Depressive Disorder (6A70)",meds:"tab escitalopram 5mg, tab escitalopram 10mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Moderately ill",bucket:"MH_ONLY"},
   {id:"76e2c754-e9b3-4d8e-910b-e267bbfea681",patientId:"d9ee45fa-c2ac-4ced-a070-64895dcfd088",date:"2026-05-12",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:33,l1:"Neurodevelopmental",l2:"ADHD — Combined",diag:"ADHD (6A05) ; acute stress reaction",meds:"Sertraline Tab 25mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
   {id:"96dd4203-dda8-45d5-9ab6-6ac3a86a9097",patientId:"490f4639-41b7-496b-bae1-7a0e9d376861",date:"2026-05-12",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:40,l1:"Depression",l2:"Moderate–Severe*",diag:"Recurrent Depressive Disorder (6A71)",meds:"tab escitalopram 5mg, tab escitalopram 10mg, tab clonazepam 0.5mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Severely ill",bucket:"MH_ONLY"},
@@ -1578,8 +1578,11 @@ const SC_APPTS=[
   {id:'75819d80',date:'2026-05-14',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
   {id:'bf9209c7',date:'2026-05-14',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
   {id:'12050e9a',date:'2026-05-14',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
+  {id:'6afd2c8d',date:'2026-05-14',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
+  {id:'4cfd2562',date:'2026-05-14',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
   {id:'8bfa5aea',date:'2026-05-14',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
   {id:'605431e3',date:'2026-05-14',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'0f1ef207',date:'2026-05-14',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
   {id:'e96d1150',date:'2026-05-14',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
   {id:'fd9b2976',date:'2026-05-14',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false}
   // ===== END CSV SC_APPTS =====

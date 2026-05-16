@@ -150,7 +150,7 @@ tr:hover td{background:var(--bg);}
   </div>
   <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
     <div style="font-size:.66rem;color:var(--muted)">Mar 14 – May 3 2026 · Multi-City</div>
-    <div style="font-size:.6rem;color:var(--green);font-weight:600">↻ Last updated: <!-- LAST_UPDATED_START -->15 May 2026, 05:05 PM IST<!-- LAST_UPDATED_END --></div>
+    <div style="font-size:.6rem;color:var(--green);font-weight:600">↻ Last updated: <!-- LAST_UPDATED_START -->16 May 2026, 12:10 PM IST<!-- LAST_UPDATED_END --></div>
   </div>
 </div>
 
@@ -1113,6 +1113,8 @@ const patients=[
   {id:"fd9b2976-2992-4b99-b654-b65a6066f704",patientId:"b1809052-b09b-426d-9c54-038742149b17",date:"2026-05-14",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:61,l1:"Depression",l2:"Mild*",diag:"post stroke depression",meds:"Sertraline Tab 25mg, tab desvenlafaxine 50mg, tab quetiapine 50mg, tab donepezil 5mg plus memantine 10mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
   {id:"daed9e8c-ff9c-415d-879e-fb3d15a0a61a",patientId:"a500c82d-f6b9-4ef1-a5d7-b1d7882dd5ae",date:"2026-05-15",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:28,l1:"Depression",l2:"Moderate–Severe*",diag:"Persistent Depressive Disorder (6A72)",meds:"Sertraline Tab 25mg, Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Moderately ill",bucket:"MH_ONLY"},
   {id:"2109e87c-34e8-4867-87b9-6bf5ae306666",patientId:"72d96548-2227-4dd1-85fe-5849bd571365",date:"2026-05-15",src:"Inbound",primary:"SH",secondary:"MH",gender:"Male",age:29,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Cefixime Tab 400 mg, Fluconazole (150mg) + Azithromycin (1000mg) + Secnidazole (1000mg)",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"STI_OVERLAP_MH",shPresenting:"Post-Exposure Prophylaxis for Genito Urinary Infection ; Mental Health Concerns"},
+  {id:"7339eb8d-760e-4cfc-8b6b-3bf86d65b0a4",patientId:"3a936077-4743-4ec7-8b01-f7ab8a2a377f",date:"2026-05-15",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:26,l1:"Depression",l2:"Mild*",diag:"Recurrent Depressive Disorder (6A71)",meds:"T. Escitalporam 10, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"177513f8-e792-4c4a-80b1-fa2c2dc8b0d3",patientId:"ba7ee104-9890-4d6a-956c-ab71ce474d08",date:"2026-05-15",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:20,l1:"Trauma & Stress-Related",l2:"Complex PTSD",diag:"Complex PTSD (6B41)",meds:"Sertraline Tab 50mg, T. Pan D, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
   // ===== END CSV MH-IDENTIFIED =====
   // ===== NE patients counted in MH-identified per business rule =====
   {id:"4ea7e8a6-ne-apr01-dep",date:"2026-04-01",src:"Google",primary:"MH",secondary:"-",gender:"Female",age:20,l1:"Depression",l2:"Mild*",diag:"Depression (NE in RX_Data)",meds:"-",therapy:"Individual + Couple",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",isNE:true},
@@ -1588,11 +1590,17 @@ const SC_APPTS=[
   {id:'e96d1150',date:'2026-05-14',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
   {id:'fd9b2976',date:'2026-05-14',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
   {id:'daed9e8c',date:'2026-05-15',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
+  {id:'5e9d6b3a',date:'2026-05-15',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
+  {id:'769740d0',date:'2026-05-15',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
   {id:'48213f6a',date:'2026-05-15',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
   {id:'2109e87c',date:'2026-05-15',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
   {id:'ac7ce49f',date:'2026-05-15',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'edccb14f',date:'2026-05-15',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
+  {id:'7339eb8d',date:'2026-05-15',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
+  {id:'177513f8',date:'2026-05-15',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
   {id:'347d138f',date:'2026-05-15',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:true},
-  {id:'eae25775',date:'2026-05-15',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false}
+  {id:'eae25775',date:'2026-05-15',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
+  {id:'354aa1f4',date:'2026-05-16',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false}
   // ===== END CSV SC_APPTS =====
 ];
 

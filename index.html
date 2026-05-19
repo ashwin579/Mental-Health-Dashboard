@@ -150,7 +150,7 @@ tr:hover td{background:var(--bg);}
   </div>
   <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
     <div style="font-size:.66rem;color:var(--muted)" id="dataRangeLbl">Loading…</div>
-    <div style="font-size:.6rem;color:var(--green);font-weight:600">↻ Last updated: <!-- LAST_UPDATED_START -->19 May 2026, 01:32 PM IST<!-- LAST_UPDATED_END --></div>
+    <div style="font-size:.6rem;color:var(--green);font-weight:600">↻ Last updated: <!-- LAST_UPDATED_START -->Manual build<!-- LAST_UPDATED_END --></div>
   </div>
 </div>
 
@@ -651,7 +651,7 @@ tr:hover td{background:var(--bg);}
 
   <!-- TAB 2: Assumptions -->
   <div class="tc" data-grp="ful" id="ful2">
-    <div class="alert a-blue">Pricing assumptions for non-serviceable medicines. Serviceable prices sourced directly from Meds_level_consumption CSV (col G = Effective MRP). Non-serviceable prices sourced from Apollo Pharmacy / 1mg based on March actual consumption (post-discount). Tagged ✓ Verified where confirmed; ~ Claude est. for 4 medicines not in the actuals file (Etizolam 0.25mg, Risperidone 2mg, Zolpidem 5mg, Melatonin 3mg).</div>
+    <div class="alert a-blue"><strong>Pricing source rules:</strong> (1) <strong>Serviceable</strong> meds — selling price per tab from Allo product DB export (export.csv). (2) <strong>Non-serviceable</strong> meds — MRP per tab from Allo team's manual recon (Apollo/1mg), selling = MRP × 0.85. (3) <strong>Remaining</strong> meds in patient prescriptions but not in either source — Claude's Apollo/1mg estimate, MRP × 0.85. Each row tagged with priceSource for audit. To update prices, re-export the Allo DB or send updated recon sheet.</div>
     <div class="card">
       <div class="ctitle">Serviceable Medicines · From Allo Clinic Inventory File</div>
       <div style="overflow-x:auto"><table><thead><tr>
@@ -1056,75 +1056,36 @@ const patients=[
   {id:"082cf291-427a-4241-9665-981c2147a7bc",date:"2026-04-12",src:"Practo",primary:"MH",secondary:"-",gender:"Female",age:27,l1:"Adjustment / Grief Spectrum",l2:"Grief Disorder",meds:"Sertraline Tab 25mg, Clonazepam Tab 0.25mg",therapy:"Therapy",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Moderately ill"},
   {id:"f301aff1-fcd9-4b56-b096-887ad491f153",date:"2026-04-12",src:"Google",primary:"MH",secondary:"-",gender:"Male",age:27,l1:"Depression",l2:"Moderate–Severe*",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Markedly ill"},
   // ===== APR 13+ MH-IDENTIFIED · CSV-DERIVED · revised logic · NE excluded · 4 allowed doctors only =====
-  {id:"25c6eb37-5b2e-4aa6-b7cb-8e9004675374",patientId:"e00b4389-c7d9-4d83-8240-5147bad25275",date:"2026-04-25",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:21,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Melatonin 3 mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
-  {id:"ca048203-1d00-4f78-812a-89826ac332ab",patientId:"34b93d30-93c3-46e6-8bc6-7dfd5e2409b3",date:"2026-04-25",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:41,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",diag:"Adjustment Disorder (6B43)",meds:"Lorazepam 2 mg, Inj. Optinueronron, Thiamine 100 mg, PAN 40, NEXITO 10 mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"25c6eb37-5b2e-4aa6-b7cb-8e9004675374",patientId:"e00b4389-c7d9-4d83-8240-5147bad25275",date:"2026-04-25",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:21,l1:"Depression",l2:"Mild*",diag:"Moderate Depression",meds:"Melatonin 3 mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"ca048203-1d00-4f78-812a-89826ac332ab",patientId:"34b93d30-93c3-46e6-8bc6-7dfd5e2409b3",date:"2026-04-25",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:41,l1:"Depression",l2:"Mild*",diag:"Alcohol Harmful use ; Adjustment Disorder- Depressive type",meds:"Lorazepam 2 mg, Inj. Optinueronron, Thiamine 100 mg, PAN 40, NEXITO 10 mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
   {id:"0613c5e2-a2cb-497c-b8aa-14a72cf44ba6",patientId:"2e82a8e2-32c3-4065-b9bc-586f10fbecc7",date:"2026-04-25",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:33,l1:"Depression",l2:"Moderate–Severe*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Markedly ill",bucket:"MH_ONLY"},
   {id:"72a38714-6307-4b50-8f36-23563cc84c3a",patientId:"a2b8757a-5892-4adf-bc75-7a9d34837ded",date:"2026-04-25",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:40,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",diag:"Adjustment Disorder (6B43)",meds:"Paroxetine Tab 12.5mg",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
-  {id:"d770ca3c-5f60-4629-8a52-515acb45c945",patientId:"ec976b0b-d82f-4628-b24c-00b7767cdc82",date:"2026-04-26",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:30,l1:"OCD Spectrum",l2:"OCD — Moderate",diag:"Obsessive-Compulsive Disorder (6B20)",meds:"Fluoxetine Tab 20mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"d770ca3c-5f60-4629-8a52-515acb45c945",patientId:"ec976b0b-d82f-4628-b24c-00b7767cdc82",date:"2026-04-26",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:30,l1:"OCD Spectrum",l2:"OCD — Moderate",diag:"?OCD",meds:"Fluoxetine Tab 20mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
   {id:"f1e3c7c3-4737-4461-bd8d-8e0f5858ae29",patientId:"c894d35b-a58b-42b6-85b2-5eded3aa8890",date:"2026-04-26",src:"Inbound",primary:"SH",secondary:"MH",gender:"Male",age:39,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",diag:"Adjustment Disorder (6B43)",meds:"Sertraline Tab 25mg, Clonazepam Tab 0.25mg, Water Based Lubricant 82gms",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"STI_OVERLAP_MH",shPresenting:"Genito Urinary Infection (GUI) ; phimosis ; Mental Health Concerns"},
   {id:"1db550ad-234e-42d2-824c-6ad211f2e706",patientId:"baf2df44-8306-4e3c-b83f-e729a36a3a28",date:"2026-04-26",src:"Inbound",primary:"SH",secondary:"MH",gender:"Male",age:26,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Tadalafil Tab 5mg, L-Arginine 2.5g + Zinc Sulphate 12mg + Vitamin B6 1.2mg, Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"SH_TO_MH",shPresenting:"Mental Health Concerns ; Erectile Dysfunction"},
   {id:"1f646b63-6385-4bbf-bb04-aecf95b3ab8e",patientId:"2346c209-4dfc-4e84-9521-ceb24a7e5b1e",date:"2026-04-27",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:37,l1:"Anxiety Disorders",l2:"Panic Disorder",diag:"Panic Disorder (6B01)",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg, Vitamin D Capsule",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Markedly ill",bucket:"MH_ONLY"},
   {id:"b93b385d-87ef-4301-91d2-21ee8ea388c2",patientId:"1aa7cd2e-01ab-499f-97dd-3eb3c82933b9",date:"2026-04-27",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:25,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Escitalopram 10 mg, Etizolam 0.5 mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
   {id:"e9d88087-c790-4ce1-89df-5c129828f043",patientId:"ae668508-6f77-48b7-a9c8-170d49b98829",date:"2026-04-27",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:27,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Fluoxetine Tab 20mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Mildly ill",bucket:"MH_ONLY"},
   {id:"6fcf4042-e95c-4900-ac06-c3b5a8fc23ac",patientId:"fb125d27-0896-4bab-aa64-0f08be84a1d0",date:"2026-04-28",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:24,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
-  {id:"3b336d7e-abc5-4926-9ac8-869e4dc65ae9",patientId:"e765f9fa-1a1f-48e4-81db-50c16caf6774",date:"2026-04-28",src:"Inbound",primary:"SH",secondary:"MH",gender:"Male",age:33,l1:"Depression",l2:"Mild*",diag:"ADHD (6A05) ; Single Episode Depressive Disorder (6A70)",meds:"tab atomoxetine 18mg, Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"SH_TO_MH",shPresenting:"Premature Ejaculation ; Porn Addiction ; Compulsive Masturbation ; Mental Health Concerns"},
+  {id:"3b336d7e-abc5-4926-9ac8-869e4dc65ae9",patientId:"e765f9fa-1a1f-48e4-81db-50c16caf6774",date:"2026-04-28",src:"Inbound",primary:"SH",secondary:"MH",gender:"Male",age:33,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70) ; ADHD (6A05)",meds:"tab atomoxetine 18mg, Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"SH_TO_MH",shPresenting:"Premature Ejaculation ; Porn Addiction ; Compulsive Masturbation ; Mental Health Concerns"},
   {id:"a043430f-8a63-4f50-9569-d6a0dfef4346",patientId:"7776f4b2-7278-4171-a2ad-74f0afe63009",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:23,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
   {id:"ea1e7770-1fe7-46e6-9cbe-9457ac71e1e2",patientId:"e587cf5c-518f-4573-98a6-25d7029e9c1e",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:29,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Sertraline Tab 25mg, Clonazepam Tab 0.25mg, Vitamin D Capsule",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
-  {id:"17f00082-4120-4179-a9b1-d6a9129353e5",patientId:"992a6c09-6c1c-4184-a93d-ee52f0caa201",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:19,l1:"Bipolar / Psychotic Spectrum",l2:"Bipolar I/II",diag:"Bipolar I Disorder (6A60)",meds:"tab lithium 600mg, tab quetiapine 25mg, tab zolcalm 10mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Normal, not at all ill",bucket:"MH_ONLY"},
-  {id:"4975830a-0804-41de-913d-1afaa5810dee",patientId:"bc1d3a82-4816-4f6f-9120-b619def058d0",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:50,l1:"Anxiety Disorders",l2:"GAD — Moderate",diag:"Alcohol Use Disorder (6C40) ; Generalized Anxiety Disorder (6B00)",meds:"Escitalopram 10 mg, Clonazepam 0.5 mg, Zolpidem 5 mg, tab nexpro rd 40mg, tab thiabion 100mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Moderately ill",bucket:"MH_ONLY"},
-  {id:"234396ac-ffd7-49e3-895b-a55fb5618232",patientId:"e7aadb51-3072-40d0-af73-acfb7ed1c830",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:21,l1:"Bipolar / Psychotic Spectrum",l2:"OCD — Moderate",diag:"Obsessive-Compulsive Disorder (6B20) ; Schizoaffective Disorder (6A21)",meds:"Fluvoxamine Tab 50mg, T. Risnia 2mg, T. Pacitane",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"17f00082-4120-4179-a9b1-d6a9129353e5",patientId:"992a6c09-6c1c-4184-a93d-ee52f0caa201",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:19,l1:"Bipolar / Psychotic Spectrum",l2:"Bipolar I/II",diag:"bipolar disorder",meds:"tab lithium 600mg, tab quetiapine 25mg, tab zolcalm 10mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Normal, not at all ill",bucket:"MH_ONLY"},
+  {id:"4975830a-0804-41de-913d-1afaa5810dee",patientId:"bc1d3a82-4816-4f6f-9120-b619def058d0",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:50,l1:"Anxiety Disorders",l2:"GAD — Moderate",diag:"Generalized Anxiety Disorder (6B00) ; Alcohol Use Disorder (6C40)",meds:"Escitalopram 10 mg, Clonazepam 0.5 mg, Zolpidem 5 mg, tab nexpro rd 40mg, tab thiabion 100mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Moderately ill",bucket:"MH_ONLY"},
+  {id:"234396ac-ffd7-49e3-895b-a55fb5618232",patientId:"e7aadb51-3072-40d0-af73-acfb7ed1c830",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:21,l1:"OCD Spectrum",l2:"OCD — Moderate",diag:"Obsessive-Compulsive Disorder (6B20)",meds:"Fluvoxamine Tab 50mg, T. Risnia 2mg, T. Pacitane",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
   {id:"74294fd5-5403-461f-af8d-c0d29e2d1bfb",patientId:"613c8556-86c0-4e00-ace5-6a58fd1d8ebf",date:"2026-04-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:26,l1:"Anxiety Disorders",l2:"GAD — Moderate",diag:"Generalized Anxiety Disorder (6B00)",meds:"Sertraline Tab 50mg, Clonazepam 0.5 mg",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Moderately ill",bucket:"MH_ONLY"},
   {id:"2562f042-cf03-490b-bf63-e61e44ccec56",patientId:"9f45680d-7a28-41f2-a1e8-a674bb242632",date:"2026-05-01",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:43,l1:"Depression",l2:"Moderate–Severe*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Moderately ill",bucket:"MH_ONLY"},
   {id:"6f7bff12-66bf-4601-b261-11531e3cf6e4",patientId:"2cd6189c-27bb-448d-bac5-6a0ea8cc03e8",date:"2026-05-01",src:"Inbound",primary:"SH",secondary:"MH",gender:"Female",age:34,l1:"Depression",l2:"Moderate–Severe*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Bupropion Tab 150mg, Clonazepam 0.5 mg",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Moderately ill",bucket:"SH_TO_MH",shPresenting:"Vaginismus ; Mental Health Concerns ; Low Sexual Desire"},
   {id:"fb5bfab9-4015-4292-990d-1e7ac036f080",patientId:"e1470e08-c064-4e12-8040-07117839deac",date:"2026-05-02",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:24,l1:"Trauma & Stress-Related",l2:"Complex PTSD",diag:"Complex PTSD (6B41)",meds:"Fluoxetine Tab 20mg, Lithosum 300mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Borderline ill",bucket:"MH_ONLY"},
   {id:"358e3d20-c2cc-4cd4-849c-f4c1aedef5e9",patientId:"79953455-828d-4a9d-8247-776b32a07aec",date:"2026-05-02",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:25,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Escitalopram 10 mg",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
   {id:"38f54bcb-7e8c-4888-8a7c-9e676d68bbc4",patientId:"cc75b4e0-7ac5-4006-a757-429ddec7970e",date:"2026-05-03",src:"Inbound",primary:"SH",secondary:"MH",gender:"Male",age:26,l1:"Addiction / Substance",l2:"Cannabis Use Disorder",diag:"Cannabis Use Disorder (6C41) ; Nicotine Use Disorder (6C4A)",meds:"Tadalafil Tab 10mg, L-Arginine 2.5g + Zinc Sulphate 12mg + Vitamin B6 1.2mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"SH_TO_MH",shPresenting:"Atypical Erectile Dysfunction ; Mental Health Concerns"},
-  {id:"83315ce3-bb91-497b-8d1b-250b7192debc",patientId:"ec6b0f85-55f6-45e9-8851-cdb56b4285ed",date:"2026-05-03",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:28,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"83315ce3-bb91-497b-8d1b-250b7192debc",patientId:"ec6b0f85-55f6-45e9-8851-cdb56b4285ed",date:"2026-05-03",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:28,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00) ; ?OC- need further evaluation",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
   {id:"e84b5026-0ff3-45ff-91c4-030e8489ddf4",patientId:"a7f25e71-580a-40d2-89ee-c4b09b70def7",date:"2026-05-03",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:45,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
   {id:"56276d7f-80bc-410e-bdb8-bc14338c6357",patientId:"456b20ee-3eb0-433f-b7ab-ba86fa12aa8c",date:"2026-05-03",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:29,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Escitalopram 10 mg, Zolpidem 10 mg, Clonazepam 0.5 mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
   {id:"14b77464-c4e7-44c1-88c9-01402c8ddee5",patientId:"caf08838-a774-4710-8f3e-d64d81d97034",date:"2026-05-03",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:19,l1:"Trauma & Stress-Related",l2:"PTSD",diag:"PTSD (6B40)",meds:"Fluoxetine Tab 20mg, tab inderal LA 20mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Moderately ill",bucket:"MH_ONLY"},
   {id:"9c443250-e0e8-4444-bc14-e44a955c4319",patientId:"86646862-d972-4814-af5c-7e6b0212d1b2",date:"2026-05-04",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:30,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg, Zolpidem 5 mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
-  {id:"7c64bb39-7984-4851-b834-f9ffea59faed",patientId:"695581f1-7359-40e4-9676-c230b0b5826a",date:"2026-05-04",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:45,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Escitalopram 10 mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"7c64bb39-7984-4851-b834-f9ffea59faed",patientId:"695581f1-7359-40e4-9676-c230b0b5826a",date:"2026-05-04",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:45,l1:"Anxiety Disorders",l2:"Panic Disorder",diag:"Generalized Anxiety Disorder (6B00) ; Panic Disorder (6B01)",meds:"Escitalopram 10 mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
   {id:"6a3101d8-3571-4c72-a67b-08f124b6fe80",patientId:"b008bbbf-57ae-4aca-9013-36238faa42ec",date:"2026-05-04",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:35,l1:"Depression",l2:"Mild*",diag:"Recurrent Depressive Disorder (6A71)",meds:"Escitalopram 10 mg",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
-  {id:"cc010381-8c0d-493e-aa5c-365f216900de",patientId:"fbcd385c-b939-40cc-8a12-e5a3a9c85d2c",date:"2026-05-05",src:"Inbound",primary:"MH",secondary:"SH",gender:"Male",age:33,l1:"Addiction / Substance",l2:"Nicotine Use Disorder",diag:"Nicotine Use Disorder (6C4A)",meds:"Sildenafil Tab 25mg, L-Arginine 2.5g + Zinc Sulphate 12mg + Vitamin B6 1.2mg, Nicotine Patch 7 mg, Naltrexone 50 mg",therapy:"-",doctor:"Dr. Basava Chetan",clinic:"Indiranagar",city:"Bangalore",severity:"Moderately ill",bucket:"MH_ONLY",shPresenting:"Atypical Erectile Dysfunction ; Mental Health Concerns"},
-  {id:"1f02a615-5a8c-4adf-bf51-d0d96913d821",patientId:"448e93cc-d772-400d-abd2-c1177d4e2e41",date:"2026-05-05",src:"Inbound",primary:"SH",secondary:"MH",gender:"Male",age:28,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70) ; Alcohol Use Disorder (6C40) ; Nicotine Use Disorder (6C4A)",meds:"Tadalafil Tab 5mg, Bupropion Tab 150mg, Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"SH_TO_MH",shPresenting:"Low Sexual Desire ; Erectile Dysfunction ; Mental Health Concerns"},
-  {id:"cb4c3538-f273-4dc3-a9bd-ad5c3810458f",patientId:"daefd0f6-f0df-405e-81f0-4e369116299d",date:"2026-05-06",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:29,l1:"Anxiety Disorders",l2:"GAD — Moderate",diag:"Generalized Anxiety Disorder (6B00)",meds:"VENLAFAXINE ER 37.5MG, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Basava Chetan",clinic:"Indiranagar",city:"Bangalore",severity:"Moderately ill",bucket:"MH_ONLY"},
-  {id:"38dcbd82-e1a7-494b-bb3a-ffdb53bff53b",patientId:"e21d9e7e-ccaa-4e18-a54f-67ccd9cd1af8",date:"2026-05-06",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:35,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00) ; Alcohol Use Disorder (6C40)",meds:"Clonazepam Tab 0.25mg, Sertraline Tab 25mg, tab thiamine",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Mildly ill",bucket:"MH_ONLY"},
-  {id:"d48b2d2e-bcd2-46fa-b204-5f4998a71986",patientId:"6a9cf42a-7c55-44eb-8329-b9721a1c740c",date:"2026-05-06",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:25,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
-  {id:"8b2d46d2-751b-4b21-9a39-c2e967cc250b",patientId:"5f962998-e84f-448d-8f2e-c3384987a33d",date:"2026-05-07",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:25,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",diag:"Adjustment Disorder (6B43)",meds:"Bupropion Tab 150mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
-  {id:"e4d72925-e044-4911-87ea-78fd51ee15e1",patientId:"cefcffaa-6ef2-47a2-ba99-2ce2ec2ab5de",date:"2026-05-08",src:"Inbound",primary:"SH",secondary:"MH",gender:"Male",age:35,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Tadalafil Tab 5mg, L-Arginine 2.5g + Zinc Sulphate 12mg + Vitamin B6 1.2mg, Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Mildly ill",bucket:"SH_TO_MH",shPresenting:"Erectile Dysfunction ; Mental Health Concerns"},
-  {id:"673f8d7c-4909-4e8c-9861-0c304182eb27",patientId:"4e1aaf84-d44c-4375-9383-cb3c94d09e5e",date:"2026-05-09",src:"Inbound",primary:"SH",secondary:"MH",gender:"Male",age:37,l1:"Bipolar / Psychotic Spectrum",l2:"Psychosis",diag:"Psychosis to be subtyped",meds:"Tadalafil Tab 10mg, L-Arginine 2.5g + Zinc Sulphate 12mg + Vitamin B6 1.2mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"SH_TO_MH",shPresenting:"Atypical Erectile Dysfunction ; Mental Health Concerns"},
-  {id:"3ef9ad18-1335-43ff-8b5e-462129c4f2e4",patientId:"f3927f59-6a71-41f1-9da9-7baebb08e3e3",date:"2026-05-09",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:22,l1:"Neurodevelopmental",l2:"ADHD — Combined",diag:"ADHD (6A05)",meds:"Atomoxetine 18 mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Normal, not at all ill",bucket:"MH_ONLY"},
-  {id:"aff0db8d-fada-422d-96ac-a0eb8805810c",patientId:"76f4e3d7-435b-48e7-939f-e8efebe5ac1c",date:"2026-05-09",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:45,l1:"Depression",l2:"Mild*",diag:"depression with psychotic symptoms",meds:"Sertraline Tab 50mg, Risperidone Tablet 0.5 mg, Risperidone Tablet 2 mg, Clonazepam 0.5 mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
-  {id:"9273fefd-61e1-4a93-b4a6-45a42ce017c7",patientId:"c2ffc4f4-6267-44de-9d8c-a762335b8a7e",date:"2026-05-09",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:32,l1:"Depression",l2:"Moderate–Severe*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Sertraline Tab 25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Normal, not at all ill",bucket:"MH_ONLY"},
-  {id:"3d72f791-aad4-4cc3-a40d-898e75aca9a3",patientId:"7c078e2b-5974-4bf3-a302-134f05e30d6c",date:"2026-05-10",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:21,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Sertraline Tab 25mg, Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
-  {id:"9b1df9b7-355f-4d49-93c3-d94eacfe9732",patientId:"c8200ce3-35db-42a2-91f0-d3fe4f79fc1c",date:"2026-05-12",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:34,l1:"OCD Spectrum",l2:"OCD — Moderate",diag:"Obsessive-Compulsive Disorder (6B20)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
-  {id:"ea731ab5-ee57-49f3-8eed-5682c924ae76",patientId:"e692416b-09e2-44ff-81b8-8ad0541e3241",date:"2026-05-12",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:24,l1:"Anxiety Disorders",l2:"Health Anxiety",diag:"Hypochondriasis / Health Anxiety (6B23)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
-  {id:"ef3c49e5-5dc5-4fc7-9419-3544415ec402",patientId:"1af03782-86f8-4e01-97fe-51b0aadd951e",date:"2026-05-12",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:22,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",diag:"Adjustment Disorder (6B43)",meds:"Clonazepam Tab 0.25mg, Melotonin 3mg, Sertraline Tab 25mg, Orofer Xt",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
-  {id:"879b1d61-8303-421a-a274-60bf5ba4b520",patientId:"c6c9e521-275e-4d15-ba0d-a3ea1387796a",date:"2026-05-12",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:35,l1:"Depression",l2:"Moderate–Severe*",diag:"Single Episode Depressive Disorder (6A70)",meds:"tab escitalopram 5mg, tab escitalopram 10mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Moderately ill",bucket:"MH_ONLY"},
-  {id:"76e2c754-e9b3-4d8e-910b-e267bbfea681",patientId:"d9ee45fa-c2ac-4ced-a070-64895dcfd088",date:"2026-05-12",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:33,l1:"Neurodevelopmental",l2:"ADHD — Combined",diag:"ADHD (6A05) ; acute stress reaction",meds:"Sertraline Tab 25mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
-  {id:"96dd4203-dda8-45d5-9ab6-6ac3a86a9097",patientId:"490f4639-41b7-496b-bae1-7a0e9d376861",date:"2026-05-12",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:40,l1:"Depression",l2:"Moderate–Severe*",diag:"Recurrent Depressive Disorder (6A71)",meds:"tab escitalopram 5mg, tab escitalopram 10mg, tab clonazepam 0.5mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Severely ill",bucket:"MH_ONLY"},
-  {id:"c4ce55dc-c0b7-40f1-b10b-f2a2ecc3b4a9",patientId:"6abc2ea3-7150-467d-b02d-d4d4c3d0e3c3",date:"2026-05-12",src:"Inbound",primary:"MH",secondary:"SH",gender:"Female",age:30,l1:"Trauma & Stress-Related",l2:"Complex PTSD",diag:"Complex PTSD (6B41) ; Personality Disorder (6D10)",meds:"Sertraline Tab 25mg",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY",shPresenting:"Mental Health Concerns ; Compulsive Masturbation ; Porn Addiction"},
-  {id:"641a3d1d-a703-43d2-bb0c-9ffe70eff59c",patientId:"463d2e1d-c0d3-40f2-a567-ac4f97c5dadb",date:"2026-05-13",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:25,l1:"Depression",l2:"Moderate–Severe*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Sertraline Tab 25mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Markedly ill",bucket:"MH_ONLY"},
-  {id:"49c6b46f-e93a-4437-a322-0dd91336dc19",patientId:"67d1c39f-9128-45cb-9b18-38afe1f265dd",date:"2026-05-13",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:30,l1:"Anxiety Disorders",l2:"GAD — Severe",diag:"Generalized Anxiety Disorder (6B00)",meds:"Sertraline Tab 25mg, Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Markedly ill",bucket:"MH_ONLY"},
-  {id:"bf9209c7-9f50-4bdc-944c-4964dc5a973f",patientId:"f2d42a3b-3d9a-421c-82ec-8caaf7aadc1d",date:"2026-05-14",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:30,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Sertraline Tab 25mg, Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
-  {id:"605431e3-0b2a-4466-ac57-8f97b0fbd2a3",patientId:"2483cf42-059f-40c5-adba-1d025cfbe042",date:"2026-05-14",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:30,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",diag:"Adjustment Disorder (6B43)",meds:"-",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
-  {id:"fd9b2976-2992-4b99-b654-b65a6066f704",patientId:"b1809052-b09b-426d-9c54-038742149b17",date:"2026-05-14",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:61,l1:"Depression",l2:"Mild*",diag:"post stroke depression",meds:"Sertraline Tab 25mg, tab desvenlafaxine 50mg, tab quetiapine 50mg, tab donepezil 5mg plus memantine 10mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
-  {id:"daed9e8c-ff9c-415d-879e-fb3d15a0a61a",patientId:"a500c82d-f6b9-4ef1-a5d7-b1d7882dd5ae",date:"2026-05-15",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:28,l1:"Depression",l2:"Moderate–Severe*",diag:"Persistent Depressive Disorder (6A72)",meds:"Sertraline Tab 25mg, Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Moderately ill",bucket:"MH_ONLY"},
-  {id:"2109e87c-34e8-4867-87b9-6bf5ae306666",patientId:"72d96548-2227-4dd1-85fe-5849bd571365",date:"2026-05-15",src:"Inbound",primary:"SH",secondary:"MH",gender:"Male",age:29,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Cefixime Tab 400 mg, Fluconazole (150mg) + Azithromycin (1000mg) + Secnidazole (1000mg)",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"STI_OVERLAP_MH",shPresenting:"Post-Exposure Prophylaxis for Genito Urinary Infection ; Mental Health Concerns"},
-  {id:"7339eb8d-760e-4cfc-8b6b-3bf86d65b0a4",patientId:"3a936077-4743-4ec7-8b01-f7ab8a2a377f",date:"2026-05-15",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:26,l1:"Depression",l2:"Mild*",diag:"Recurrent Depressive Disorder (6A71)",meds:"T. Escitalporam 10, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
-  {id:"177513f8-e792-4c4a-80b1-fa2c2dc8b0d3",patientId:"ba7ee104-9890-4d6a-956c-ab71ce474d08",date:"2026-05-15",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:20,l1:"Trauma & Stress-Related",l2:"Complex PTSD",diag:"Complex PTSD (6B41)",meds:"Sertraline Tab 50mg, T. Pan D, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
-  {id:"c8f581c4-81d5-44e6-8d58-7d33458b3cd4",patientId:"6c8a3360-a20e-4e9e-b5b8-2a75b9d0e8e1",date:"2026-05-16",src:"Inbound",primary:"MH",secondary:"SH",gender:"Male",age:27,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Paroxetine Tab 12.5mg, Tadalafil Tab 5mg, Lidocaine + Prilocaine Spray 20g",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY",shPresenting:"Premature Ejaculation ; Mental Health Concerns"},
-  {id:"497ace6d-08f4-41cd-aa72-282dda058bff",patientId:"91ae3a34-ba7a-4699-96ce-34b53b865e96",date:"2026-05-16",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:29,l1:"OCD Spectrum",l2:"OCD — Moderate",diag:"Obsessive-Compulsive Disorder (6B20)",meds:"Fluoxetine Tab 20mg",therapy:"-",doctor:"Dr. Basava Chetan",clinic:"Indiranagar",city:"Bangalore",severity:"Moderately ill",bucket:"MH_ONLY"},
-  {id:"8be1ee7b-09e5-449e-8241-014e7740476d",patientId:"78039a4b-bbaf-4475-aa76-3aec3fe0a8d9",date:"2026-05-16",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:41,l1:"Anxiety Disorders",l2:"GAD — Moderate",diag:"Generalized Anxiety Disorder (6B00)",meds:"tab vortioxetine 5mg, tab propranolol 20mg, tab atomoxetine 18mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Moderately ill",bucket:"MH_ONLY"},
-  {id:"ae032168-2fb3-4643-880f-844d6a9f4041",patientId:"c4aed313-78c3-4292-a845-40e3e2f4d1bf",date:"2026-05-16",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:47,l1:"Anxiety Disorders",l2:"GAD — Moderate",diag:"Generalized Anxiety Disorder (6B00) ; Acute and Transient Psychotic Disorder (6A23)",meds:"tab desvenlafaxine 50mg, tab olanzapine 2.5mg, tab propranolol 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Moderately ill",bucket:"MH_ONLY"},
-  {id:"52942b9e-3394-49da-9fe2-3521cd107f2f",patientId:"4d2116a9-b5dd-443c-b90d-5c340cae70c0",date:"2026-05-16",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:35,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",diag:"Adjustment Disorder (6B43)",meds:"Sertraline Tab 25mg, Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
-  {id:"24cd1007-2c2b-48bc-8604-440b4c096f4b",patientId:"83509b0b-cc86-4cb0-a88f-84197d9c9e4e",date:"2026-05-16",src:"Inbound",primary:"MH",secondary:"SH",gender:"Male",age:34,l1:"Anxiety Disorders",l2:"GAD — Moderate",diag:"Generalized Anxiety Disorder (6B00)",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Moderately ill",bucket:"MH_ONLY",shPresenting:"Porn Addiction ; Compulsive Masturbation ; Mental Health Concerns"},
-  {id:"a4c7c688-e728-4198-af9a-c0a702793a86",patientId:"39ee28e8-3b5a-43ba-805f-f4e1c4f791f3",date:"2026-05-17",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:22,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Fluoxetine Tab 20mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
-  {id:"1343987e-bb71-4a2d-91e1-ba83ce6633c5",patientId:"52e4b622-2954-4bc2-869f-865810cc0e95",date:"2026-05-17",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:37,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70)",meds:"-",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Mildly ill",bucket:"MH_ONLY"},
-  {id:"a88f7bbe-c6cb-4588-be9e-8175f9271b6e",patientId:"fd1b6017-163f-4d38-9fc6-b220ad0fdfe5",date:"2026-05-18",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:34,l1:"Depression",l2:"Moderate–Severe*",diag:"Nicotine Use Disorder (6C4A) ; moderate depression without psychotic symptoms",meds:"Sertraline Tab 50mg, Clonazepam Tab 0.25mg, Naltrexone 50 mg, Nicotine patch 7mg",therapy:"-",doctor:"Dr. Basava Chetan",clinic:"Indiranagar",city:"Bangalore",severity:"Moderately ill",bucket:"MH_ONLY"},
-  {id:"89e28a3a-fec4-400d-ad22-7eb446f8803d",patientId:"ee1ebe34-764b-4b74-addd-0d4002ca82fa",date:"2026-05-18",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:48,l1:"Depression",l2:"Moderate–Severe*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Sertraline Tab 25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Moderately ill",bucket:"MH_ONLY"},
-  {id:"f0360e3a-225b-4eb8-b2f3-5d808014cbc2",patientId:"87dd075b-b060-4b79-8b7a-71e7a88e1f16",date:"2026-05-18",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:32,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",diag:"Adjustment Disorder (6B43)",meds:"Fluoxetine Tab 20mg, Fluoxetine Tab 10mg",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
   // ===== END CSV MH-IDENTIFIED =====
   // ===== NE patients counted in MH-identified per business rule =====
   {id:"4ea7e8a6-ne-apr01-dep",date:"2026-04-01",src:"Google",primary:"MH",secondary:"-",gender:"Female",age:20,l1:"Depression",l2:"Mild*",diag:"Depression (NE in RX_Data)",meds:"-",therapy:"Individual + Couple",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",isNE:true},
@@ -1489,162 +1450,7 @@ const SC_APPTS=[
   {id:'9c443250',date:'2026-05-04',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
   {id:'b4341002',date:'2026-05-04',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
   {id:'7c64bb39',date:'2026-05-04',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
-  {id:'6a3101d8',date:'2026-05-04',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
-  {id:'7a0a3245',date:'2026-05-05',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
-  {id:'c76e7a03',date:'2026-05-05',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'STI',ne:false},
-  {id:'af4cf59b',date:'2026-05-05',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
-  {id:'60b83d34',date:'2026-05-05',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
-  {id:'cc010381',date:'2026-05-05',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'MH',ne:false},
-  {id:'74fdfa39',date:'2026-05-05',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
-  {id:'4b0dcf87',date:'2026-05-05',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'4685d7fb',date:'2026-05-05',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'9b963d88',date:'2026-05-05',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'70b23723',date:'2026-05-05',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'1f02a615',date:'2026-05-05',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'133eb183',date:'2026-05-06',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
-  {id:'8bfe9ec3',date:'2026-05-06',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'MH',ne:true},
-  {id:'cb4c3538',date:'2026-05-06',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'MH',ne:false},
-  {id:'38dcbd82',date:'2026-05-06',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'d48b2d2e',date:'2026-05-06',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'353367e8',date:'2026-05-06',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'7b231794',date:'2026-05-06',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'f72094bf',date:'2026-05-06',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'79c7d921',date:'2026-05-06',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'0d369bff',date:'2026-05-06',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
-  {id:'34dc72b4',date:'2026-05-07',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'e047039f',date:'2026-05-07',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'8b2d46d2',date:'2026-05-07',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'c89d1f48',date:'2026-05-07',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'0d1e5a24',date:'2026-05-07',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'869d7ccd',date:'2026-05-07',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'b13189c8',date:'2026-05-07',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
-  {id:'99ed6cf4',date:'2026-05-07',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'8d2862c7',date:'2026-05-07',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'d531356d',date:'2026-05-07',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
-  {id:'0785753a',date:'2026-05-07',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'217864ef',date:'2026-05-08',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'1df7584a',date:'2026-05-08',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'091d814f',date:'2026-05-08',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'e4d72925',date:'2026-05-08',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'76dcc58c',date:'2026-05-08',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'fa5984c4',date:'2026-05-08',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'e6d8f687',date:'2026-05-08',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'088badb6',date:'2026-05-08',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'ea02e8c2',date:'2026-05-08',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'76bb54da',date:'2026-05-08',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'2d40ac41',date:'2026-05-09',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'64750511',date:'2026-05-09',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:true},
-  {id:'673f8d7c',date:'2026-05-09',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'0441b614',date:'2026-05-09',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'17f569b4',date:'2026-05-09',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'STI',ne:false},
-  {id:'c4dd314c',date:'2026-05-09',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'6b632098',date:'2026-05-09',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'f00bc2b5',date:'2026-05-09',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'13ac4d6f',date:'2026-05-09',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
-  {id:'93481779',date:'2026-05-09',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'3ef9ad18',date:'2026-05-09',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'8228d40e',date:'2026-05-09',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'aff0db8d',date:'2026-05-09',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'9273fefd',date:'2026-05-09',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'a17cf3e3',date:'2026-05-09',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'ac5bd34d',date:'2026-05-10',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'fdcc2c41',date:'2026-05-10',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'STI',ne:false},
-  {id:'9990eee5',date:'2026-05-10',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:true},
-  {id:'43804d0e',date:'2026-05-10',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'d976ab42',date:'2026-05-10',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'9ba0ea77',date:'2026-05-10',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'6debd0a2',date:'2026-05-10',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'6033a070',date:'2026-05-10',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'78dbc6d0',date:'2026-05-10',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'3d72f791',date:'2026-05-10',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'8c629dda',date:'2026-05-10',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'74a57d41',date:'2026-05-11',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:true},
-  {id:'94684515',date:'2026-05-11',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
-  {id:'678bc72c',date:'2026-05-11',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'STI',ne:false},
-  {id:'dab4bf0a',date:'2026-05-11',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:true},
-  {id:'b9bc7135',date:'2026-05-11',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'STI',ne:false},
-  {id:'b9cd8795',date:'2026-05-11',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'ec35c446',date:'2026-05-12',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'9b1df9b7',date:'2026-05-12',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
-  {id:'6ea2141a',date:'2026-05-12',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'ea731ab5',date:'2026-05-12',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
-  {id:'4591bc92',date:'2026-05-12',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'ef3c49e5',date:'2026-05-12',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
-  {id:'35d0b20a',date:'2026-05-12',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'da94c592',date:'2026-05-12',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'879b1d61',date:'2026-05-12',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'c3ee4742',date:'2026-05-12',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'870c2f7a',date:'2026-05-12',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'a806c11e',date:'2026-05-12',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'76e2c754',date:'2026-05-12',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'96dd4203',date:'2026-05-12',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'c4ce55dc',date:'2026-05-12',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
-  {id:'da9cd0b8',date:'2026-05-12',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'83424aeb',date:'2026-05-12',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'1a268ed7',date:'2026-05-12',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'b3392c97',date:'2026-05-12',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'8dc3c04b',date:'2026-05-13',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'STI',ne:false},
-  {id:'920e5d53',date:'2026-05-13',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
-  {id:'f433d353',date:'2026-05-13',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'08f47fb0',date:'2026-05-13',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'c9883e99',date:'2026-05-13',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'641a3d1d',date:'2026-05-13',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'49c6b46f',date:'2026-05-13',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'9f38be01',date:'2026-05-13',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'36b995a9',date:'2026-05-13',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
-  {id:'7842af0c',date:'2026-05-13',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'75819d80',date:'2026-05-14',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'bf9209c7',date:'2026-05-14',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
-  {id:'12050e9a',date:'2026-05-14',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'6afd2c8d',date:'2026-05-14',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
-  {id:'4cfd2562',date:'2026-05-14',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
-  {id:'8bfa5aea',date:'2026-05-14',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'605431e3',date:'2026-05-14',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'0f1ef207',date:'2026-05-14',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'e96d1150',date:'2026-05-14',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'fd9b2976',date:'2026-05-14',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'daed9e8c',date:'2026-05-15',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
-  {id:'5e9d6b3a',date:'2026-05-15',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
-  {id:'769740d0',date:'2026-05-15',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
-  {id:'48213f6a',date:'2026-05-15',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'2109e87c',date:'2026-05-15',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'ac7ce49f',date:'2026-05-15',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'edccb14f',date:'2026-05-15',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:false},
-  {id:'7339eb8d',date:'2026-05-15',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
-  {id:'177513f8',date:'2026-05-15',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
-  {id:'347d138f',date:'2026-05-15',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'STI',ne:true},
-  {id:'eae25775',date:'2026-05-15',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'4f6994d0',date:'2026-05-16',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:true},
-  {id:'c8f581c4',date:'2026-05-16',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
-  {id:'354aa1f4',date:'2026-05-16',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
-  {id:'497ace6d',date:'2026-05-16',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'MH',ne:false},
-  {id:'d90c7925',date:'2026-05-16',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
-  {id:'3c98cb51',date:'2026-05-16',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'STI',ne:false},
-  {id:'dd59398c',date:'2026-05-16',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'3c64a72c',date:'2026-05-16',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'8be1ee7b',date:'2026-05-16',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'ae032168',date:'2026-05-16',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'933b01e9',date:'2026-05-16',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'52942b9e',date:'2026-05-16',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'24cd1007',date:'2026-05-16',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'b168ee80',date:'2026-05-16',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'5199d176',date:'2026-05-16',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'2cfffa97',date:'2026-05-16',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'e78e945c',date:'2026-05-16',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:true},
-  {id:'a4c7c688',date:'2026-05-17',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'1343987e',date:'2026-05-17',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'4e9aacb7',date:'2026-05-17',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'a88f7bbe',date:'2026-05-18',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'MH',ne:false},
-  {id:'639a5711',date:'2026-05-18',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'89e28a3a',date:'2026-05-18',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
-  {id:'94af84f3',date:'2026-05-18',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'bc9f6b75',date:'2026-05-18',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:true},
-  {id:'ea454115',date:'2026-05-18',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'0b14b082',date:'2026-05-18',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'59795214',date:'2026-05-18',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
-  {id:'f0360e3a',date:'2026-05-18',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
-  {id:'7603c889',date:'2026-05-18',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'1e1fa5fd',date:'2026-05-18',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false}
+  {id:'6a3101d8',date:'2026-05-04',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false}
   // ===== END CSV SC_APPTS =====
 ];
 
@@ -1897,58 +1703,87 @@ const SALT_MAP={
 
 // MEDICINE_DB — keys MUST exactly match normMed() output
 const MEDICINE_DB={
-  'Tadalafil 5mg':              {brand:'Tadactual 5mg',          manufacturer:'Allo Health (Pvt. Label)', mrp:20.5,  selling:20.5,  serviceable:true,  verified:true},
-  'Tadalafil 2.5mg':            {brand:'Tadactual 2.5mg',        manufacturer:'Allo Health (Pvt. Label)', mrp:13.7,  selling:13.7,  serviceable:true,  verified:true},
-  'Paroxetine 12.5mg':          {brand:'Paractual 12.5mg',       manufacturer:'Allo Health (Pvt. Label)', mrp:20.1,  selling:20.1,  serviceable:true,  verified:true},
-  'Paroxetine 10mg':            {brand:'Xet 10mg',               manufacturer:'Various',                  mrp:16.4,  selling:16.4,  serviceable:true,  verified:true},
-  'Paroxetine 37.5mg':          {brand:'Xet CR 37.5mg',          manufacturer:'Various',                  mrp:34.9,  selling:34.9,  serviceable:true,  verified:true},
-  'Bupropion 150mg':            {brand:'Bupromis 150',           manufacturer:'Allo Health (Pvt. Label)', mrp:17.0,  selling:17.0,  serviceable:true,  verified:true},
-  'Clonazepam 0.25mg':          {brand:'Lonazep 0.25mg',         manufacturer:'Various',                  mrp:2.0,   selling:2.0,   serviceable:true,  verified:true},
-  'Sertraline 50mg':            {brand:'Zosert 50mg',            manufacturer:'Various',                  mrp:11.5,  selling:11.5,  serviceable:true,  verified:true},
-  'Sertraline 25mg':            {brand:'Zosert 25mg',            manufacturer:'Various',                  mrp:6.5,   selling:6.5,   serviceable:true,  verified:true},
-  'Fluoxetine 20mg':            {brand:'Prodep 20mg',            manufacturer:'Various',                  mrp:3.9,   selling:3.9,   serviceable:true,  verified:true},
-  'Fluoxetine 10mg':            {brand:'Prodep 10mg',            manufacturer:'Various',                  mrp:3.2,   selling:3.2,   serviceable:true,  verified:true},
-  'Cyproheptadine 4mg':         {brand:'Ciplactin 4mg',          manufacturer:'Various',                  mrp:3.1,   selling:3.1,   serviceable:true,  verified:true},
-  'Cefixime 400mg':             {brand:'Taxim-O 400mg',          manufacturer:'Various',                  mrp:21.9,  selling:21.9,  serviceable:true,  verified:true},
-  'Azithromycin 500mg':         {brand:'Azicip 500mg',           manufacturer:'Various',                  mrp:23.7,  selling:23.7,  serviceable:true,  verified:true},
-  'Sildenafil 50mg':            {brand:'Zenegra 50mg',           manufacturer:'Various',                  mrp:29.4,  selling:29.4,  serviceable:true,  verified:true},
-  'Sildenafil 25mg':            {brand:'Penegra 25mg',           manufacturer:'Various',                  mrp:39.7,  selling:39.7,  serviceable:true,  verified:true},
-  'Sildenafil 100mg':           {brand:'Zenegra 100mg',          manufacturer:'Various',                  mrp:41.7,  selling:41.7,  serviceable:true,  verified:true},
-  'Avanafil 100mg':             {brand:'Avanext 100mg',          manufacturer:'Various',                  mrp:88.5,  selling:88.5,  serviceable:true,  verified:true},
-  'Dapoxetine 30mg':            {brand:'Duralast 30mg',          manufacturer:'Various',                  mrp:44.5,  selling:44.5,  serviceable:true,  verified:true},
-  'Fluvoxamine 50mg':           {brand:'Uvox 50mg',              manufacturer:'Various',                  mrp:24.2,  selling:24.2,  serviceable:true,  verified:true},
-  'Clomipramine 10mg':          {brand:'Clonil 10mg',            manufacturer:'Various',                  mrp:2.6,   selling:2.6,   serviceable:true,  verified:true},
-  'Clomipramine 25mg':          {brand:'Clonil 25mg',            manufacturer:'Various',                  mrp:5.9,   selling:5.9,   serviceable:true,  verified:true},
-  'Clomipramine 50mg':          {brand:'Clonil 50mg',            manufacturer:'Various',                  mrp:15.4,  selling:15.4,  serviceable:true,  verified:true},
-  'Acyclovir 400mg':            {brand:'Zovirax 400mg',          manufacturer:'Various',                  mrp:13.7,  selling:13.7,  serviceable:true,  verified:true},
-  'Acyclovir':                  {brand:'Acivir Cream 10gm',      manufacturer:'Various',                  mrp:144.0, selling:144.0, serviceable:true,  verified:true},
-  'Mupirocin 2%':               {brand:'T-Bact 2% Ointment',     manufacturer:'Various',                  mrp:101.9, selling:101.9, serviceable:true,  verified:true},
-  'Lidocaine + Prilocaine 20g': {brand:'EdgeMax Spray',          manufacturer:'Allo Health (Pvt. Label)', mrp:372.6, selling:372.6, serviceable:true,  verified:true},
-  'Vitamin D':                  {brand:'Vitalix-D',              manufacturer:'Allo Health (Pvt. Label)', mrp:29.6,  selling:29.6,  serviceable:true,  verified:true},
-  'Fluconazole 150mg':          {brand:'FAS-3 Kit',              manufacturer:'Various',                  mrp:121.0, selling:121.0, serviceable:true,  verified:true},
-  'L-Arginine 2.5g':            {brand:'Energine Plus',          manufacturer:'Allo Health (Pvt. Label)', mrp:90.7,  selling:90.7,  serviceable:true,  verified:true},
-  'L-Arginine 500mg':           {brand:'Energine',               manufacturer:'Allo Health (Pvt. Label)', mrp:51.0,  selling:51.0,  serviceable:true,  verified:true},
-  'Etizolam 0.5mg':             {brand:'Etilaam 0.5mg',          manufacturer:'Intas Pharmaceuticals',    mrp:11.88, selling:10.10, serviceable:false, verified:true},
-  'Etizolam 0.25mg':            {brand:'Etilaam 0.25mg',         manufacturer:'Intas Pharmaceuticals',    mrp:7.22,  selling:6.14,  serviceable:false, verified:false},
-  'Venlafaxine 75mg':           {brand:'Venlor XR 75',           manufacturer:'Cipla Ltd',                mrp:13.90, selling:11.82, serviceable:false, verified:true},
-  'Mirtazapine 7.5mg':          {brand:'Mirtaz 7.5mg',           manufacturer:'Sun Pharma',               mrp:8.50,  selling:7.22,  serviceable:false, verified:true},
-  'Risperidone 1mg':            {brand:'Sizodon MD 1mg',         manufacturer:'Sun Pharma',               mrp:3.23,  selling:2.75,  serviceable:false, verified:true},
-  'Risperidone 2mg':            {brand:'Sizodon MD 2mg',         manufacturer:'Sun Pharma',               mrp:5.80,  selling:4.93,  serviceable:false, verified:false},
-  'Propranolol 20mg':           {brand:'Ciplar 20mg',            manufacturer:'Cipla Ltd',                mrp:2.10,  selling:1.79,  serviceable:false, verified:true},
-  'Escitalopram 10mg':          {brand:'Nexito 10mg',            manufacturer:'Sun Pharma',               mrp:3.80,  selling:3.23,  serviceable:false, verified:true},
-  'Naltrexone 50mg':            {brand:'Nodict 50mg',            manufacturer:'Sun Pharma',               mrp:45.0,  selling:38.25, serviceable:false, verified:true},
-  'Thiamine 100mg':             {brand:'Neurobion Forte',        manufacturer:'Merck India',              mrp:3.50,  selling:2.98,  serviceable:false, verified:true},
-  'Quetiapine 25mg':            {brand:'Seroquel 25mg',          manufacturer:'AstraZeneca',              mrp:8.50,  selling:7.22,  serviceable:false, verified:true},
-  'Melatonin 3mg':              {brand:'Melzap 3mg',             manufacturer:'Sun Pharma',               mrp:2.80,  selling:2.38,  serviceable:false, verified:false},
-  'Donepezil 5mg':              {brand:'Aricep 5mg',             manufacturer:'Eisai / Sun Pharma',       mrp:18.50, selling:15.72, serviceable:false, verified:true},
-  'Memantine 10mg':             {brand:'Alzumab 10mg',           manufacturer:'Intas Pharmaceuticals',    mrp:22.00, selling:18.70, serviceable:false, verified:true},
-  'Lamotrigine 25mg':           {brand:'Lamitor 25mg',           manufacturer:'Torrent Pharma',           mrp:4.50,  selling:3.82,  serviceable:false, verified:true},
-  'Zolpidem 5mg':               {brand:'Zolfresh 5mg',           manufacturer:'Mankind Pharma',           mrp:4.20,  selling:3.57,  serviceable:false, verified:false},
-  'Olanzapine 5mg':             {brand:'Oleanz 5mg',             manufacturer:'Sun Pharma',               mrp:5.20,  selling:4.42,  serviceable:false, verified:true},
-  'Bupropion XL 150mg':         {brand:'Bupron XL 150mg',       manufacturer:'Sun Pharma',               mrp:21.50, selling:18.27, serviceable:false, verified:true},
-  'Desvenlafaxine 50mg':        {brand:'D-Veniz 50mg',           manufacturer:'Alkem (Cachet Pharma)',    mrp:25.00, selling:21.25, serviceable:false, verified:true, source:'1mg.com/brands/d-veniz'},
-  'Desvenlafaxine 100mg':       {brand:'D-Veniz 100mg',          manufacturer:'Alkem (Cachet Pharma)',    mrp:40.00, selling:34.00, serviceable:false, verified:true, source:'1mg.com/brands/d-veniz'},
-  'Atomoxetine 40mg':           {brand:'Axepta 40mg',            manufacturer:'Intas Pharmaceuticals',    mrp:52.00, selling:44.20, serviceable:false, verified:true},
+  // ===== SERVICEABLE — Allo product DB export (selling price = real customer price) =====
+  // Source: export__4_.csv · per-tab prices from JSON Prices column (latest active record)
+  'Sertraline 50mg':               {brand:'Zosert 50mg', manufacturer:'Sun Pharma Laboratories Ltd.', mrp:13.2,  selling:10.56,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Sertraline 25mg':               {brand:'Zosert 25mg', manufacturer:'Sun Pharma Laboratories Ltd.', mrp:7.4,  selling:5.92,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Fluoxetine 20mg':               {brand:'Prodep 20mg', manufacturer:'Sun Pharma Laboratories Ltd.', mrp:4.47,  selling:3.57,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Fluoxetine 10mg':               {brand:'Prodep 10mg', manufacturer:'Sun Pharma Laboratories Ltd.', mrp:3.71,  selling:2.97,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Paroxetine 12.5mg':             {brand:'Paractual 12.5mg', manufacturer:'Pure & Cure Healthcare PVT. LTD.', mrp:24.2,  selling:19.36,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Paroxetine 25mg':               {brand:'Xet 25mg', manufacturer:'Intas Pharmaceuticals Ltd.', mrp:31.21,  selling:24.97,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Paroxetine 10mg':               {brand:'Xet 10mg', manufacturer:'Zydus Healthcare Ltd.', mrp:19.66,  selling:15.73,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Paroxetine 37.5mg':             {brand:'Xet CR 37.5mg', manufacturer:'Zydus Healthcare Ltd.', mrp:41.39,  selling:33.11,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Bupropion 150mg':               {brand:'Bupron XL 150mg', manufacturer:'Sun Pharma Laboratories Ltd.', mrp:19.6,  selling:15.68,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Clonazepam 0.25mg':             {brand:'Lonazep 0.25mg', manufacturer:'Sun Pharma Laboratories Ltd.', mrp:2.25,  selling:1.8,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Cyproheptadine 4mg':            {brand:'Ciplactin 4mg', manufacturer:'Cipla Ltd.', mrp:3.6,  selling:2.88,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Clomipramine 10mg':             {brand:'Clonil 10mg', manufacturer:'Intas Pharmaceuticals Ltd.', mrp:3.18,  selling:2.54,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Clomipramine 25mg':             {brand:'Clonil 25mg', manufacturer:'Intas Pharmaceuticals Ltd.', mrp:6.97,  selling:5.57,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Clomipramine 50mg':             {brand:'Clonil 50mg', manufacturer:'Intas Pharmaceuticals Ltd.', mrp:18.55,  selling:14.84,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Fluvoxamine 50mg':              {brand:'Uvox 50mg', manufacturer:'Abbott India Ltd.', mrp:28.61,  selling:22.88,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Tadalafil 5mg':                 {brand:'Tadactual 5mg', manufacturer:'Applied Communication & Controls', mrp:24.1,  selling:19.28,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Tadalafil 2.5mg':               {brand:'Efil 2.5mg', manufacturer:'JB Pharma', mrp:16.09,  selling:12.87,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Tadalafil 10mg':                {brand:'Efil 10mg', manufacturer:'J B Chemicals and Pharmaceuticals Ltd.', mrp:36.57,  selling:29.25,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Tadalafil 20mg':                {brand:'Forzest 20mg', manufacturer:'Sun Pharmaceutical Industries Ltd.', mrp:96.86,  selling:77.48,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Sildenafil 25mg':               {brand:'Penegra 25mg', manufacturer:'Zydus Healthcare Ltd.', mrp:46.36,  selling:37.08,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Sildenafil 50mg':               {brand:'Zenegra 50mg', manufacturer:'Alkem Laboratories Ltd.', mrp:34.25,  selling:27.4,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Sildenafil 100mg':              {brand:'Zenegra 100mg', manufacturer:'Alkem Laboratories Ltd.', mrp:48.0,  selling:38.4,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Avanafil 100mg':                {brand:'Avanext 100mg', manufacturer:'Various', mrp:103.15,  selling:82.52,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Dapoxetine 30mg':               {brand:'Duralast 30mg', manufacturer:'Sun Pharma Laboratories Ltd.', mrp:52.0,  selling:39.0,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'L-Arginine 2.5g':               {brand:'Energine Plus', manufacturer:'CU-V-KAR Genetic Medicines Pvt. Ltd.', mrp:105.0,  selling:84.0,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'L-Arginine 500mg':              {brand:'Energine', manufacturer:'CU-V-KAR Genetic Medicines Pvt. Ltd.', mrp:60.0,  selling:48.0,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Acyclovir 400mg':               {brand:'Zovirax 400mg', manufacturer:'Glaxo SmithKline Pharmaceuticals Ltd', mrp:15.28,  selling:12.23,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Acyclovir':                     {brand:'Acivir Cream 10gm', manufacturer:'Cipla Ltd', mrp:161.05,  selling:128.84,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Mupirocin 2%':                  {brand:'T-Bact 2% Ointment 5gm', manufacturer:'Glaxo SmithKline Pharmaceuticals Ltd', mrp:113.62,  selling:90.9,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Lidocaine + Prilocaine 20g':    {brand:'EdgeMax Spray', manufacturer:'Pontika Aerotech Limited', mrp:399.0,  selling:319.2,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Cefixime 400mg':                {brand:'Taxim-O 400mg', manufacturer:'Alkem Laboratories Ltd', mrp:24.75,  selling:19.8,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Azithromycin 500mg':            {brand:'Azicip 500mg', manufacturer:'Cipla Ltd', mrp:26.4,  selling:21.12,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Fluconazole 150mg':             {brand:'FAS-3 Kit', manufacturer:'Hetero Healthcare Limited', mrp:132.0,  selling:111.2,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Doxycycline 100mg':             {brand:'Doxt-SL Capsule', manufacturer:'Swiss Garnier Life Sciences', mrp:13.3,  selling:10.64,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'PEP Kit (Viropil)':             {brand:'Viropil', manufacturer:'Emcure Pharmaceuticals Ltd', mrp:128.79,  selling:103.1,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Vitamin D':                     {brand:'Uprise-D3 60k Capsule', manufacturer:'Alkem Laboratories Ltd.', mrp:34.46,  selling:27.57,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Vitamin B-complex':             {brand:'Vitalix-B', manufacturer:'Pure & Cure Healthcare Pvt. Ltd.', mrp:25.34,  selling:21.12,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  'Lubricant':                     {brand:'K Y Jelly', manufacturer:'Reckitt Benckiser', mrp:314.6,  selling:251.68,  serviceable:true,  priceSource:'Allo export · serviceable',  verified:true},
+  // ===== UNSERVICEABLE — Manual recon by Allo team (Apollo/1mg sourcing) =====
+  // Source: Unserviceable_Meds_-_Sheet1.csv · per-tab MRP from col F · selling = MRP × 0.85
+  'Etizolam 0.5mg':                {brand:'Etilaam 0.5mg', manufacturer:'Intas Pharmaceuticals', mrp:7.9,  selling:6.71,  serviceable:false,  priceSource:'Allo recon · MRP × 0.85',  verified:true,  source:'https://www.apollopharmacy.in/medicine/etilaam-0-5-tablet-15-s'},
+  'Venlafaxine 75mg':              {brand:'Venlor XR 75mg', manufacturer:'Cipla Ltd', mrp:15.25,  selling:12.96,  serviceable:false,  priceSource:'Allo recon · MRP × 0.85',  verified:true,  source:'https://www.apollopharmacy.in/medicine/venlor-xr-75mg-tablet'},
+  'Mirtazapine 15mg':              {brand:'Mirtaz 15mg', manufacturer:'Sun Pharma', mrp:13.7,  selling:11.64,  serviceable:false,  priceSource:'Allo recon · MRP × 0.85',  verified:true,  source:'https://www.apollopharmacy.in/medicine/mirtaz-15mg-tablet'},
+  'Risperidone 1mg':               {brand:'Sizodon MD 1mg', manufacturer:'Sun Pharma', mrp:3.2,  selling:2.72,  serviceable:false,  priceSource:'Allo recon · MRP × 0.85',  verified:true,  source:'https://www.apollopharmacy.in/medicine/sizodon-md-1mg-tablet'},
+  'Propranolol 20mg':              {brand:'Ciplar 20mg', manufacturer:'Cipla Ltd', mrp:4.27,  selling:3.63,  serviceable:false,  priceSource:'Allo recon · MRP × 0.85',  verified:true,  source:'https://www.apollopharmacy.in/medicine/ciplar-la-20mg-tablet'},
+  'Propranolol 10mg':              {brand:'Ciplar 10mg', manufacturer:'Cipla Ltd', mrp:1.37,  selling:1.16,  serviceable:false,  priceSource:'Allo recon · MRP × 0.85',  verified:true,  source:'https://www.apollopharmacy.in/medicine/ciplar-10mg-tablet'},
+  'Escitalopram 10mg':             {brand:'Nexito 10mg', manufacturer:'Sun Pharma', mrp:9.6,  selling:8.16,  serviceable:false,  priceSource:'Allo recon · MRP × 0.85',  verified:true,  source:'https://www.apollopharmacy.in/medicine/nexito-10-tab-15-s'},
+  'Escitalopram 5mg':              {brand:'Nexito 5mg', manufacturer:'Sun Pharma', mrp:5.25,  selling:4.46,  serviceable:false,  priceSource:'Allo recon · MRP × 0.85',  verified:true,  source:'https://www.apollopharmacy.in/medicine/nexito-5mg-tablet'},
+  'Naltrexone 50mg':               {brand:'Nodict 50mg', manufacturer:'Sun Pharma', mrp:97.5,  selling:82.88,  serviceable:false,  priceSource:'Allo recon · MRP × 0.85',  verified:true,  source:'https://www.apollopharmacy.in/medicine/nodict-50mg-tablet'},
+  'Thiamine 100mg':                {brand:'Neurobion Forte', manufacturer:'Merck', mrp:1.57,  selling:1.33,  serviceable:false,  priceSource:'Allo recon · MRP × 0.85',  verified:true,  source:'https://www.apollopharmacy.in/otc/neurobion-forte-tablet'},
+  'Quetiapine 25mg':               {brand:'Seroquil 25mg', manufacturer:'AstraZeneca', mrp:2.11,  selling:1.79,  serviceable:false,  priceSource:'Allo recon · MRP × 0.85',  verified:true,  source:'https://www.apollopharmacy.in/medicine/seroquin-25mg-tablet?srsltid=AfmBOorihht4'},
+  'Quetiapine 50mg':               {brand:'Seroquil 50mg', manufacturer:'AstraZeneca', mrp:3.33,  selling:2.83,  serviceable:false,  priceSource:'Allo recon · MRP × 0.85',  verified:true,  source:'https://www.1mg.com/drugs/seroquin-50mg-tablet-255807?srsltid=AfmBOoqNHrslzO5ySx'},
+  'Donepezil 5mg':                 {brand:'Aricep 5mg', manufacturer:'Eisai / Sun Pharma', mrp:12.85,  selling:10.92,  serviceable:false,  priceSource:'Allo recon · MRP × 0.85',  verified:true,  source:'https://www.apollopharmacy.in/medicine/aricep-5mg-tablet'},
+  'Memantine 10mg':                {brand:'Alzumab 10mg', manufacturer:'Intas Pharmaceuticals', mrp:22.95,  selling:19.51,  serviceable:false,  priceSource:'Allo recon · MRP × 0.85',  verified:true,  source:'https://www.apollopharmacy.in/medicine/admenta-10mg-tablet'},
+  'Lamotrigine 50mg':              {brand:'Lamitor 50mg', manufacturer:'Torrent Pharma', mrp:18.15,  selling:15.43,  serviceable:false,  priceSource:'Allo recon · MRP × 0.85',  verified:true,  source:'https://www.apollopharmacy.in/medicine/lamitor-od-50mg-tablet'},
+  'Lamotrigine 25mg':              {brand:'Lamitor 25mg', manufacturer:'Torrent Pharma', mrp:11.6,  selling:9.86,  serviceable:false,  priceSource:'Allo recon · MRP × 0.85',  verified:true,  source:'https://www.apollopharmacy.in/medicine/lamitor-dt-25mg-tablet'},
+  'Zolpidem 10mg':                 {brand:'Zolfresh 10mg', manufacturer:'Mankind Pharma', mrp:9.07,  selling:7.71,  serviceable:false,  priceSource:'Allo recon · MRP × 0.85',  verified:true,  source:'https://www.apollopharmacy.in/medicine/zolfresh-10mg-tablet'},
+  'Olanzapine 5mg':                {brand:'Oleanz 5mg', manufacturer:'Sun Pharma', mrp:6.0,  selling:5.1,  serviceable:false,  priceSource:'Allo recon · MRP × 0.85',  verified:true,  source:'https://www.apollopharmacy.in/medicine/oleanz-5mg-tablet'},
+  'Olanzapine 10mg':               {brand:'Oleanz 10mg', manufacturer:'Sun Pharma', mrp:10.7,  selling:9.09,  serviceable:false,  priceSource:'Allo recon · MRP × 0.85',  verified:true,  source:'https://www.apollopharmacy.in/medicine/oleanz-10mg-tablet'},
+  'Atomoxetine 25mg':              {brand:'Axepta 25mg', manufacturer:'Intas Pharmaceuticals', mrp:30.45,  selling:25.88,  serviceable:false,  priceSource:'Allo recon · MRP × 0.85',  verified:true,  source:'https://www.apollopharmacy.in/medicine/axepta-25mg-tablet'},
+  'Atomoxetine 40mg':              {brand:'Axepta 40mg', manufacturer:'Intas Pharmaceuticals', mrp:38.6,  selling:32.81,  serviceable:false,  priceSource:'Allo recon · MRP × 0.85',  verified:true,  source:'https://www.apollopharmacy.in/medicine/axepta-40mg-tablet'},
+
+  // ===== RULE 3 — Claude estimate (web-sourced MRP from Apollo/1mg, × 0.85 for selling) =====
+  // These drugs appear in patient prescriptions but aren't in Allo's product DB or recon list yet.
+  'Clonazepam 0.5mg':              {brand:'Lonazep 0.5mg', manufacturer:'Cipla Ltd', mrp:3.3,  selling:2.8,  serviceable:false,  priceSource:'Claude est · MRP × 0.85',  verified:false},
+  'Etizolam 0.25mg':               {brand:'Etilaam 0.25mg', manufacturer:'Intas Pharma', mrp:4.2,  selling:3.57,  serviceable:false,  priceSource:'Claude est · MRP × 0.85',  verified:false},
+  'Risperidone 2mg':               {brand:'Sizodon MD 2mg', manufacturer:'Sun Pharma', mrp:5.8,  selling:4.93,  serviceable:false,  priceSource:'Claude est · MRP × 0.85',  verified:false},
+  'Mirtazapine 7.5mg':             {brand:'Mirtaz 7.5mg', manufacturer:'Sun Pharma', mrp:8.5,  selling:7.22,  serviceable:false,  priceSource:'Claude est · MRP × 0.85',  verified:false},
+  'Atomoxetine 18mg':              {brand:'Axepta 18mg', manufacturer:'Intas Pharma', mrp:25.0,  selling:21.25,  serviceable:false,  priceSource:'Claude est · MRP × 0.85',  verified:false},
+  'Zolpidem 5mg':                  {brand:'Zolfresh 5mg', manufacturer:'Mankind Pharma', mrp:4.2,  selling:3.57,  serviceable:false,  priceSource:'Claude est · MRP × 0.85',  verified:false},
+  'Lorazepam 2mg':                 {brand:'Ativan 2mg', manufacturer:'Pfizer', mrp:4.5,  selling:3.82,  serviceable:false,  priceSource:'Claude est · MRP × 0.85',  verified:false},
+  'Melatonin 3mg':                 {brand:'Melzap 3mg', manufacturer:'Sun Pharma', mrp:2.8,  selling:2.38,  serviceable:false,  priceSource:'Claude est · MRP × 0.85',  verified:false},
+  'Lithium 600mg':                 {brand:'Lithosun SR 400mg', manufacturer:'Sun Pharma', mrp:5.5,  selling:4.67,  serviceable:false,  priceSource:'Claude est · MRP × 0.85',  verified:false},
+  'Pantoprazole 40mg':             {brand:'Pan 40', manufacturer:'Alkem', mrp:7.5,  selling:6.38,  serviceable:false,  priceSource:'Claude est · MRP × 0.85',  verified:false},
+  'Trihexyphenidyl 2mg':           {brand:'Pacitane 2mg', manufacturer:'Wyeth', mrp:1.0,  selling:0.85,  serviceable:false,  priceSource:'Claude est · MRP × 0.85',  verified:false},
+  'Desvenlafaxine 50mg':           {brand:'D-Veniz 50mg', manufacturer:'Alkem (Cachet)', mrp:25.0,  selling:21.25,  serviceable:false,  priceSource:'Claude est · MRP × 0.85',  verified:false},
+  'Desvenlafaxine 100mg':          {brand:'D-Veniz 100mg', manufacturer:'Alkem (Cachet)', mrp:40.0,  selling:34.0,  serviceable:false,  priceSource:'Claude est · MRP × 0.85',  verified:false},
+  'Vortioxetine 10mg':             {brand:'Vortinex 10mg', manufacturer:'Sun Pharma', mrp:54.0,  selling:45.9,  serviceable:false,  priceSource:'Claude est · MRP × 0.85',  verified:false},
+  'Bupropion XL 150mg':            {brand:'Bupron XL 150mg', manufacturer:'Sun Pharma', mrp:21.5,  selling:18.27,  serviceable:false,  priceSource:'Claude est · MRP × 0.85',  verified:false},
 };
 // Derive inventory from serviceable entries
 let inventory=Object.entries(MEDICINE_DB).filter(([,v])=>v.serviceable).map(([k])=>k);
@@ -2724,10 +2559,10 @@ function renderSection1(){
   const from=new Date(document.getElementById('dateFrom').value);
   const to=new Date(document.getElementById('dateTo').value);
 
-  // Active monthly columns within range
-  const activeMons=[];
-  if(from<=new Date("2026-03-31")&&to>=new Date("2026-03-01"))activeMons.push('Mar');
-  if(from<=new Date("2026-04-30")&&to>=new Date("2026-04-01"))activeMons.push('Apr');
+  // Active monthly columns within range — dynamic, based on MONTHLY dict (auto-extends each month)
+  const activeMons=Object.entries(MONTHLY)
+    .filter(([k,v])=>new Date(v.start)<=to && new Date(v.end)>=from)
+    .map(([k])=>k);
 
   // Active weekly columns within range
   let activeWks=Object.entries(WEEKLY).filter(([k,v])=>new Date(v.start)>=from&&new Date(v.end)<=to);
@@ -3309,10 +3144,14 @@ function renderSection3(){
   const from=new Date(document.getElementById('dxFrom')?.value||'2026-03-09');
   const to=new Date(document.getElementById('dxTo')?.value||'2026-04-27');
 
-  // Active months and weeks within range (mirrors Category Mix logic exactly)
-  const activeMons=[];
-  if(from<=new Date("2026-03-31")&&to>=new Date("2026-03-01"))activeMons.push({key:'Mar',lbl:'March 2026'});
-  if(from<=new Date("2026-04-30")&&to>=new Date("2026-04-01"))activeMons.push({key:'Apr',lbl:'April 2026'});
+  // Active months and weeks within range (mirrors Category Mix logic exactly) — dynamic
+  const MONTH_LABELS={Jan:'January',Feb:'February',Mar:'March',Apr:'April',May:'May',Jun:'June',Jul:'July',Aug:'August',Sep:'September',Oct:'October',Nov:'November',Dec:'December'};
+  const activeMons=Object.entries(MONTHLY)
+    .filter(([k,v])=>new Date(v.start)<=to && new Date(v.end)>=from)
+    .map(([k,v])=>{
+      const yr=v.start.slice(0,4);
+      return {key:k,lbl:(MONTH_LABELS[k]||k)+' '+yr};
+    });
 
   const activeWks=wkKeys.filter(w=>{
     const s=new Date(WEEKLY[w].start),e=new Date(WEEKLY[w].end);
@@ -4792,9 +4631,13 @@ function renderAOV(){
 }
 
 function renderAssumptions(){
-  const servRows=Object.entries(MEDICINE_DB).filter(([,v])=>v.serviceable).map(([k,v])=>`<tr><td style="font-family:monospace;font-size:.68rem;font-weight:600">${k}</td><td style="font-size:.7rem">${v.brand}</td><td style="font-size:.65rem;color:var(--muted)">${v.manufacturer}</td><td class="c-n" style="text-align:center;color:var(--green)">₹${v.mrp}</td><td class="c-n" style="text-align:center;font-weight:700">₹${v.selling}</td><td style="font-size:.62rem;color:var(--muted)">Meds_level_consumption CSV · Col G</td></tr>`).join('');
+  const servRows=Object.entries(MEDICINE_DB).filter(([,v])=>v.serviceable).map(([k,v])=>`<tr><td style="font-family:monospace;font-size:.68rem;font-weight:600">${k}</td><td style="font-size:.7rem">${v.brand}</td><td style="font-size:.65rem;color:var(--muted)">${v.manufacturer}</td><td class="c-n" style="text-align:center;color:var(--green)">₹${v.mrp}</td><td class="c-n" style="text-align:center;font-weight:700">₹${v.selling}</td><td style="font-size:.62rem;color:var(--muted)">${v.priceSource||'Allo CSV'}</td></tr>`).join('');
   const elServ=document.getElementById("assumpServBody");if(elServ)elServ.innerHTML=servRows;
-  const nonServRows=Object.entries(MEDICINE_DB).filter(([,v])=>!v.serviceable).map(([k,v])=>`<tr><td style="font-family:monospace;font-size:.68rem;font-weight:600">${k}</td><td style="font-size:.7rem;font-weight:600;color:var(--blue)">${v.brand}</td><td style="font-size:.65rem;color:var(--muted)">${v.manufacturer}</td><td class="c-n" style="text-align:center">₹${v.mrp}</td><td class="c-n" style="text-align:center;font-weight:700;color:var(--orange)">₹${v.selling}</td><td style="font-size:.62rem;color:var(--muted)">${v.verified?'✓ Verified · Apollo/1mg':'~ Claude est.'}</td></tr>`).join('');
+  const nonServRows=Object.entries(MEDICINE_DB).filter(([,v])=>!v.serviceable).map(([k,v])=>{
+    const src=v.priceSource||(v.verified?'✓ Verified · Apollo/1mg':'~ Claude est.');
+    const srcColor=src.includes('Claude est')?'var(--orange)':(src.includes('Allo recon')?'var(--green)':'var(--muted)');
+    return `<tr><td style="font-family:monospace;font-size:.68rem;font-weight:600">${k}</td><td style="font-size:.7rem;font-weight:600;color:var(--blue)">${v.brand}</td><td style="font-size:.65rem;color:var(--muted)">${v.manufacturer}</td><td class="c-n" style="text-align:center">₹${v.mrp}</td><td class="c-n" style="text-align:center;font-weight:700;color:var(--orange)">₹${v.selling}</td><td style="font-size:.62rem;color:${srcColor};font-weight:${src.includes('Claude est')?'600':'400'}">${src}</td></tr>`;
+  }).join('');
   const elNS=document.getElementById("assumpNonServBody");if(elNS)elNS.innerHTML=nonServRows;
 }
 

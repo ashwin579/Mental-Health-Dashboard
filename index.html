@@ -150,7 +150,7 @@ tr:hover td{background:var(--bg);}
   </div>
   <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
     <div style="font-size:.66rem;color:var(--muted)" id="dataRangeLbl">Loading…</div>
-    <div style="font-size:.6rem;color:var(--green);font-weight:600">↻ Last updated: <!-- LAST_UPDATED_START -->22 May 2026, 05:34 PM IST<!-- LAST_UPDATED_END --></div>
+    <div style="font-size:.6rem;color:var(--green);font-weight:600">↻ Last updated: <!-- LAST_UPDATED_START -->23 May 2026, 12:45 PM IST<!-- LAST_UPDATED_END --></div>
   </div>
 </div>
 
@@ -1132,7 +1132,8 @@ const patients=[
   {id:"08c38e6f-e7de-4630-89ab-ad228877d717",patientId:"f5fd3678-52ee-4d14-be1b-45e6bf87aeef",date:"2026-05-21",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:35,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Sertraline Tab 25mg, Sertraline Tab 50mg, Clonazepam Tab 0.25mg, Vitamin D Capsule",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
   {id:"29eab10c-a6b6-49da-8e5c-8b1e45e60295",patientId:"9171f15a-d6f9-463b-a542-df38b34308bf",date:"2026-05-21",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:22,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Sertraline Tab 25mg, Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
   {id:"b780642f-ae61-4fea-ad7d-3df6bcb139c7",patientId:"bf207fc6-33a0-4e67-b2c0-629b544c5917",date:"2026-05-21",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:27,l1:"Neurodevelopmental",l2:"ADHD — Combined",diag:"ADHD (6A05)",meds:"Tab atomoxetine 18mg, tab zolpidem 5mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
-  {id:"0c6af590-bc94-4c22-840c-0a5c4f9cc9a5",patientId:"de6b1e50-aa0f-422d-ba20-42013a6d306f",date:"2026-05-22",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:27,l1:"Anxiety Disorders",l2:"Panic Disorder",diag:"Panic Disorder (6B01)",meds:"T. Nexito 10mg, T. Clonazepam 0.5mg, T. Pan 40mg",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"fd767da8-b9a7-4c45-a9be-d700d37af4bc",patientId:"ec835267-8aaa-4477-8819-a4a1278cab9e",date:"2026-05-22",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:26,l1:"Neurodevelopmental",l2:"ADHD — Combined",diag:"ADHD (6A05)",meds:"ATOMOXETINE 18MG",therapy:"-",doctor:"Dr. Basava Chetan",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"0c6af590-bc94-4c22-840c-0a5c4f9cc9a5",patientId:"de6b1e50-aa0f-422d-ba20-42013a6d306f",date:"2026-05-22",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:27,l1:"Anxiety Disorders",l2:"Panic Disorder",diag:"Panic Disorder (6B01)",meds:"T. Nexito 10mg, T. Clonazepam 0.5mg",therapy:"-",doctor:"Dr. Shraddha",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
   // ===== END CSV MH-IDENTIFIED =====
   // ===== NE patients counted in MH-identified per business rule =====
   {id:"4ea7e8a6-ne-apr01-dep",date:"2026-04-01",src:"Google",primary:"MH",secondary:"-",gender:"Female",age:20,l1:"Depression",l2:"Mild*",diag:"Depression (NE in RX_Data)",meds:"-",therapy:"Individual + Couple",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",isNE:true},
@@ -1674,9 +1675,12 @@ const SC_APPTS=[
   {id:'29eab10c',date:'2026-05-21',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'MH',ne:false},
   {id:'cc705008',date:'2026-05-21',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
   {id:'b780642f',date:'2026-05-21',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
+  {id:'e00ac888',date:'2026-05-22',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'SH',ne:false},
+  {id:'fd767da8',date:'2026-05-22',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Basava Chetan',src:'Inbound',cat:'MH',ne:false},
   {id:'611414a0',date:'2026-05-22',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
   {id:'637473f7',date:'2026-05-22',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false},
-  {id:'0c6af590',date:'2026-05-22',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false}
+  {id:'0c6af590',date:'2026-05-22',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'MH',ne:false},
+  {id:'56d055f6',date:'2026-05-23',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Shraddha',src:'Inbound',cat:'SH',ne:false}
   // ===== END CSV SC_APPTS =====
 ];
 

@@ -150,7 +150,7 @@ tr:hover td{background:var(--bg);}
   </div>
   <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
     <div style="font-size:.66rem;color:var(--muted)" id="dataRangeLbl">Loading…</div>
-    <div style="font-size:.6rem;color:var(--green);font-weight:600">↻ Last updated: <!-- LAST_UPDATED_START -->30 May 2026, 04:27 PM IST<!-- LAST_UPDATED_END --></div>
+    <div style="font-size:.6rem;color:var(--green);font-weight:600">↻ Last updated: <!-- LAST_UPDATED_START -->31 May 2026, 01:27 PM IST<!-- LAST_UPDATED_END --></div>
   </div>
 </div>
 
@@ -1158,6 +1158,8 @@ const patients=[
   {id:"15d938c7-e83a-4259-895c-080efff6bb8d",patientId:"064a98fc-1a81-4741-9e9c-5c5fb514ac3e",date:"2026-05-29",src:"Inbound",primary:"MH",secondary:"SH",gender:"Male",age:47,l1:"OCD Spectrum",l2:"OCD — Moderate",diag:"Obsessive-Compulsive Disorder (6B20)",meds:"Tadalafil Tab 5mg, Bupropion Tab 150mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Moderately ill",bucket:"MH_ONLY",shPresenting:"Erectile Dysfunction ; Mental Health Concerns ; Low Sexual Desire"},
   {id:"cad379fc-e8e0-428e-a502-d2e3cafbea5b",patientId:"6811d23b-ecfc-4e79-84cf-07cc3239fef0",date:"2026-05-29",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:43,l1:"Anxiety Disorders",l2:"GAD — Moderate",diag:"generalised anxiety disorder",meds:"tab sertraline 100mg, tab propranolol 20mg, tab zolpidem 5mg, tab etizolam 0.5mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Moderately ill",bucket:"MH_ONLY"},
   {id:"c1ff523c-6527-4c68-8175-176069b3a87d",patientId:"32d784a7-72bc-40d3-9055-522d9e2da126",date:"2026-05-29",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:26,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"Sertraline Tab 50mg, Vitamin D Capsule, tab propranolol 20mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Mildly ill",bucket:"MH_ONLY"},
+  {id:"1dd043d0-a265-4013-b2ef-38bc31bb488c",patientId:"b995a7f5-18e8-4100-9c6d-2d1674c8fee8",date:"2026-05-30",src:"Inbound",primary:"SH",secondary:"MH",gender:"Male",age:50,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Sertraline Tab 50mg, Tadalafil Tab 5mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"SH_TO_MH",shPresenting:"Porn Addiction ; Compulsive Masturbation ; Mental Health Concerns"},
+  {id:"07d8832f-c4c7-4dea-b38c-5c101683add8",patientId:"ee67811c-f9b9-42ca-927d-d5758dbe830a",date:"2026-05-30",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:20,l1:"Anxiety Disorders",l2:"GAD — Mild",diag:"Generalized Anxiety Disorder (6B00)",meds:"tab escitalopram 5mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Borderline ill",bucket:"MH_ONLY"},
   // ===== END CSV MH-IDENTIFIED =====
   // ===== NE patients counted in MH-identified per business rule =====
   {id:"4ea7e8a6-ne-apr01-dep",date:"2026-04-01",src:"Google",primary:"MH",secondary:"-",gender:"Female",age:20,l1:"Depression",l2:"Mild*",diag:"Depression (NE in RX_Data)",meds:"-",therapy:"Individual + Couple",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",isNE:true},
@@ -1771,9 +1773,14 @@ const SC_APPTS=[
   {id:'4d584302',date:'2026-05-29',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
   {id:'7cab9df2',date:'2026-05-30',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
   {id:'025a330a',date:'2026-05-30',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'STI',ne:false},
+  {id:'ca8fe089',date:'2026-05-30',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
   {id:'ab4b038a',date:'2026-05-30',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
   {id:'1fe0e8be',date:'2026-05-30',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'4765ce86',date:'2026-05-30',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false}
+  {id:'1dd043d0',date:'2026-05-30',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'4765ce86',date:'2026-05-30',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'STI',ne:false},
+  {id:'4b0017df',date:'2026-05-30',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'1f978851',date:'2026-05-30',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
+  {id:'07d8832f',date:'2026-05-30',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false}
   // ===== END CSV SC_APPTS =====
 ];
 

@@ -34,7 +34,7 @@ DOCTOR_START_DATE = {
     "Dr. Shraddha": "2026-04-23",       # Bangalore launch
     "Dr. Adithya": "2026-04-23",
     "Dr. Basava Chetan": "2026-04-23",
-    "Dr. Pragnya Pillarisetti": "2026-06-01",  # Pune Hadapsar launch
+    "Dr. Pragnya Pillarisetti": "2026-06-08",  # Pune Hadapsar launch
     "Dr. Ashish Yadav": "2026-06-08",   # Jaipur launch
 }
 

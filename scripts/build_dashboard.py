@@ -24,7 +24,7 @@ from googleapiclient.http import MediaIoBaseDownload
 SHEET_ID = "1C1ZmeEmBjfXS9E81GqZFNLatzh3py4eNN0imkF-_2Zs"  # Mental Health Category Launch
 RX_DATA_GID = 0  # RX_Data tab gid — UPDATE if different
 DASHBOARD_PATH = "index.html"
-ALLOWED_DOCTORS = {"Dr. Sandhiya", "Dr. Shraddha", "Dr. Adithya", "Dr. Basava Chetan"}
+ALLOWED_DOCTORS = {"Dr. Sandhiya", "Dr. Shraddha", "Dr. Adithya", "Dr. Basava Chetan", "Dr. Pragnya Pillarisetti", "Dr. Ashish Yadav"}
 DATE_CUTOFF = "2026-04-13"  # CSV-derived data starts here; pre-cutoff is manual
 
 # Doctor-specific cutoffs: doctors who joined the pilot later only count from their start date.
@@ -34,6 +34,8 @@ DOCTOR_START_DATE = {
     "Dr. Shraddha": "2026-04-23",       # Bangalore launch
     "Dr. Adithya": "2026-04-23",
     "Dr. Basava Chetan": "2026-04-23",
+    "Dr. Pragnya Pillarisetti": "2026-06-01",  # Pune Hadapsar launch
+    "Dr. Ashish Yadav": "2026-06-08",   # Jaipur launch
 }
 
 # === COLUMN MAP (resolved DYNAMICALLY from header row) ===
@@ -136,6 +138,8 @@ def map_doctor(p):
     if "adithya" in pl: return "Dr. Adithya"
     if "shraddha" in pl: return "Dr. Shraddha"
     if "chetan" in pl: return "Dr. Basava Chetan"
+    if "pragnya" in pl: return "Dr. Pragnya Pillarisetti"
+    if "ashish" in pl: return "Dr. Ashish Yadav"
     return p
 
 
@@ -144,6 +148,8 @@ CLINIC_TO_CITY = {
     "bharathi nagar": "Coimbatore",
     "indiranagar": "Bangalore",
     "kr puram": "Bangalore",
+    "hadapsar": "Pune",
+    "vaishali nagar": "Jaipur",
     # Add new clinics here as they come online
 }
 
@@ -158,6 +164,8 @@ CITY_ALIASES = {
     "kovai": "Coimbatore",
     "mumbai": "Mumbai",
     "bombay": "Mumbai",
+    "pune": "Pune",
+    "jaipur": "Jaipur",
 }
 
 

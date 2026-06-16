@@ -38,6 +38,12 @@ DOCTOR_START_DATE = {
     "Dr. Ashish Yadav": "2026-06-08",   # Jaipur launch
 }
 
+# Clinic-specific cutoffs: clinics that opened later — counted regardless of which doctor.
+# Clinic name lookup is case-insensitive (normalized to lowercase to match map_city).
+CLINIC_START_DATE = {
+    "brookefield": "2026-06-01",        # Brookefield Bangalore opens June 1
+}
+
 # === COLUMN MAP (resolved DYNAMICALLY from header row) ===
 # Internal field name -> list of acceptable header names (priority order, first match wins)
 # This makes the script resilient to column insertions/reorderings in the sheet.
@@ -148,6 +154,7 @@ CLINIC_TO_CITY = {
     "bharathi nagar": "Coimbatore",
     "indiranagar": "Bangalore",
     "kr puram": "Bangalore",
+    "brookefield": "Bangalore",
     "hadapsar": "Pune",
     "vaishali nagar": "Jaipur",
     # Add new clinics here as they come online
@@ -353,6 +360,11 @@ def build_blocks(csv_text):
         # Doctor-specific date cutoff: skip rows before doctor's pilot start date
         doc_start = DOCTOR_START_DATE.get(doc)
         if doc_start and r[COL["app_date"]] < doc_start:
+            continue
+        # Clinic-specific date cutoff: skip rows before clinic's opening date (independent of doctor)
+        clinic_key = (r[COL["clinic"]] or "").strip().lower()
+        clinic_start = CLINIC_START_DATE.get(clinic_key)
+        if clinic_start and r[COL["app_date"]] < clinic_start:
             continue
 
         sc_cat, ne, primary, secondary, bucket, mh_id = classify(r)

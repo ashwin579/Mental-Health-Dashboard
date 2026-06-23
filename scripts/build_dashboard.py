@@ -42,6 +42,8 @@ DOCTOR_START_DATE = {
 # Clinic name lookup is case-insensitive (normalized to lowercase to match map_city).
 CLINIC_START_DATE = {
     "brookefield": "2026-06-01",        # Brookefield Bangalore opens June 1
+    "kharghar": "2026-06-15",           # Kharghar Navi Mumbai opens June 15
+    "hubli": "2026-06-22",              # Hubli opens June 22
 }
 
 # === COLUMN MAP (resolved DYNAMICALLY from header row) ===
@@ -157,6 +159,8 @@ CLINIC_TO_CITY = {
     "brookefield": "Bangalore",
     "hadapsar": "Pune",
     "vaishali nagar": "Jaipur",
+    "hubli": "Hubli",
+    "kharghar": "Navi Mumbai",
     # Add new clinics here as they come online
 }
 
@@ -173,6 +177,9 @@ CITY_ALIASES = {
     "bombay": "Mumbai",
     "pune": "Pune",
     "jaipur": "Jaipur",
+    "hubli": "Hubli",
+    "hubballi": "Hubli",
+    "navi mumbai": "Navi Mumbai",
 }
 
 

@@ -24,7 +24,7 @@ from googleapiclient.http import MediaIoBaseDownload
 SHEET_ID = "1C1ZmeEmBjfXS9E81GqZFNLatzh3py4eNN0imkF-_2Zs"  # Mental Health Category Launch
 RX_DATA_GID = 0  # RX_Data tab gid — UPDATE if different
 DASHBOARD_PATH = "index.html"
-ALLOWED_DOCTORS = {"Dr. Sandhiya", "Dr. Shraddha", "Dr. Adithya", "Dr. Basava Chetan", "Dr. Pragnya Pillarisetti", "Dr. Ashish Yadav"}
+ALLOWED_DOCTORS = {"Dr. Sandhiya", "Dr. Shraddha", "Dr. Adithya", "Dr. Basava Chetan", "Dr. Pragnya Pillarisetti", "Dr. Ashish Yadav", "Dr. Reeva Sorathiya", "Dr. Varsha Angadi"}
 DATE_CUTOFF = "2026-04-13"  # CSV-derived data starts here; pre-cutoff is manual
 
 # Doctor-specific cutoffs: doctors who joined the pilot later only count from their start date.
@@ -36,6 +36,8 @@ DOCTOR_START_DATE = {
     "Dr. Basava Chetan": "2026-04-23",
     "Dr. Pragnya Pillarisetti": "2026-06-08",  # Pune Hadapsar launch
     "Dr. Ashish Yadav": "2026-06-08",   # Jaipur launch
+    "Dr. Reeva Sorathiya": "2026-06-15", # Kharghar Navi Mumbai launch
+    "Dr. Varsha Angadi": "2026-06-22",  # Hubli launch
 }
 
 # Clinic-specific cutoffs: clinics that opened later — counted regardless of which doctor.
@@ -148,6 +150,8 @@ def map_doctor(p):
     if "chetan" in pl: return "Dr. Basava Chetan"
     if "pragnya" in pl: return "Dr. Pragnya Pillarisetti"
     if "ashish" in pl: return "Dr. Ashish Yadav"
+    if "reeva" in pl: return "Dr. Reeva Sorathiya"
+    if "varsha" in pl: return "Dr. Varsha Angadi"
     return p
 
 

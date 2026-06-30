@@ -27,25 +27,32 @@ DASHBOARD_PATH = "index.html"
 ALLOWED_DOCTORS = {"Dr. Sandhiya", "Dr. Shraddha", "Dr. Adithya", "Dr. Basava Chetan", "Dr. Pragnya Pillarisetti", "Dr. Ashish Yadav", "Dr. Reeva Sorathiya", "Dr. Varsha Angadi"}
 DATE_CUTOFF = "2026-04-13"  # CSV-derived data starts here; pre-cutoff is manual
 
-# Doctor-specific cutoffs: doctors who joined the pilot later only count from their start date.
-# Sandhiya was in the pilot from day 1 (Mar 14). The Bangalore doctors went live Apr 23.
+# === FEATURE FLAG: per-launch date cutoffs ===
+# Set True  → enforce per-doctor AND per-clinic launch dates (earlier "strict" view).
+# Set False → uniform PILOT_START_DATE applies to everyone.
+USE_PER_LAUNCH_CUTOFFS = False
+
+# Uniform pilot start date — used when USE_PER_LAUNCH_CUTOFFS = False.
+PILOT_START_DATE = "2026-03-14"
+
+# Per-doctor cutoffs — only enforced when USE_PER_LAUNCH_CUTOFFS = True.
 DOCTOR_START_DATE = {
-    "Dr. Sandhiya": "2026-03-14",       # full history
-    "Dr. Shraddha": "2026-04-23",       # Bangalore launch
+    "Dr. Sandhiya": "2026-03-14",                # Coimbatore pilot
+    "Dr. Shraddha": "2026-04-23",                # Bangalore launch
     "Dr. Adithya": "2026-04-23",
     "Dr. Basava Chetan": "2026-04-23",
-    "Dr. Pragnya Pillarisetti": "2026-06-08",  # Pune Hadapsar launch
-    "Dr. Ashish Yadav": "2026-06-08",   # Jaipur launch
-    "Dr. Reeva Sorathiya": "2026-06-15", # Kharghar Navi Mumbai launch
-    "Dr. Varsha Angadi": "2026-06-22",  # Hubli launch
+    "Dr. Pragnya Pillarisetti": "2026-06-08",    # Pune Hadapsar launch
+    "Dr. Ashish Yadav": "2026-06-08",            # Jaipur launch
+    "Dr. Reeva Sorathiya": "2026-06-15",         # Kharghar Navi Mumbai launch
+    "Dr. Varsha Angadi": "2026-06-22",           # Hubli launch
 }
 
-# Clinic-specific cutoffs: clinics that opened later — counted regardless of which doctor.
-# Clinic name lookup is case-insensitive (normalized to lowercase to match map_city).
+# Per-clinic cutoffs — only enforced when USE_PER_LAUNCH_CUTOFFS = True.
+# Clinic name lookup is case-insensitive (lowercase to match map_city).
 CLINIC_START_DATE = {
-    "brookefield": "2026-06-01",        # Brookefield Bangalore opens June 1
-    "kharghar": "2026-06-15",           # Kharghar Navi Mumbai opens June 15
-    "hubli": "2026-06-22",              # Hubli opens June 22
+    "brookefield": "2026-06-01",                 # Brookefield Bangalore
+    "kharghar": "2026-06-15",                    # Kharghar Navi Mumbai
+    "hubli": "2026-06-22",                       # Hubli
 }
 
 # === COLUMN MAP (resolved DYNAMICALLY from header row) ===
@@ -368,15 +375,18 @@ def build_blocks(csv_text):
         doc = map_doctor(r[COL["provider_name"]])
         if doc not in ALLOWED_DOCTORS:
             continue
-        # Doctor-specific date cutoff: skip rows before doctor's pilot start date
-        doc_start = DOCTOR_START_DATE.get(doc)
-        if doc_start and r[COL["app_date"]] < doc_start:
-            continue
-        # Clinic-specific date cutoff: skip rows before clinic's opening date (independent of doctor)
-        clinic_key = (r[COL["clinic"]] or "").strip().lower()
-        clinic_start = CLINIC_START_DATE.get(clinic_key)
-        if clinic_start and r[COL["app_date"]] < clinic_start:
-            continue
+        # Date cutoff — strict (per-launch) when flag ON, uniform PILOT_START_DATE when flag OFF.
+        if USE_PER_LAUNCH_CUTOFFS:
+            doc_start = DOCTOR_START_DATE.get(doc)
+            if doc_start and r[COL["app_date"]] < doc_start:
+                continue
+            clinic_key = (r[COL["clinic"]] or "").strip().lower()
+            clinic_start = CLINIC_START_DATE.get(clinic_key)
+            if clinic_start and r[COL["app_date"]] < clinic_start:
+                continue
+        else:
+            if r[COL["app_date"]] < PILOT_START_DATE:
+                continue
 
         sc_cat, ne, primary, secondary, bucket, mh_id = classify(r)
         if sc_cat is None:

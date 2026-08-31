@@ -157,7 +157,7 @@ tr:hover td{background:var(--bg);}
   </div>
   <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
     <div style="font-size:.66rem;color:var(--muted)" id="dataRangeLbl">Loading…</div>
-    <div style="font-size:.6rem;color:var(--green);font-weight:600">↻ Last updated: <!-- LAST_UPDATED_START -->31 Aug 2026, 04:33 PM IST<!-- LAST_UPDATED_END --></div>
+    <div style="font-size:.6rem;color:var(--green);font-weight:600">↻ Last updated: <!-- LAST_UPDATED_START -->31 Aug 2026, 10:41 PM IST<!-- LAST_UPDATED_END --></div>
   </div>
 </div>
 
@@ -1467,7 +1467,6 @@ const patients=[
   {id:"323d3f00-9473-4298-b842-882ea9f86767",patientId:"930d1996-9bca-42c9-9f63-e672acbf2b03",date:"2026-07-24",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:29,l1:"Other MH",l2:"Other MH",diag:"Not yet diagnosed",meds:"Sertraline Tab 25mg, Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
   {id:"bc2e537c-58fe-42a7-877a-19fed840e0aa",patientId:"23a042cd-fa8f-4c91-8390-751a278098ff",date:"2026-07-24",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:18,l1:"Depression",l2:"Mild*",diag:"Single Episode Depressive Disorder (6A70)",meds:"Sertraline Tab 25mg, Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
   {id:"d72654d3-27d4-471a-a599-86d342a4da25",patientId:"ba54368e-f916-40d8-a50c-5d9b55f8ae01",date:"2026-07-24",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:23,l1:"Adjustment / Grief Spectrum",l2:"Adjustment Disorder",diag:"Adjustment Disorder (6B43)",meds:"Sertraline Tab 25mg, Sertraline Tab 50mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Adithya",clinic:"Indiranagar",city:"Bangalore",severity:"Mildly ill",bucket:"MH_ONLY"},
-  {id:"860057c4-5df9-479a-818c-f28af14d262e",patientId:"f6e53b6e-b3e1-472d-a19a-552948a67b0b",date:"2026-07-24",src:"Inbound",primary:"MH",secondary:"-",gender:"Female",age:38,l1:"OCD Spectrum",l2:"OCD — Moderate",diag:"Obsessive-Compulsive Disorder (6B20)",meds:"Fluoxetine Tab 20mg, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Reeva Sorathiya",clinic:"Kharghar",city:"Navi Mumbai",severity:"Moderately ill",bucket:"MH_ONLY"},
   {id:"beda68a9-c175-4d15-a27b-8822db884375",patientId:"828d629c-dd2c-46da-beb8-046e6eeb0bda",date:"2026-07-24",src:"Inbound",primary:"MH",secondary:"-",gender:"Male",age:34,l1:"Anxiety Disorders",l2:"GAD — Severe",diag:"Generalized Anxiety Disorder (6B00)",meds:"Tadalafil Tab 5mg, Escitalopram Oxalate 10mg, Propranolol 20mg, Vitamin B6 + B9 + B12, Clonazepam Tab 0.25mg",therapy:"-",doctor:"Dr. Sandhiya",clinic:"Bharathi Nagar",city:"Coimbatore",severity:"Severely ill",bucket:"MH_ONLY"},
   // ===== END CSV MH-IDENTIFIED =====
   // ===== NE patients counted in MH-identified per business rule =====
@@ -3310,15 +3309,11 @@ const SC_APPTS=[
   {id:'2dd57bd4',date:'2026-07-24',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
   {id:'59dac12f',date:'2026-07-24',clinic:'Indiranagar',city:'Bangalore',doctor:'Dr. Adithya',src:'Inbound',cat:'SH',ne:false},
   {id:'2e98d1da',date:'2026-07-24',clinic:'Hadapsar',city:'Pune',doctor:'Dr. Pragnya Pillarisetti',src:'Inbound',cat:'SH',ne:false},
-  {id:'15e11f8c',date:'2026-07-24',clinic:'Hadapsar',city:'Pune',doctor:'Dr. Pragnya Pillarisetti',src:'Inbound',cat:'SH',ne:false},
   {id:'469b2206',date:'2026-07-24',clinic:'Kharghar',city:'Navi Mumbai',doctor:'Dr. Reeva Sorathiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'860057c4',date:'2026-07-24',clinic:'Kharghar',city:'Navi Mumbai',doctor:'Dr. Reeva Sorathiya',src:'Inbound',cat:'MH',ne:false},
   {id:'beda68a9',date:'2026-07-24',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'MH',ne:false},
   {id:'f30a8acb',date:'2026-07-24',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
   {id:'dcbefdc9',date:'2026-07-24',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'d409e425',date:'2026-07-24',clinic:'Vidya Nagar',city:'Vidya Nagar',doctor:'Dr. Varsha Angadi',src:'Inbound',cat:'SH',ne:false},
-  {id:'bd632635',date:'2026-07-25',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false},
-  {id:'fd61f5e7',date:'2026-07-25',clinic:'Bharathi Nagar',city:'Coimbatore',doctor:'Dr. Sandhiya',src:'Inbound',cat:'SH',ne:false}
+  {id:'d409e425',date:'2026-07-24',clinic:'Vidya Nagar',city:'Vidya Nagar',doctor:'Dr. Varsha Angadi',src:'Inbound',cat:'SH',ne:false}
   // ===== END CSV SC_APPTS =====
 ];
 
